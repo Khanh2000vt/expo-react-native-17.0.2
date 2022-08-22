@@ -1,2 +1,2 @@
-export * from "./base-button/base-button";
-export * from "./base-input/base-input";
+export * from "./BaseButton/BaseButton";
+export * from "./BaseInput/BaseInput";

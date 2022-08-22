@@ -1,14 +1,18 @@
 import { Formik } from "formik";
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import BaseInput from "../../components/base-input/base-input";
+import { StyleSheet, Text, View } from "react-native";
+import BaseInput from "../../components/BaseInput/BaseInput";
 import ArrowRight from "../../../assets/svg/ArrowRight.svg";
-import { theme, Container } from "../../constants/index";
-import BaseButton from "../../components/base-button/base-button";
-import BaseScrollView from "../../components/base-scroll-view/base-scroll-view";
+import { theme } from "../../constants/index";
+import BaseButton from "../../components/BaseButton/BaseButton";
+import BaseScrollView from "../../components/BaseScrollView/BaseScrollView";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
-function ForgotPasswordScreen() {
+function ForgotPasswordScreen({ navigation }: { navigation: any }) {
+  function handleBackToLogin() {
+    navigation.goBack();
+  }
+
   return (
     <BaseScrollView style={styles.container}>
       <Text style={styles.textTitle}>Forgot Password</Text>
@@ -42,9 +46,8 @@ function ForgotPasswordScreen() {
             />
             <BaseButton
               title={"Back to login"}
-              //   IconView={<ArrowRight height={20} width={20} />}
               style={styles.baseButton}
-              onPress={() => {}}
+              onPress={handleBackToLogin}
               option="solid"
             />
           </View>

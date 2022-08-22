@@ -5,7 +5,8 @@ interface PropsBaseInput extends TextInputProps {
   IconView?: React.ReactNode | undefined;
   styleContainer?: StyleProp<ViewStyle> | undefined;
   onPressIcon?: () => void | undefined;
-  // option?: "default" | " password" | "email" | "phone" | undefined;
+  error?: boolean | undefined;
+  messageError?: string;
 }
 
 export type { PropsBaseInput };

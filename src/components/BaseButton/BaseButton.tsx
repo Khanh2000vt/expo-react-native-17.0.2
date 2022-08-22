@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { BaseButtonProps } from "./base-button-model";
+import { BaseButtonProps } from "./BaseButtonModel";
 import { theme, Button } from "../../constants/index";
 const colors = theme.colors;
 function BaseButton({

@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { theme, Input } from "../../constants/index";
-import { PropsBaseInput } from "./base-input-model";
+import { PropsBaseInput } from "./BaseInputModel";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function BaseInput({
@@ -16,6 +16,8 @@ function BaseInput({
   onPressIcon,
   style,
   styleContainer,
+  error,
+  messageError,
   ...props
 }: PropsBaseInput) {
   function handlePressIcon() {
@@ -32,6 +34,7 @@ function BaseInput({
           </TouchableOpacity>
         )}
       </View>
+      {error && <Text style={styles.textError}>{messageError}</Text>}
     </View>
   );
 }
@@ -58,6 +61,11 @@ const styles = StyleSheet.create({
   text: {
     color: colors.Neutral4,
     fontSize: fontSize.font16,
+  },
+  //set test text
+  textError: {
+    fontSize: 9,
+    color: "red",
   },
 });
 

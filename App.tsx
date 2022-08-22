@@ -1,21 +1,26 @@
 import React from "react";
 import { StyleSheet } from "react-native";
-import LoginScreen from "./src/views/login/login-screen";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import ForgotPasswordScreen from "./src/views/login/forgot-password-screen";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import RootStackScreen from "./src/navigation/RootNavigation";
+// const Tab = createTabNavigator();
+const Stack = createNativeStackNavigator();
 export default function App() {
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.safeAreaView}>
-        <LoginScreen />
-        {/* <ForgotPasswordScreen /> */}
-      </SafeAreaView>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          <Stack.Screen name="RootStackScreen" component={RootStackScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </SafeAreaProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  safeAreaView: {
-    flex: 1,
-  },
-});
+const styles = StyleSheet.create({});

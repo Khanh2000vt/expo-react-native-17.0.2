@@ -1,31 +1,50 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { PropsBaseScrollView } from "./base-scroll-view-model";
+import { PropsBaseScrollView } from "./BaseScrollViewModel";
 import { Container } from "../../constants/index";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import BaseHeader from "../BaseHeader/BaseHeader";
 function BaseScrollView({
   paddingLeft = Container.PADDING_LEFT,
   paddingRight = Container.PADDING_RIGHT,
   paddingTop = 0,
   paddingBottom = 0,
   children,
+  header,
   style,
+  title,
+  IconLeft,
+  IconRight,
+  styleHeader,
+  onPressLeft,
+  onPressRight,
   ...props
 }: PropsBaseScrollView) {
   return (
-    <View
-      style={
-        (styles.container,
-        {
-          paddingLeft,
-          paddingRight,
-          paddingTop,
-          paddingBottom,
-        })
-      }
-    >
+    <SafeAreaView style={styles.safeAreaView}>
+      {header && (
+        <BaseHeader
+          title={title}
+          IconLeft={IconLeft}
+          IconRight={IconRight}
+          styleHeader={styleHeader}
+          onPressLeft={onPressLeft}
+          onPressRight={onPressRight}
+        />
+      )}
       <KeyboardAwareScrollView
-        contentContainerStyle={[styles.scrollView, style]}
+        contentContainerStyle={[
+          {
+            paddingLeft,
+            paddingRight,
+            paddingTop,
+            paddingBottom,
+          },
+          ,
+          styles.scrollView,
+          style,
+        ]}
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         // keyboardDismissMode="on-drag"
@@ -34,17 +53,15 @@ function BaseScrollView({
       >
         {children}
       </KeyboardAwareScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 const styles = StyleSheet.create({
-  container: {
+  safeAreaView: {
     flex: 1,
-    backgroundColor: "green",
   },
   scrollView: {
     flexGrow: 1,
-    backgroundColor: "red",
   },
 });
 
