@@ -3,11 +3,15 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { BaseButtonProps } from "./BaseButtonModel";
 import { theme, Button } from "../../constants/index";
 const colors = theme.colors;
+enum OptionsEnum {
+  SOLID = "solid",
+}
+
 function BaseButton({
   title,
   IconView,
   option = "default",
-  color = option === "solid" ? colors.Neutral8 : colors.Neutral0,
+  color = option === OptionsEnum.SOLID ? colors.Neutral8 : colors.Neutral0,
   backgroundColor = option === "solid" ? colors.Neutral0 : colors.primary,
   onPress,
   style,

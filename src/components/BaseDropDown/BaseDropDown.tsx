@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from "react";
 import DropDownPicker from "react-native-dropdown-picker";
 
-import { PropsBaseDropDown } from "./base-drop-down-model";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { theme, Container } from "../../constants/index";
+import { PropsBaseDropDown } from "./BaseDropDownModel";
+import { StyleSheet, Text, View } from "react-native";
+import { theme } from "../../constants/index";
+import ArrowDownIcon from "../../../assets/svg/ArrowDownIcon.svg";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function BaseDropDown({
   data,
   title,
-  selectedValue,
-  // value,
+  placeholder = "Select an item",
+  placeholderStyle,
   styleView,
-  ...props
+  onChangeValue,
+  error,
+  messageError,
 }: PropsBaseDropDown) {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState("apple");
-  const [items, setItems] = useState<{ label: string; value: string }[]>([]);
-  useEffect(() => {
-    setItems([...data]);
-  }, []);
+  const [items, setItems] = useState<{ label: string; value: string }[]>(data);
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, styleView]}>
+      <Text style={styles.textTitle}>{title}</Text>
       <DropDownPicker
         open={open}
         value={value}
@@ -29,37 +30,58 @@ function BaseDropDown({
         setOpen={setOpen}
         setValue={setValue}
         setItems={setItems}
-        // searchable={true}
         listMode="SCROLLVIEW"
         dropDownDirection="TOP"
-        // onChangeValue={onChangeValue}
+        bottomOffset={100}
+        placeholder={placeholder}
+        placeholderStyle={placeholderStyle}
+        onChangeValue={onChangeValue}
+        style={styles.dropDownPicker}
+        ArrowDownIconComponent={({ style }) => <ArrowDownIcon style={style} />}
+        dropDownContainerStyle={styles.dropDownContainerStyle}
+        selectedItemContainerStyle={styles.listItemLabelStyle}
+        zIndex={6000}
         scrollViewProps={{
           decelerationRate: "fast",
         }}
-        modalTitleStyle={{
-          fontWeight: "bold",
-        }}
-        zIndex={6000}
         labelProps={{
           style: styles.labelText,
         }}
-        autoScroll={false}
-        style={styles.dropDownPicker}
       />
+      {error && <Text style={styles.textError}>{messageError}</Text>}
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 8,
+  },
+  dropDownContainerStyle: {
+    borderWidth: 0,
   },
   labelText: {
-    fontWeight: "bold",
+    fontWeight: "400",
+    fontSize: fontSize.font16,
+    color: colors.Neutral10,
   },
   dropDownPicker: {
     backgroundColor: colors.colorInput,
     borderWidth: 0,
+  },
+  textTitle: {
+    fontWeight: "500",
+    fontSize: fontSize.font16,
+    color: colors.Neutral4,
+  },
+  listItemContainerStyle: {
+    // backgroundColor: "red",
+  },
+  listItemLabelStyle: {
+    backgroundColor: colors.colorInput,
+  },
+  textError: {
+    fontSize: 9,
+    color: "red",
   },
 });
 export default BaseDropDown;

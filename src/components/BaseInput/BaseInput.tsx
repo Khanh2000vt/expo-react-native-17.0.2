@@ -28,7 +28,7 @@ function BaseInput({
       <Text style={styles.text}>{title}</Text>
       <View style={styles.viewInput}>
         <TextInput style={styles.textInput} {...props} />
-        {IconView && (
+        {!!IconView && (
           <TouchableOpacity style={styles.viewIcon} onPress={handlePressIcon}>
             {IconView}
           </TouchableOpacity>
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
   },
   text: {
+    fontWeight: "500",
     color: colors.Neutral4,
     fontSize: fontSize.font16,
   },

@@ -1,7 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ForgotPasswordScreen from "../../views/login/ForgotPasswordScreen";
-import LoginScreen from "../../views/login/LoginScreen";
-import RegisterScreen from "../../views/login/RegisterScreen";
+import ForgotPasswordScreen from "../../screens/ForgotPassword/ForgotPasswordScreen";
+import LoginScreen from "../../screens/Login/LoginScreen";
+import OTPScreen from "../../screens/OTP/OTPScreen";
+import RegisterScreen from "../../screens/Register/RegisterScreen";
 
 const LoginStack = createNativeStackNavigator();
 function LoginStackScreen() {
@@ -17,6 +18,7 @@ function LoginStackScreen() {
         component={ForgotPasswordScreen}
       />
       <LoginStack.Screen name="RegisterScreen" component={RegisterScreen} />
+      <LoginStack.Screen name="OTPScreen" component={OTPScreen} />
     </LoginStack.Navigator>
   );
 }
