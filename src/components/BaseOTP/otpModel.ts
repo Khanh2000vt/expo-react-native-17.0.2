@@ -1,28 +1,26 @@
 import { ColorValue, StyleProp, ViewStyle } from "react-native";
-
-interface PropsOTP {
-  pinCount?: number;
-  onCodeFilled?: (code: string) => void | undefined;
+interface PropsOTPBase {
   type?: "otp" | "password";
-  clearInputs?: boolean;
-  styleInputOTP?: StyleProp<ViewStyle> | undefined;
-  styleViewOTP?: StyleProp<ViewStyle> | undefined;
-  styleContainerOTP?: StyleProp<ViewStyle> | undefined;
-  styleInputHighlight?: StyleProp<ViewStyle> | undefined;
   backgroundColor?: ColorValue | undefined;
+  styleInputOTP?: StyleProp<ViewStyle> | undefined;
+  styleInputHighlight?: StyleProp<ViewStyle> | undefined;
 }
 
-interface PropsInputOTP {
-  code: string[];
+interface PropsOTP extends PropsOTPBase {
+  pinCount?: number;
+  onCodeFilled?: (code: string) => void | undefined;
+  clearInputs?: boolean;
+  styleViewOTP?: StyleProp<ViewStyle> | undefined;
+  styleContainerOTP?: StyleProp<ViewStyle> | undefined;
+}
+
+interface PropsInputOTP extends PropsOTPBase {
+  codeChar: string;
   index: number;
   onTextChange: (text: string, index: number) => void;
   onLayout: (a: any, i: number) => void;
   onKeyPress: (s: string, c: string, index: number) => void;
-  type: "otp" | "password";
-  styleInputOTP?: StyleProp<ViewStyle> | undefined;
-  styleInputHighlight?: StyleProp<ViewStyle> | undefined;
-  indexFocused: number;
-  backgroundColor?: ColorValue | undefined;
+  focused: boolean;
 }
 
 export type { PropsOTP, PropsInputOTP };

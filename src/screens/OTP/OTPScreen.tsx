@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { theme } from "../../constants/index";
-import BaseScrollView from "../../components/BaseScrollView/BaseScrollView";
+import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
 import BaseOTP from "../../components/BaseOTP/BaseOTP";
 import BaseButton from "../../components/BaseButton/BaseButton";
 import VectorBack from "../../../assets/svg/VectorBack.svg";
@@ -12,14 +12,16 @@ const fontSize = theme.fontSize;
 function OTPScreen({ navigation }: { navigation: any }) {
   function handleCodeFilled(value: string) {
     console.log("value: ", value);
+    navigation.navigate("AccountsSNSScreen");
   }
   return (
-    <BaseScrollView
+    <BaseAreaView
       style={styles.container}
       header={true}
       IconLeft={<VectorBack />}
       onPressLeft={() => navigation.goBack()}
       styleHeader={styles.styleHeader}
+      scroll
     >
       <Text style={styles.textTitle}>Verification Code</Text>
       <Text style={styles.textInfo}>
@@ -31,32 +33,33 @@ function OTPScreen({ navigation }: { navigation: any }) {
         styleViewOTP={styles.styleViewOTP}
         styleInputOTP={styles.styleInputOTP}
         styleContainerOTP={styles.styleContainerOTP}
+        styleInputHighlight={styles.styleInputHighlight}
         onCodeFilled={handleCodeFilled}
-        backgroundColor="red"
+        backgroundColor={colors.Neutral0}
       />
       <BaseButton
         title={"Verify"}
-        IconView={<Tick height={20} width={20} />}
+        IconRight={<Tick height={20} width={20} />}
         style={styles.baseButton}
-        onPress={() => {}}
+        onPress={() => {
+          navigation.navigate("PersonalIntroductionScreen");
+        }}
       />
       <View style={styles.viewReceiveOTP}>
         <Text style={styles.textReceiveOTP}>Didn’t receive OTP code?</Text>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => {}} activeOpacity={0.8}>
           <Text style={[styles.textReceiveOTP, styles.textResend]}>
             {" Resend"}
           </Text>
         </TouchableOpacity>
       </View>
-    </BaseScrollView>
+    </BaseAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 130,
-    // backgroundColor: "red",
-    // justifyContent: "center",
   },
   styleHeader: {
     height: 50,
@@ -64,7 +67,6 @@ const styles = StyleSheet.create({
   },
   styleViewOTP: {
     width: "100%",
-    // marginHorizontal: 65,
   },
   styleContainerOTP: {
     justifyContent: "space-evenly",
@@ -74,10 +76,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     color: "#000",
     borderColor: "#5A636D",
-    fontSize: 15,
+    fontSize: fontSize.font24,
     height: 65,
     width: 65,
-    // fontSize: fontSize.font16,
+    paddingBottom: 8,
   },
   baseButton: {
     marginTop: 33,
@@ -109,6 +111,9 @@ const styles = StyleSheet.create({
   textResend: {
     fontWeight: "600",
     color: colors.primary,
+  },
+  styleInputHighlight: {
+    borderColor: colors.primary,
   },
 });
 

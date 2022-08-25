@@ -10,6 +10,7 @@ interface PropsBaseScrollView
   paddingBottom?: number;
   children?: React.ReactNode;
   header?: boolean;
+  scroll?: boolean;
 }
 
 export type { PropsBaseScrollView };

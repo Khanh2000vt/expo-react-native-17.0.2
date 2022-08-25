@@ -21,7 +21,7 @@ function BaseInput({
   ...props
 }: PropsBaseInput) {
   function handlePressIcon() {
-    onPressIcon && onPressIcon();
+    !!onPressIcon && onPressIcon();
   }
   return (
     <View style={styleContainer}>
@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    // backgroundColor: "red",
     height: Input.HEIGHT,
     paddingLeft: 16,
   },

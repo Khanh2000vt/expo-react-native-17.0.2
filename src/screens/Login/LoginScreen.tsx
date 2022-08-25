@@ -9,9 +9,11 @@ import { theme, Container } from "../../constants/index";
 import Logo from "../../../assets/svg/LogoBlue.svg";
 import ArrowRight from "../../../assets/svg/ArrowRight.svg";
 import EyeSlash from "../../../assets/svg/EyeSlash.svg";
-import BaseScrollView from "../../components/BaseScrollView/BaseScrollView";
+import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
+
 const colors = theme.colors;
 const fontSize = theme.fontSize;
+
 function LoginScreen({ navigation }: { navigation: any }) {
   const [isHide, setIsHide] = useState<boolean>(true);
   const formik = useFormik({
@@ -40,7 +42,7 @@ function LoginScreen({ navigation }: { navigation: any }) {
   }
 
   return (
-    <BaseScrollView style={styles.container}>
+    <BaseAreaView style={styles.container} scroll>
       <Logo width={49.64} height={50} style={styles.logo} />
       <View style={styles.viewLogin}>
         <Text style={styles.textTitle}>Login</Text>
@@ -74,26 +76,29 @@ function LoginScreen({ navigation }: { navigation: any }) {
           />
           <View style={styles.viewForgotPassword}>
             <View />
-            <TouchableOpacity onPress={handleForgotPassword}>
+            <TouchableOpacity
+              onPress={handleForgotPassword}
+              activeOpacity={0.8}
+            >
               <Text style={styles.textForgotPassword}>Forgot Password?</Text>
             </TouchableOpacity>
           </View>
           <BaseButton
             title={"Login"}
-            IconView={<ArrowRight height={20} width={20} />}
+            IconRight={<ArrowRight height={20} width={20} />}
             style={styles.baseButton}
             onPress={formik.handleSubmit}
           />
           <View style={styles.viewRegister}>
             <Text style={styles.text}>Don't have an account?</Text>
-            <TouchableOpacity onPress={handleRegister}>
+            <TouchableOpacity onPress={handleRegister} activeOpacity={0.8}>
               <Text style={styles.textActive}>{" Register"}</Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
       <View />
-    </BaseScrollView>
+    </BaseAreaView>
   );
 }
 const styles = StyleSheet.create({

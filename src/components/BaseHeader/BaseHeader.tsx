@@ -14,21 +14,21 @@ function BaseHeader({
 }: PropsBaseHeader) {
   return (
     <View style={[styles.container, styleHeader]}>
-      {IconLeft ? (
+      {!!IconLeft ? (
         <TouchableOpacity onPress={onPressLeft} style={styles.button}>
           {IconLeft}
         </TouchableOpacity>
-      ) : IconRight ? (
+      ) : !!IconRight ? (
         <View style={styles.viewOffset}>{IconRight}</View>
       ) : (
         <View />
       )}
       <Text style={styles.textTitle}>{title}</Text>
-      {IconRight ? (
+      {!!IconRight ? (
         <TouchableOpacity onPress={onPressRight} style={styles.button}>
           {IconRight}
         </TouchableOpacity>
-      ) : IconLeft ? (
+      ) : !!IconLeft ? (
         <View style={styles.viewOffset}>{IconLeft}</View>
       ) : (
         <View />

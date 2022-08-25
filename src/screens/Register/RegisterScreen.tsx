@@ -1,22 +1,24 @@
+import { useFormik } from "formik";
 import React, { useMemo, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useFormik } from "formik";
-import * as Yup from "yup";
 
-import BaseInput from "../../components/BaseInput/BaseInput";
-import BaseScrollView from "../../components/BaseScrollView/BaseScrollView";
 import ArrowRight from "../../../assets/svg/ArrowRight.svg";
 import EyeSlash from "../../../assets/svg/EyeSlash.svg";
-import Rectangle74 from "../../../assets/svg/Rectangle74.svg";
+import Tick from "../../../assets/svg/Tick.svg";
+import VectorBack from "../../../assets/svg/VectorBack.svg";
+import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
 import BaseButton from "../../components/BaseButton/BaseButton";
+import BaseDropDown from "../../components/BaseDropDown/BaseDropDown";
+import BaseInput from "../../components/BaseInput/BaseInput";
 import { theme } from "../../constants/index";
 import { createYear } from "./RegisterHandle";
-import VectorBack from "../../../assets/svg/VectorBack.svg";
-import BaseDropDown from "../../components/BaseDropDown/BaseDropDown";
+
 const colors = theme.colors;
 const fontSize = theme.fontSize;
+
 function RegisterScreen({ navigation }: { navigation: any }) {
   const [isHide, setIsHide] = useState<boolean>(true);
+  const [agree, setAgree] = useState<boolean>(false);
 
   const year = new Date().getFullYear();
   const getYear = useMemo(() => createYear(year), [year]);
@@ -50,13 +52,14 @@ function RegisterScreen({ navigation }: { navigation: any }) {
   });
 
   return (
-    <BaseScrollView
+    <BaseAreaView
       style={styles.container}
       title="Register"
       header={true}
       IconLeft={<VectorBack />}
       onPressLeft={() => navigation.goBack()}
       styleHeader={styles.styleHeader}
+      scroll
     >
       <BaseInput
         title="Email"
@@ -126,8 +129,17 @@ function RegisterScreen({ navigation }: { navigation: any }) {
         placeholderTextColor={colors.Neutral3}
       />
       <View style={styles.viewTerms}>
-        <TouchableOpacity>
-          <Rectangle74 width={32} height={32} />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[
+            styles.buttonAgree,
+            {
+              backgroundColor: agree ? colors.primary : colors.Neutral0,
+            },
+          ]}
+          onPress={() => setAgree(!agree)}
+        >
+          {agree && <Tick />}
         </TouchableOpacity>
         <Text style={styles.textDefault}>I agree to the</Text>
         <TouchableOpacity onPress={() => {}}>
@@ -138,11 +150,11 @@ function RegisterScreen({ navigation }: { navigation: any }) {
       </View>
       <BaseButton
         title={"Submit"}
-        IconView={<ArrowRight height={20} width={20} />}
+        IconRight={<ArrowRight height={20} width={20} />}
         style={styles.baseButton}
         onPress={formik.handleSubmit}
       />
-    </BaseScrollView>
+    </BaseAreaView>
   );
 }
 
@@ -174,7 +186,6 @@ const styles = StyleSheet.create({
   },
   viewPicker: {
     flexDirection: "row",
-    // marginVertical: 16,
     marginBottom: 16,
   },
   viewTerms: {
@@ -183,6 +194,15 @@ const styles = StyleSheet.create({
   },
   inputPicker: {
     flex: 1,
+  },
+  buttonAgree: {
+    width: 32,
+    height: 32,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
   },
   textDefault: {
     fontSize: fontSize.font18,

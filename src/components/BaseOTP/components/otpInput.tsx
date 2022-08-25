@@ -1,9 +1,12 @@
 import React, { useRef } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import { PropsInputOTP } from "../otpModel";
-
+enum TypeEnum {
+  PASSWORD = "password",
+  OTP = "otp",
+}
 function InputOTP({
-  code,
+  codeChar,
   index,
   onTextChange,
   onLayout,
@@ -11,6 +14,8 @@ function InputOTP({
   type,
   styleInputOTP,
   backgroundColor,
+  styleInputHighlight,
+  focused,
 }: PropsInputOTP) {
   const refInput = useRef<TextInput>(null);
   return (
@@ -22,24 +27,20 @@ function InputOTP({
         style={[
           styles.textInput,
           styleInputOTP,
-          type === "password" && { color: backgroundColor },
+          type === TypeEnum.PASSWORD && { color: backgroundColor },
+          focused && styleInputHighlight,
         ]}
-        value={code[index]}
+        value={codeChar}
         onChangeText={(text) => onTextChange(text, index)}
         onLayout={() => onLayout(refInput, index)}
         autoFocus={index === 0}
         onKeyPress={({ nativeEvent }) =>
-          onKeyPress(nativeEvent.key, code[index], index)
+          onKeyPress(nativeEvent.key, codeChar, index)
         }
         caretHidden
       />
-      {type === "password" && (
-        <View
-          style={[
-            styles.circle,
-            code[index] !== "" ? styles.circleFilled : styles.circleNot,
-          ]}
-        />
+      {type === TypeEnum.PASSWORD && (
+        <View style={[styles.circle, codeChar !== "" && styles.circleFilled]} />
       )}
     </View>
   );
@@ -66,7 +67,6 @@ const styles = StyleSheet.create({
   circleFilled: {
     backgroundColor: "#000",
   },
-  circleNot: {},
 });
 
 export default InputOTP;

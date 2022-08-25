@@ -5,7 +5,7 @@ import BaseInput from "../../components/BaseInput/BaseInput";
 import ArrowRight from "../../../assets/svg/ArrowRight.svg";
 import { theme } from "../../constants/index";
 import BaseButton from "../../components/BaseButton/BaseButton";
-import BaseScrollView from "../../components/BaseScrollView/BaseScrollView";
+import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function ForgotPasswordScreen({ navigation }: { navigation: any }) {
@@ -14,7 +14,7 @@ function ForgotPasswordScreen({ navigation }: { navigation: any }) {
   }
 
   return (
-    <BaseScrollView style={styles.container}>
+    <BaseAreaView style={styles.container} scroll>
       <Text style={styles.textTitle}>Forgot Password</Text>
       <Text style={styles.textBody}>
         Enter your email and we’ll send the instruction to you
@@ -40,7 +40,7 @@ function ForgotPasswordScreen({ navigation }: { navigation: any }) {
             />
             <BaseButton
               title={"Submit"}
-              IconView={<ArrowRight height={20} width={20} />}
+              IconRight={<ArrowRight height={20} width={20} />}
               style={styles.baseButton}
               onPress={handleSubmit}
             />
@@ -53,7 +53,7 @@ function ForgotPasswordScreen({ navigation }: { navigation: any }) {
           </View>
         )}
       </Formik>
-    </BaseScrollView>
+    </BaseAreaView>
   );
 }
 

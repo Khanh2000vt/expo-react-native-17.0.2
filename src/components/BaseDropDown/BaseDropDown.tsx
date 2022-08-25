@@ -18,7 +18,7 @@ function BaseDropDown({
   messageError,
 }: PropsBaseDropDown) {
   const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState("apple");
+  const [value, setValue] = useState("");
   const [items, setItems] = useState<{ label: string; value: string }[]>(data);
   return (
     <View style={[styles.container, styleView]}>

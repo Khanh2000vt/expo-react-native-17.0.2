@@ -39,8 +39,8 @@ function BaseOTP({
   }
 
   function handleChangeText(text: string, index: number): void {
-    console.log("text", text, index);
     if (text === "") {
+      console.log("handleDeleteText");
       handleDeleteText(text, index);
     } else {
       handleAddText(text, index);
@@ -51,7 +51,7 @@ function BaseOTP({
     if (index !== pinCount - 1) {
       let afterIndex = index + 1;
       ref[afterIndex].current?.focus();
-      // setIndexFocused(afterIndex);
+      setIndexFocused(afterIndex);
     } else {
       Keyboard.dismiss();
     }
@@ -66,11 +66,10 @@ function BaseOTP({
   }
 
   function handleDeleteText(text: string, index: number) {
-    console.log("index:", index);
     if (index !== 0 && index !== pinCount - 1) {
-      console.log("test vao day ");
       let preIndex = index - 1;
       ref[preIndex].current?.focus();
+      setIndexFocused(preIndex);
     }
     const temp = handleInputText(text, index, code);
     setCode([...temp]);
@@ -85,6 +84,7 @@ function BaseOTP({
     if (clearInputs) {
       clearAllCode();
       ref[0].current?.focus();
+      setIndexFocused(0);
     } else {
       let filledCount = code.filter((item) => {
         return item !== "";
@@ -115,16 +115,16 @@ function BaseOTP({
             return (
               <InputOTP
                 key={index}
-                code={code}
+                codeChar={code[index]}
                 index={index}
+                type={type}
+                styleInputHighlight={styleInputHighlight}
+                styleInputOTP={styleInputOTP}
+                focused={indexFocused === index}
+                backgroundColor={backgroundColor}
                 onTextChange={handleChangeText}
                 onLayout={handleLayout}
                 onKeyPress={handleKeyPress}
-                type={type}
-                styleInputOTP={styleInputOTP}
-                indexFocused={indexFocused}
-                backgroundColor={backgroundColor}
-                styleInputHighlight={styleInputHighlight}
               />
             );
           })}
