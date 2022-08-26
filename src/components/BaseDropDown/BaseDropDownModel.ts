@@ -13,6 +13,8 @@ interface PropsBaseDropDown {
   onChangeValue?: (value: any | any[] | undefined) => void | undefined;
   error?: boolean | undefined;
   messageError?: string;
+  zIndex?: number;
+  zIndexInverse?: number;
 }
 
 export type { PropsBaseDropDown };

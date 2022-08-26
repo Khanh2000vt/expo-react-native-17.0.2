@@ -1,15 +1,16 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import BaseButton from "../../components/BaseButton/BaseButton";
-import BaseInput from "../../components/BaseInput/BaseInput";
 import { theme, Container } from "../../constants/index";
-import Logo from "../../../assets/svg/LogoBlue.svg";
-import ArrowRight from "../../../assets/svg/ArrowRight.svg";
-import EyeSlash from "../../../assets/svg/EyeSlash.svg";
-import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
+import {
+  BaseAreaView,
+  BaseButton,
+  BaseInput,
+  ArrowRight,
+  EyeSlash,
+} from "../../components";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
@@ -43,7 +44,10 @@ function LoginScreen({ navigation }: { navigation: any }) {
 
   return (
     <BaseAreaView style={styles.container} scroll>
-      <Logo width={49.64} height={50} style={styles.logo} />
+      <Image
+        source={require("../../../assets/png/LogoBlue.png")}
+        style={styles.logo}
+      />
       <View style={styles.viewLogin}>
         <Text style={styles.textTitle}>Login</Text>
         <View>

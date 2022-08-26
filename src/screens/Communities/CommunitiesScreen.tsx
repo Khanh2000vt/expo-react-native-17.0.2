@@ -1,25 +1,29 @@
-import React, { useCallback, useRef, useState } from "react";
-import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
+import React, { useCallback, useState } from "react";
+import {
+  BaseAreaView,
+  BaseButton,
+  BaseCommunities,
+  BaseGettingStarted,
+  ArrowRight,
+} from "../../components";
 
-import { FlatList, StyleSheet, Text, View } from "react-native";
-import ArrowRight from "../../../assets/svg/ArrowRight.svg";
-import LogoBlue from "../../../assets/svg/LogoBlue.svg";
-import BaseButton from "../../components/BaseButton/BaseButton";
-import BaseCommunities from "../../components/BaseCommunities/BaseCommunities";
+import { FlatList, StyleSheet, View } from "react-native";
 import { theme } from "../../constants/index";
 import { getAddITem, getDeleteItem } from "./CommunitiesHandle";
 
 const colors = theme.colors;
-const fontSize = theme.fontSize;
 
 function CommunitiesScreen({ navigation }: { navigation: any }) {
   const [countTick, setCountTick] = useState<number>(0);
   const [list, setList] = useState<any[]>([]);
+
+  //flat list
   const keyExtractor = useCallback((_, index) => index.toString(), []);
   const renderItem = ({ item }: { item: any }) => {
     return <BaseCommunities item={item} onPress={handlePressBaseCommunities} />;
   };
 
+  //function
   function handlePressBaseCommunities(pressed: boolean, item: any) {
     if (pressed) {
       setCountTick(countTick + 1);
@@ -31,27 +35,14 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
   }
   return (
     <BaseAreaView>
-      <LogoBlue />
-      <Text style={styles.textIntro}>Getting started</Text>
-      <Text style={[styles.textHeader, { marginTop: 5 }]}>
-        Join your communities
-      </Text>
-      <View>
-        <View style={[styles.viewSNS, { marginBottom: 0 }]}>
-          <View style={styles.viewCircle}>
-            <Text style={styles.textCircle}>2</Text>
-          </View>
-          <Text style={[styles.textHeader, styles.textTitle]}>
-            Choose communities you prefer
-          </Text>
-        </View>
-        <View style={[styles.viewSNS, { marginTop: 0, marginBottom: 23 }]}>
-          <View style={{ width: 36, marginRight: 12 }} />
-          <Text style={styles.textDescription}>
-            (Up to 3 communities - {countTick}/3)
-          </Text>
-        </View>
-      </View>
+      <BaseGettingStarted
+        titleScreen="Join your communities"
+        titleStep="Choose communities you prefer"
+        comment="Up to 3 communities"
+        step={2}
+        upto={3}
+        indexUpto={countTick}
+      />
       <View style={styles.viewBody}>
         <FlatList
           data={dataTest}
@@ -64,8 +55,12 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
         title="Next"
         option="solid"
         color={colors.primary}
-        IconRight={<ArrowRight fill={colors.primary} stroke={colors.primary} />}
-        onPress={() => console.log("Test: ", list)}
+        IconRight={
+          <ArrowRight
+            stroke={countTick === 0 ? colors.Neutral3 : colors.primary}
+          />
+        }
+        onPress={() => navigation.navigate("PersonalIntroductionScreen")}
         disabled={countTick === 0}
       />
     </BaseAreaView>
@@ -131,49 +126,9 @@ const dataTest = [
 ];
 
 const styles = StyleSheet.create({
-  viewSNS: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 36,
-  },
-  viewCircle: {
-    width: 36,
-    height: 36,
-    marginRight: 12,
-    backgroundColor: colors.Neutral8,
-    borderRadius: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   viewBody: {
     flex: 1,
     marginBottom: 32,
-  },
-  textIntro: {
-    fontWeight: "500",
-    fontSize: fontSize.font18,
-    color: colors.Neutral8,
-    marginTop: 32,
-  },
-  textHeader: {
-    fontWeight: "600",
-    fontSize: fontSize.font28,
-    color: colors.Neutral10,
-    //
-  },
-  textCircle: {
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: fontSize.font18,
-  },
-  textTitle: {
-    fontSize: fontSize.font18,
-  },
-  textDescription: {
-    fontWeight: "500",
-    fontSize: fontSize.font14,
-    color: colors.Neutral4,
-    marginTop: 4,
   },
 });
 

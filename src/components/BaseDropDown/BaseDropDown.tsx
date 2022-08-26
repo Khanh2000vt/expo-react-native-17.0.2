@@ -4,7 +4,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { PropsBaseDropDown } from "./BaseDropDownModel";
 import { StyleSheet, Text, View } from "react-native";
 import { theme } from "../../constants/index";
-import ArrowDownIcon from "../../../assets/svg/ArrowDownIcon.svg";
+import { ArrowDownIcon } from "../Icon";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function BaseDropDown({
@@ -16,6 +16,8 @@ function BaseDropDown({
   onChangeValue,
   error,
   messageError,
+  zIndex,
+  zIndexInverse,
 }: PropsBaseDropDown) {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState("");
@@ -23,31 +25,37 @@ function BaseDropDown({
   return (
     <View style={[styles.container, styleView]}>
       <Text style={styles.textTitle}>{title}</Text>
-      <DropDownPicker
-        open={open}
-        value={value}
-        items={items}
-        setOpen={setOpen}
-        setValue={setValue}
-        setItems={setItems}
-        listMode="SCROLLVIEW"
-        dropDownDirection="TOP"
-        bottomOffset={100}
-        placeholder={placeholder}
-        placeholderStyle={placeholderStyle}
-        onChangeValue={onChangeValue}
-        style={styles.dropDownPicker}
-        ArrowDownIconComponent={({ style }) => <ArrowDownIcon style={style} />}
-        dropDownContainerStyle={styles.dropDownContainerStyle}
-        selectedItemContainerStyle={styles.listItemLabelStyle}
-        zIndex={6000}
-        scrollViewProps={{
-          decelerationRate: "fast",
-        }}
-        labelProps={{
-          style: styles.labelText,
-        }}
-      />
+      <View>
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+          listMode="SCROLLVIEW"
+          bottomOffset={100}
+          placeholder={placeholder}
+          placeholderStyle={placeholderStyle}
+          onChangeValue={onChangeValue}
+          zIndex={zIndex}
+          itemSeparator
+          zIndexInverse={zIndexInverse}
+          style={styles.dropDownPicker}
+          ArrowDownIconComponent={({ style }) => (
+            <ArrowDownIcon style={style} />
+          )}
+          dropDownContainerStyle={styles.dropDownContainerStyle}
+          selectedItemContainerStyle={styles.listItemLabelStyle}
+          itemSeparatorStyle={{ backgroundColor: colors.Neutral3 }}
+          scrollViewProps={{
+            decelerationRate: "fast",
+          }}
+          labelProps={{
+            style: styles.labelText,
+          }}
+        />
+      </View>
       {error && <Text style={styles.textError}>{messageError}</Text>}
     </View>
   );

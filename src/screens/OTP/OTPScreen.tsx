@@ -2,11 +2,13 @@ import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import { theme } from "../../constants/index";
-import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
-import BaseOTP from "../../components/BaseOTP/BaseOTP";
-import BaseButton from "../../components/BaseButton/BaseButton";
-import VectorBack from "../../../assets/svg/VectorBack.svg";
-import Tick from "../../../assets/svg/Tick.svg";
+import {
+  BaseAreaView,
+  BaseButton,
+  BaseOTP,
+  Tick,
+  VectorBack,
+} from "../../components";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function OTPScreen({ navigation }: { navigation: any }) {
@@ -42,7 +44,7 @@ function OTPScreen({ navigation }: { navigation: any }) {
         IconRight={<Tick height={20} width={20} />}
         style={styles.baseButton}
         onPress={() => {
-          navigation.navigate("PersonalIntroductionScreen");
+          navigation.navigate("AccountsSNSScreen");
         }}
       />
       <View style={styles.viewReceiveOTP}>

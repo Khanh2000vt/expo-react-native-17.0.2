@@ -1,11 +1,13 @@
 import { Formik } from "formik";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import BaseInput from "../../components/BaseInput/BaseInput";
-import ArrowRight from "../../../assets/svg/ArrowRight.svg";
 import { theme } from "../../constants/index";
-import BaseButton from "../../components/BaseButton/BaseButton";
-import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
+import {
+  BaseAreaView,
+  BaseButton,
+  BaseInput,
+  ArrowRight,
+} from "../../components";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function ForgotPasswordScreen({ navigation }: { navigation: any }) {

@@ -18,6 +18,7 @@ function BaseInput({
   styleContainer,
   error,
   messageError,
+  styleTitle,
   ...props
 }: PropsBaseInput) {
   function handlePressIcon() {
@@ -25,7 +26,7 @@ function BaseInput({
   }
   return (
     <View style={styleContainer}>
-      <Text style={styles.text}>{title}</Text>
+      <Text style={[styles.text, styleTitle]}>{title}</Text>
       <View style={styles.viewInput}>
         <TextInput style={styles.textInput} {...props} />
         {!!IconView && (

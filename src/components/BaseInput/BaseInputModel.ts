@@ -1,4 +1,4 @@
-import { StyleProp, TextInputProps, ViewStyle } from "react-native";
+import { StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
 
 interface PropsBaseInput extends TextInputProps {
   title: string;
@@ -7,6 +7,7 @@ interface PropsBaseInput extends TextInputProps {
   onPressIcon?: () => void | undefined;
   error?: boolean | undefined;
   messageError?: string;
+  styleTitle?: StyleProp<TextStyle> | undefined;
 }
 
 export type { PropsBaseInput };

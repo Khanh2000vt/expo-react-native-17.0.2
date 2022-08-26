@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Tick from "../../../assets/svg/Tick.svg";
 import { theme } from "../../constants/index";
+import { Tick } from "../Icon";
 import { BaseCommunitiesProps } from "./BaseCommunitiesModel";
 const colors = theme.colors;
 const fontSize = theme.fontSize;

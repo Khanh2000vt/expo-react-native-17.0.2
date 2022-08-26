@@ -1,11 +1,13 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-import LogoBlue from "../../../assets/svg/LogoBlue.svg";
-import Plus from "../../../assets/svg/Plus.svg";
-import ArrowRight from "../../../assets/svg/ArrowRight.svg";
-import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
-import BaseButton from "../../components/BaseButton/BaseButton";
-import BaseIntroduction from "../../components/BaseIntroduction/BaseIntroduction";
+import { ScrollView, StyleSheet, View } from "react-native";
+import {
+  BaseAreaView,
+  BaseButton,
+  BaseGettingStarted,
+  BaseIntroduction,
+  ArrowRight,
+  Plus,
+} from "../../components";
 import { theme } from "../../constants/index";
 
 const colors = theme.colors;
@@ -14,18 +16,13 @@ const fontSize = theme.fontSize;
 function AccountsSNSScreen({ navigation }: { navigation: any }) {
   return (
     <BaseAreaView style={styles.container}>
-      <LogoBlue />
-      <Text style={styles.textIntro}>Getting started</Text>
-      <Text style={[styles.textHeader, { marginTop: 5 }]}>
-        Personal Introductions
-      </Text>
-      <View style={styles.viewSNS}>
-        <View style={styles.viewCircle}>
-          <Text style={styles.textCircle}>1</Text>
-        </View>
-        <Text style={[styles.textHeader, styles.textTitle]}>SNS accounts</Text>
-        <Text style={styles.textDescription}>{"(Up to 5 accounts)"}</Text>
-      </View>
+      <BaseGettingStarted
+        flexRow
+        titleScreen="Personal Introduction"
+        titleStep="SNS accounts"
+        comment="Up to 5 accounts"
+        step={1}
+      />
       <View style={styles.viewBody}>
         <ScrollView
           contentContainerStyle={styles.scrollView}
@@ -51,7 +48,7 @@ function AccountsSNSScreen({ navigation }: { navigation: any }) {
         title="Next"
         option="solid"
         color={colors.primary}
-        IconRight={<ArrowRight fill={colors.primary} stroke={colors.primary} />}
+        IconRight={<ArrowRight stroke={colors.primary} />}
         onPress={() => navigation.navigate("CommunitiesScreen")}
       />
     </BaseAreaView>
@@ -63,20 +60,6 @@ const styles = StyleSheet.create({
   viewText: {
     flexDirection: "row",
     backgroundColor: "red",
-    alignItems: "center",
-  },
-  viewSNS: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 36,
-  },
-  viewCircle: {
-    width: 36,
-    height: 36,
-    marginRight: 12,
-    backgroundColor: colors.Neutral8,
-    borderRadius: 100,
-    justifyContent: "center",
     alignItems: "center",
   },
   viewBody: {
@@ -94,26 +77,6 @@ const styles = StyleSheet.create({
     fontSize: fontSize.font18,
     color: colors.Neutral8,
     marginTop: 32,
-  },
-  textHeader: {
-    fontWeight: "600",
-    fontSize: fontSize.font28,
-    color: colors.Neutral10,
-    //
-  },
-  textCircle: {
-    color: "#fff",
-    fontWeight: "600",
-    fontSize: fontSize.font18,
-  },
-  textTitle: {
-    fontSize: fontSize.font18,
-  },
-  textDescription: {
-    fontWeight: "500",
-    fontSize: fontSize.font14,
-    color: colors.Neutral4,
-    marginLeft: 15,
   },
   textButtonAdd: {
     fontWeight: "400",

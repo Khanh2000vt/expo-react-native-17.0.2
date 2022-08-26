@@ -1,8 +1,8 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { BaseIntroductionProps } from "./BaseIntroductionModel";
-import ArrowDownIcon from "../../../assets/svg/ArrowDownIcon.svg";
 import { theme } from "../../constants/index";
+import { ArrowDownIcon } from "../Icon";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function BaseIntroduction({}: BaseIntroductionProps) {

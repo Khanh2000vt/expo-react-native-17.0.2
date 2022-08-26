@@ -1,12 +1,14 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import CommunitiesScreen from "../../screens/Communities/CommunitiesScreen";
-import ForgotPasswordScreen from "../../screens/ForgotPassword/ForgotPasswordScreen";
-import LoginScreen from "../../screens/Login/LoginScreen";
-import OTPScreen from "../../screens/OTP/OTPScreen";
-import AccountsSNSScreen from "../../screens/AccountsSNS/AccountsSNSScreen";
-import RegisterScreen from "../../screens/Register/RegisterScreen";
+import {
+  AccountsSNSScreen,
+  CommunitiesScreen,
+  ForgotPasswordScreen,
+  LoginScreen,
+  OTPScreen,
+  PersonalIntroductionScreen,
+  RegisterScreen,
+} from "../../screens";
 const LoginStack = createNativeStackNavigator();
-
 function LoginStackScreen() {
   return (
     <LoginStack.Navigator
@@ -28,6 +30,10 @@ function LoginStackScreen() {
       <LoginStack.Screen
         name="CommunitiesScreen"
         component={CommunitiesScreen}
+      />
+      <LoginStack.Screen
+        name="PersonalIntroductionScreen"
+        component={PersonalIntroductionScreen}
       />
     </LoginStack.Navigator>
   );

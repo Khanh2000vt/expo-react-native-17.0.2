@@ -2,16 +2,18 @@ import { useFormik } from "formik";
 import React, { useMemo, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import ArrowRight from "../../../assets/svg/ArrowRight.svg";
-import EyeSlash from "../../../assets/svg/EyeSlash.svg";
-import Tick from "../../../assets/svg/Tick.svg";
-import VectorBack from "../../../assets/svg/VectorBack.svg";
-import BaseAreaView from "../../components/BaseAreaView/BaseAreaView";
-import BaseButton from "../../components/BaseButton/BaseButton";
-import BaseDropDown from "../../components/BaseDropDown/BaseDropDown";
-import BaseInput from "../../components/BaseInput/BaseInput";
-import { theme } from "../../constants/index";
-import { createYear } from "./RegisterHandle";
+import {
+  BaseAreaView,
+  BaseButton,
+  BaseDropDown,
+  BaseInput,
+  ArrowRight,
+  EyeSlash,
+  Tick,
+  VectorBack,
+} from "../../components";
+import { gender, theme } from "../../constants";
+import { ListYear } from "../../utils";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
@@ -19,9 +21,6 @@ const fontSize = theme.fontSize;
 function RegisterScreen({ navigation }: { navigation: any }) {
   const [isHide, setIsHide] = useState<boolean>(true);
   const [agree, setAgree] = useState<boolean>(false);
-
-  const year = new Date().getFullYear();
-  const getYear = useMemo(() => createYear(year), [year]);
 
   const formik = useFormik({
     initialValues: {
@@ -101,7 +100,7 @@ function RegisterScreen({ navigation }: { navigation: any }) {
 
       <View style={styles.viewPicker}>
         <BaseDropDown
-          data={data}
+          data={gender}
           onChangeValue={formik.handleChange("gender")}
           title="Gender"
           styleView={{ marginRight: 8 }}
@@ -111,7 +110,7 @@ function RegisterScreen({ navigation }: { navigation: any }) {
           messageError={formik.errors.gender}
         />
         <BaseDropDown
-          data={getYear}
+          data={ListYear()}
           onChangeValue={formik.handleChange("birthYear")}
           title="Birth Year"
           styleView={{ marginLeft: 8 }}
@@ -158,17 +157,6 @@ function RegisterScreen({ navigation }: { navigation: any }) {
   );
 }
 
-const data = [
-  {
-    label: "Male",
-    value: "Male",
-  },
-  {
-    label: "Female",
-    value: "Female",
-  },
-];
-
 const styles = StyleSheet.create({
   container: {
     paddingTop: 43,
@@ -187,6 +175,7 @@ const styles = StyleSheet.create({
   viewPicker: {
     flexDirection: "row",
     marginBottom: 16,
+    zIndex: 100,
   },
   viewTerms: {
     flexDirection: "row",
