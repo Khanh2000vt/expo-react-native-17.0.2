@@ -5,3 +5,5 @@ export { default as LoginScreen } from "./Login/LoginScreen";
 export { default as OTPScreen } from "./OTP/OTPScreen";
 export { default as PersonalIntroductionScreen } from "./PersonalIntroduction/PersonalIntroductionScreen";
 export { default as RegisterScreen } from "./Register/RegisterScreen";
+export { default as RegisterForgotScreen } from "./RegisterForgot/RegisterForgotScreen";
+export { default as SuccessfullyScreen } from "./Successfully/SuccessfullyScreen";

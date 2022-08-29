@@ -91,7 +91,7 @@ function Plus(props: any) {
   );
 }
 
-function Tick(props: any) {
+function Tick({ stroke, ...props }: any) {
   return (
     <Svg
       width={16}
@@ -103,7 +103,7 @@ function Tick(props: any) {
     >
       <Path
         d="M14.375 1.625l-8.75 8.75L1.25 6"
-        stroke="#fff"
+        stroke={stroke || "#fff"}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -154,4 +154,31 @@ function VectorBack(props: any) {
   );
 }
 
-export { ArrowDownIcon, ArrowRight, EyeSlash, Plus, Tick, Vector, VectorBack };
+function CircleComplete(props: any) {
+  return (
+    <Svg
+      width={90}
+      height={90}
+      viewBox="0 0 90 90"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M45 .313A44.687 44.687 0 1089.688 45 44.74 44.74 0 0045 .312zm21.283 36.862l-25.21 24.063a3.448 3.448 0 01-4.754 0L23.717 49.206a3.44 3.44 0 014.754-4.975l10.225 9.766L61.53 32.2a3.44 3.44 0 014.753 4.975z"
+        fill="#3FAEC7"
+      />
+    </Svg>
+  );
+}
+
+export {
+  ArrowDownIcon,
+  ArrowRight,
+  EyeSlash,
+  Plus,
+  Tick,
+  Vector,
+  VectorBack,
+  CircleComplete,
+};

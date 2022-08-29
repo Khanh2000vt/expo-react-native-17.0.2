@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { memo, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -13,7 +13,6 @@ const fontSize = theme.fontSize;
 function BaseInput({
   title,
   IconView,
-  onPressIcon,
   style,
   styleContainer,
   error,
@@ -21,16 +20,21 @@ function BaseInput({
   styleTitle,
   ...props
 }: PropsBaseInput) {
-  function handlePressIcon() {
-    !!onPressIcon && onPressIcon();
-  }
+  const [isHide, setIsHide] = useState<boolean>(true);
   return (
     <View style={styleContainer}>
       <Text style={[styles.text, styleTitle]}>{title}</Text>
       <View style={styles.viewInput}>
-        <TextInput style={styles.textInput} {...props} />
+        <TextInput
+          style={styles.textInput}
+          secureTextEntry={isHide && !!IconView}
+          {...props}
+        />
         {!!IconView && (
-          <TouchableOpacity style={styles.viewIcon} onPress={handlePressIcon}>
+          <TouchableOpacity
+            style={styles.viewIcon}
+            onPress={() => setIsHide(!isHide)}
+          >
             {IconView}
           </TouchableOpacity>
         )}
@@ -70,4 +74,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BaseInput;
+export default memo(BaseInput);

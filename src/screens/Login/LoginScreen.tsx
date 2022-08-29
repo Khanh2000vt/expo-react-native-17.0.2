@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useFormik } from "formik";
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
 
-import { theme, Container } from "../../constants/index";
 import {
+  ArrowRight,
   BaseAreaView,
   BaseButton,
   BaseInput,
-  ArrowRight,
   EyeSlash,
 } from "../../components";
+import { Container, theme } from "../../constants/index";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
 function LoginScreen({ navigation }: { navigation: any }) {
-  const [isHide, setIsHide] = useState<boolean>(true);
+  // const [isHide, setIsHide] = useState<boolean>(true);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -71,10 +71,6 @@ function LoginScreen({ navigation }: { navigation: any }) {
             placeholder="Your password"
             placeholderTextColor={colors.Neutral3}
             IconView={<EyeSlash height={24} width={24} />}
-            secureTextEntry={isHide}
-            onPressIcon={() => {
-              setIsHide(!isHide);
-            }}
             error={formik.touched.password}
             messageError={formik.errors.password}
           />

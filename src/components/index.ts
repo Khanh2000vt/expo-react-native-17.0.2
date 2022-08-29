@@ -7,3 +7,4 @@ export * from "./BaseInput";
 export * from "./BaseIntroduction";
 export * from "./BaseOTP";
 export * from "./Icon";
+export * from "./BaseModal";

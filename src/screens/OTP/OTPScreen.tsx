@@ -1,6 +1,5 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
 import { theme } from "../../constants/index";
 import {
   BaseAreaView,
@@ -11,10 +10,16 @@ import {
 } from "../../components";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
-function OTPScreen({ navigation }: { navigation: any }) {
+function OTPScreen({ route, navigation }: { route: any; navigation: any }) {
+  const { type } = route.params;
   function handleCodeFilled(value: string) {
-    console.log("value: ", value);
-    navigation.navigate("AccountsSNSScreen");
+    if (type === 1) {
+      console.log("vao day");
+      navigation.navigate("AccountsSNSScreen");
+    } else if (type === 2) {
+      console.log("vao 2");
+      navigation.navigate("SuccessfullyScreen");
+    }
   }
   return (
     <BaseAreaView
@@ -44,7 +49,14 @@ function OTPScreen({ navigation }: { navigation: any }) {
         IconRight={<Tick height={20} width={20} />}
         style={styles.baseButton}
         onPress={() => {
-          navigation.navigate("AccountsSNSScreen");
+          // navigation.navigate("AccountsSNSScreen");
+          if (type === 1) {
+            console.log("vao day");
+            navigation.navigate("AccountsSNSScreen");
+          } else if (type === 2) {
+            console.log("vao 2");
+            navigation.navigate("SuccessfullyScreen");
+          }
         }}
       />
       <View style={styles.viewReceiveOTP}>

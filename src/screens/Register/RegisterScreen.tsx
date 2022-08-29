@@ -1,13 +1,13 @@
 import { useFormik } from "formik";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
+import * as Yup from "yup";
 import {
+  ArrowRight,
   BaseAreaView,
   BaseButton,
-  BaseDropDown,
   BaseInput,
-  ArrowRight,
+  BaseModal,
   EyeSlash,
   Tick,
   VectorBack,
@@ -19,7 +19,6 @@ const colors = theme.colors;
 const fontSize = theme.fontSize;
 
 function RegisterScreen({ navigation }: { navigation: any }) {
-  const [isHide, setIsHide] = useState<boolean>(true);
   const [agree, setAgree] = useState<boolean>(false);
 
   const formik = useFormik({
@@ -44,9 +43,11 @@ function RegisterScreen({ navigation }: { navigation: any }) {
     //   gender: Yup.string().required("No gender provided."),
     //   birthYear: Yup.string().required("No birth year provided."),
     // }),
-    onSubmit: (values) => {
+    onSubmit: (_values) => {
       console.log("OTPScreen");
-      navigation.navigate("OTPScreen");
+      navigation.navigate("OTPScreen", {
+        type: 1,
+      });
     },
   });
 
@@ -80,10 +81,6 @@ function RegisterScreen({ navigation }: { navigation: any }) {
         placeholder="Your password"
         placeholderTextColor={colors.Neutral3}
         IconView={<EyeSlash height={24} width={24} />}
-        secureTextEntry={isHide}
-        onPressIcon={() => {
-          setIsHide(!isHide);
-        }}
         error={formik.touched.password}
         messageError={formik.errors.password}
       />
@@ -99,23 +96,21 @@ function RegisterScreen({ navigation }: { navigation: any }) {
       />
 
       <View style={styles.viewPicker}>
-        <BaseDropDown
+        <BaseModal
           data={gender}
-          onChangeValue={formik.handleChange("gender")}
           title="Gender"
-          styleView={{ marginRight: 8 }}
           placeholder="-Gender -"
-          placeholderStyle={styles.textPlaceholderDropDown}
+          onChangeValue={formik.handleChange("gender")}
+          styleContainer={{ marginRight: 8 }}
           error={formik.touched.gender}
           messageError={formik.errors.gender}
         />
-        <BaseDropDown
+        <BaseModal
           data={ListYear()}
-          onChangeValue={formik.handleChange("birthYear")}
           title="Birth Year"
-          styleView={{ marginLeft: 8 }}
           placeholder="- Birth Year -"
-          placeholderStyle={styles.textPlaceholderDropDown}
+          onChangeValue={formik.handleChange("birthYear")}
+          styleContainer={{ marginLeft: 8 }}
           error={formik.touched.birthYear}
           messageError={formik.errors.birthYear}
         />

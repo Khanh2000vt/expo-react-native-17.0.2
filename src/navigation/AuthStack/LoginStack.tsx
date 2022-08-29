@@ -6,7 +6,9 @@ import {
   LoginScreen,
   OTPScreen,
   PersonalIntroductionScreen,
+  RegisterForgotScreen,
   RegisterScreen,
+  SuccessfullyScreen,
 } from "../../screens";
 const LoginStack = createNativeStackNavigator();
 function LoginStackScreen() {
@@ -34,6 +36,14 @@ function LoginStackScreen() {
       <LoginStack.Screen
         name="PersonalIntroductionScreen"
         component={PersonalIntroductionScreen}
+      />
+      <LoginStack.Screen
+        name="RegisterForgotScreen"
+        component={RegisterForgotScreen}
+      />
+      <LoginStack.Screen
+        name="SuccessfullyScreen"
+        component={SuccessfullyScreen}
       />
     </LoginStack.Navigator>
   );
