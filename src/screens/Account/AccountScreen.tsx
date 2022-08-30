@@ -1,12 +1,12 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-function CommunitiesScreen() {
+function AccountScreen() {
   return (
     <View>
-      <Text>CommunitiesScreen</Text>
+      <Text>AccountScreen</Text>
     </View>
   );
 }
 
-export default CommunitiesScreen;
+export default AccountScreen;

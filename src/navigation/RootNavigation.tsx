@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginStackScreen from "./AuthStack/LoginStack";
+import MainStack from "./MainStack/MainStack";
 
 const RootStack = createNativeStackNavigator();
 function RootStackScreen() {
@@ -9,7 +10,8 @@ function RootStackScreen() {
         headerShown: false,
       }}
     >
-      <RootStack.Screen name="LoginStackScreen" component={LoginStackScreen} />
+      {/* <RootStack.Screen name="LoginStackScreen" component={LoginStackScreen} /> */}
+      <RootStack.Screen name="MainStack" component={MainStack} />
     </RootStack.Navigator>
   );
 }

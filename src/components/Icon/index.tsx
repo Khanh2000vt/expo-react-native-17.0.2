@@ -172,6 +172,171 @@ function CircleComplete(props: any) {
   );
 }
 
+function VectorRight(props: any) {
+  return (
+    <Svg
+      width={7}
+      height={12}
+      viewBox="0 0 7 12"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M1 1l5 5-5 5"
+        stroke="#3FAEC7"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function TabHome({ stroke, ...props }: any) {
+  return (
+    <Svg
+      width={28}
+      height={29}
+      viewBox="0 0 28 29"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M26.007 12.415L14.756 2.187a1.125 1.125 0 00-1.514 0L1.993 12.415a1.125 1.125 0 00-.368.832V26.25a1.125 1.125 0 001.125 1.125h22.5a1.125 1.125 0 001.125-1.125V13.247a1.126 1.126 0 00-.368-.832z"
+        stroke={stroke || "#3FAEC7"}
+        strokeWidth={2.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function TabCommunities({ stroke, ...props }: any) {
+  return (
+    <Svg
+      width={36}
+      height={36}
+      viewBox="0 0 36 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M14.625 6.75h-6.75c-.621 0-1.125.504-1.125 1.125v6.75c0 .621.504 1.125 1.125 1.125h6.75c.622 0 1.125-.504 1.125-1.125v-6.75c0-.621-.503-1.125-1.125-1.125zM14.625 20.25h-6.75c-.621 0-1.125.504-1.125 1.125v6.75c0 .621.504 1.125 1.125 1.125h6.75c.622 0 1.125-.504 1.125-1.125v-6.75c0-.621-.503-1.125-1.125-1.125zM28.125 6.75h-6.75c-.621 0-1.125.504-1.125 1.125v6.75c0 .621.504 1.125 1.125 1.125h6.75c.622 0 1.125-.504 1.125-1.125v-6.75c0-.621-.503-1.125-1.125-1.125z"
+        stroke={stroke || "#C6CBCC"}
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function TabAccount({ stroke, ...props }: any) {
+  return (
+    <Svg
+      width={36}
+      height={36}
+      viewBox="0 0 36 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M18 22.5a9 9 0 100-18 9 9 0 000 18z"
+        stroke={stroke || "#3FAEC7"}
+        strokeWidth={2.5}
+        strokeMiterlimit={10}
+      />
+      <Path
+        d="M4.358 30.374a15.755 15.755 0 0127.284 0"
+        stroke={stroke || "#C6CBCC"}
+        strokeWidth={2.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function TomoCoins(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M16 19c7.18 0 13-2.686 13-6s-5.82-6-13-6S3 9.686 3 13s5.82 6 13 6zM16 19v6"
+        stroke="#FEA827"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M3 13v6c0 3 5 6 13 6s13-3 13-6v-6M24 17.763v6M8 17.763v6"
+        stroke="#FEA827"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function ViaTwitter(props: any) {
+  return (
+    <Svg
+      width={28}
+      height={24}
+      viewBox="0 0 28 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M23.23 7.77l-.258.259-.032.363C22.232 16.61 15.298 23 7 23c-1.723 0-3.05-.275-4-.75h0c-.75-.375-.997-.745-1-.75h.002c.05-.02 3.203-1.221 5.283-3.575l.736-.832-.905-.645a12.7 12.7 0 01-2.865-2.822H4.25C2.678 11.491.959 7.727 2 2h0l-.298-.954L2 2h0l.001.001c.055.055 4.38 4.333 9.746 5.731l1.251.326L13 6.765 13 6.004A5.04 5.04 0 0118.066 1a5.015 5.015 0 014.266 2.5l.289.5H27l-3.77 3.77zM2 2h0z"
+        stroke="#406FF1"
+        strokeWidth={2}
+      />
+    </Svg>
+  );
+}
+
+function ViaFacebook(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M16 28c6.627 0 12-5.373 12-12S22.627 4 16 4 4 9.373 4 16s5.373 12 12 12z"
+        stroke="#642AE3"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M21 11h-2a3 3 0 00-3 3v14M12 18h8"
+        stroke="#642AE3"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
 export {
   ArrowDownIcon,
   ArrowRight,
@@ -181,4 +346,11 @@ export {
   Vector,
   VectorBack,
   CircleComplete,
+  TabHome,
+  TabCommunities,
+  TabAccount,
+  VectorRight,
+  TomoCoins,
+  ViaTwitter,
+  ViaFacebook,
 };

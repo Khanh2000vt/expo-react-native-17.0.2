@@ -5,7 +5,11 @@ import { Tick } from "../Icon";
 import { BaseCommunitiesProps } from "./BaseCommunitiesModel";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
-function BaseCommunities({ item, onPress }: BaseCommunitiesProps) {
+function BaseCommunities({
+  item,
+  onPress,
+  isShowTick = true,
+}: BaseCommunitiesProps) {
   const [tick, setTick] = useState<boolean>(false);
   function handleOnPress() {
     !!onPress && onPress(!tick, item);
@@ -17,16 +21,18 @@ function BaseCommunities({ item, onPress }: BaseCommunitiesProps) {
       style={[styles.container]}
       onPress={handleOnPress}
     >
-      <View
-        style={[
-          styles.iconView,
-          {
-            backgroundColor: tick ? colors.primary : colors.Neutral0,
-          },
-        ]}
-      >
-        <Tick />
-      </View>
+      {isShowTick && (
+        <View
+          style={[
+            styles.iconView,
+            {
+              backgroundColor: tick ? colors.primary : colors.Neutral0,
+            },
+          ]}
+        >
+          <Tick />
+        </View>
+      )}
       <Image
         source={require("../../../assets/png/imgTest.png")}
         width={74}

@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {
   AccountsSNSScreen,
-  CommunitiesScreen,
+  PickPreferScreen,
   ForgotPasswordScreen,
   LoginScreen,
   OTPScreen,
@@ -31,7 +31,7 @@ function LoginStackScreen() {
       />
       <LoginStack.Screen
         name="CommunitiesScreen"
-        component={CommunitiesScreen}
+        component={PickPreferScreen}
       />
       <LoginStack.Screen
         name="PersonalIntroductionScreen"
