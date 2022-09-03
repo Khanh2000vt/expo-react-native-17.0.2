@@ -458,6 +458,161 @@ function SvgUser(props: any) {
   );
 }
 
+function SvgCopy(props: any) {
+  return (
+    <Svg
+      width={18}
+      height={18}
+      viewBox="0 0 18 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M11.813 11.812h3.374v-9h-9v3.375"
+        stroke="#5A636D"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M11.813 6.187h-9v9h9v-9z"
+        stroke="#5A636D"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function UserCircle(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M16 28c6.627 0 12-5.373 12-12S22.627 4 16 4 4 9.373 4 16s5.373 12 12 12z"
+        stroke="#191B1D"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M16 20a5 5 0 100-10 5 5 0 000 10zM7.975 24.922a9.004 9.004 0 0116.05 0"
+        stroke="#191B1D"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function Prohibit(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M16 28c6.627 0 12-5.373 12-12S22.627 4 16 4 4 9.373 4 16s5.373 12 12 12z"
+        stroke="#191B1D"
+        strokeWidth={1.5}
+        strokeMiterlimit={10}
+      />
+      <Path
+        d="M7.515 7.515l16.97 16.97"
+        stroke="#191B1D"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function LockKeyOpen(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M15.999 20a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM15.999 20v3"
+        stroke="#191B1D"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M25.999 11h-20a1 1 0 00-1 1v14a1 1 0 001 1h20a1 1 0 001-1V12a1 1 0 00-1-1zM11.499 11V6.5a4.5 4.5 0 119 0"
+        stroke="#191B1D"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function SignOut(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M21.751 10.75L27 16l-5.249 5.25M13 16h13.996M13 27H6a1 1 0 01-1-1V6a1 1 0 011-1h7"
+        stroke="#191B1D"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function Warnings(props: any) {
+  return (
+    <Svg
+      width={20}
+      height={20}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M10 8.125v3.125M8.918 3.124L2.045 14.998a1.25 1.25 0 001.082 1.876h13.746a1.25 1.25 0 001.082-1.876L11.082 3.124a1.25 1.25 0 00-2.164 0v0z"
+        stroke="#FF4C41"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M10 15a.937.937 0 100-1.875A.937.937 0 0010 15z"
+        fill="#FF4C41"
+      />
+    </Svg>
+  );
+}
+
 export {
   ArrowDownIcon,
   ArrowRight,
@@ -479,4 +634,10 @@ export {
   SvgInfo,
   SlidersHorizontal,
   SvgUser,
+  SvgCopy,
+  UserCircle,
+  Prohibit,
+  LockKeyOpen,
+  SignOut,
+  Warnings,
 };

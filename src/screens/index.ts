@@ -9,7 +9,15 @@ export { default as RegisterForgotScreen } from "./RegisterForgot/RegisterForgot
 export { default as SuccessfullyScreen } from "./Successfully/SuccessfullyScreen";
 
 //main stacks
+//home tab
 export { default as HomeScreen } from "./Home/HomeScreen";
+// Communities tab
 export { default as CommunitiesScreen } from "./Communities/CommunitiesScreen";
-export { default as AccountScreen } from "./Account/AccountScreen";
 export { default as CommunityDetailScreen } from "./CommunityDetail/CommunityDetailScreen";
+// Account tab
+export { default as AccountScreen } from "./Account/AccountScreen";
+export { default as YourProfileScreen } from "./YourProfile/YourProfileScreen";
+export { default as WaitingForApprovalScreen } from "./WaitingForApproval/WaitingForApprovalScreen";
+export { default as FriendRequestScreen } from "./FriendRequest/FriendRequestScreen";
+export { default as BlockListScreen } from "./BlockList/BlockListScreen";
+export { default as ChangePasswordScreen } from "./ChangePassword/ChangePasswordScreen";
