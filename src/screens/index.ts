@@ -12,3 +12,4 @@ export { default as SuccessfullyScreen } from "./Successfully/SuccessfullyScreen
 export { default as HomeScreen } from "./Home/HomeScreen";
 export { default as CommunitiesScreen } from "./Communities/CommunitiesScreen";
 export { default as AccountScreen } from "./Account/AccountScreen";
+export { default as CommunityDetailScreen } from "./CommunityDetail/CommunityDetailScreen";

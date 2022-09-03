@@ -1,13 +1,6 @@
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-import { ParamListBase } from "@react-navigation/native";
 import React from "react";
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TabAccount, TabCommunities, TabHome } from "../../../components";
 import { theme } from "../../../constants";
 
@@ -51,7 +44,7 @@ function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate({ name: route.name, merge: true });
+            navigation.navigate({ name: route.name, merge: true } as never);
           }
         };
 
@@ -67,6 +60,7 @@ function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
+            activeOpacity={0.8}
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}

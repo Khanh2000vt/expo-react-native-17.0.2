@@ -337,6 +337,127 @@ function ViaFacebook(props: any) {
   );
 }
 
+function MagnifyingGlass(props: any) {
+  return (
+    <Svg
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M10.875 18.75a7.875 7.875 0 100-15.75 7.875 7.875 0 000 15.75zM16.443 16.444L21 21"
+        stroke="#C6CBCC"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function SvgMessages(props: any) {
+  return (
+    <Svg
+      width={48}
+      height={48}
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M43.2 2.4H21.6c-2.64 0-4.8 2.16-4.8 4.8v19.2h16.8l7.2 7.2v-7.2h2.4c2.64 0 4.8-2.158 4.8-4.8V7.2c0-2.64-2.16-4.8-4.8-4.8z"
+        fill="#3FAEC7"
+      />
+      <Path
+        d="M13.92 29.28V14.4H4.8c-2.64 0-4.8 2.16-4.8 4.8v14.4c0 2.64 2.16 4.8 4.8 4.8h2.4v7.2l7.2-7.2h12c2.64 0 4.8-2.16 4.8-4.8v-4.368c-.158.034-.319.05-.48.05h-16.8v-.002z"
+        fill="#C6CBCC"
+      />
+    </Svg>
+  );
+}
+
+function SvgInfo(props: any) {
+  return (
+    <Svg
+      width={28}
+      height={28}
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M14 24.5c5.799 0 10.5-4.701 10.5-10.5S19.799 3.5 14 3.5 3.5 8.201 3.5 14 8.201 24.5 14 24.5z"
+        stroke="#3FAEC7"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M13.125 13.125H14v6.125h.875"
+        stroke="#3FAEC7"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M13.781 10.5a1.313 1.313 0 100-2.625 1.313 1.313 0 000 2.625z"
+        fill="#3FAEC7"
+      />
+    </Svg>
+  );
+}
+
+function SlidersHorizontal(props: any) {
+  return (
+    <Svg
+      width={28}
+      height={28}
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M16.188 18.812H4.374M23.625 18.812h-3.063M18.375 21a2.188 2.188 0 100-4.376 2.188 2.188 0 000 4.376zM9.188 9.187H4.375M23.625 9.187H13.562M11.375 11.374a2.188 2.188 0 100-4.375 2.188 2.188 0 000 4.375z"
+        stroke="#191B1D"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function SvgUser(props: any) {
+  return (
+    <Svg
+      width={16}
+      height={17}
+      viewBox="0 0 16 17"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M5.5 10.5a3.25 3.25 0 100-6.5 3.25 3.25 0 000 6.5z"
+        stroke="#2B3641"
+        strokeMiterlimit={10}
+      />
+      <Path
+        d="M9.713 4.12a3.25 3.25 0 11.882 6.38M1 12.837a5.501 5.501 0 019 0M10.595 10.5a5.494 5.494 0 014.5 2.337"
+        stroke="#2B3641"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
 export {
   ArrowDownIcon,
   ArrowRight,
@@ -353,4 +474,9 @@ export {
   TomoCoins,
   ViaTwitter,
   ViaFacebook,
+  MagnifyingGlass,
+  SvgMessages,
+  SvgInfo,
+  SlidersHorizontal,
+  SvgUser,
 };

@@ -1,6 +1,6 @@
 export * from "./BaseAreaView";
 export * from "./BaseButton";
-export * from "./BaseCommunities";
+export * from "./BaseCategory";
 export * from "./BaseDropDown";
 export * from "./BaseGettingStarted";
 export * from "./BaseInput";
@@ -8,3 +8,5 @@ export * from "./BaseIntroduction";
 export * from "./BaseOTP";
 export * from "./Icon";
 export * from "./BaseModal";
+export * from "./BaseHeader";
+export * from "./BaseMember";

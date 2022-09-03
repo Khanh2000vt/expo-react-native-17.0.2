@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import {
   BaseAreaView,
   BaseButton,
-  BaseCommunities,
+  BaseCategory,
   BaseGettingStarted,
   ArrowRight,
 } from "../../components";
@@ -20,11 +20,11 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
   //flat list
   const keyExtractor = useCallback((_, index) => index.toString(), []);
   const renderItem = ({ item }: { item: any }) => {
-    return <BaseCommunities item={item} onPress={handlePressBaseCommunities} />;
+    return <BaseCategory item={item} onPress={handlePressBaseCategory} />;
   };
 
   //function
-  function handlePressBaseCommunities(pressed: boolean, item: any) {
+  function handlePressBaseCategory(item: any, pressed: boolean) {
     if (pressed) {
       setCountTick(countTick + 1);
       setList(getAddITem(list, item));

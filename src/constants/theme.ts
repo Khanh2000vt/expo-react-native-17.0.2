@@ -2,8 +2,10 @@ export const theme = {
   colors: {
     colorInput: "#F6F5E8",
     primary: "#3FAEC7",
+    darkerPrimary: "#2B8093",
     Neutral0: "#FFFFFF",
     Neutral1: "#F6F7F9",
+    Neutral2: "#E8EEF1",
     Neutral3: "#C6CBCC",
     Neutral4: "#A8ACAE",
     Neutral6: "#5A636D",

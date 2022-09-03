@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -6,12 +6,13 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import {
   BaseButton,
-  BaseCommunities,
+  BaseCategory,
   TomoCoins,
   VectorRight,
   ViaFacebook,
@@ -20,10 +21,26 @@ import {
 import { theme } from "../../constants";
 const { width, height } = Dimensions.get("window");
 function HomeScreen({ navigation }: { navigation: any }) {
+  const [isSeeAll, setSeeAll] = useState<boolean>(false);
+  const [listOthers, setListOthers] = useState<{}[]>([]);
+  const dataCompact = dataTest.slice(0, 4);
+  useEffect(() => {
+    if (isSeeAll) {
+      setListOthers([...dataTest]);
+    } else {
+      setListOthers([...dataCompact]);
+    }
+  }, [isSeeAll]);
+
+  // flatList
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item }: { item: any }) => {
+  const renderItemCommunities = ({ item }: { item: any }) => {
     return (
-      <View style={styles.containerItem}>
+      <TouchableOpacity
+        activeOpacity={0.6}
+        style={styles.containerItem}
+        onPress={() => console.log("press")}
+      >
         <Image source={require("../../../assets/png/typeReview.png")} />
         <LinearGradient
           colors={["rgba(20, 13, 41, 0)", "rgba(20, 13, 40, 0.91)"]}
@@ -40,105 +57,121 @@ function HomeScreen({ navigation }: { navigation: any }) {
           ]}
         />
         <Text style={styles.textItem}>Anime</Text>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (
     <View style={styles.container}>
-      <ScrollView
+      <FlatList
+        data={[]}
+        renderItem={() => <></>}
         showsVerticalScrollIndicator={false}
-        style={styles.scrollView}
-      >
-        <View style={styles.viewHeader}>
-          <View style={styles.viewAvatar}>
-            <Image
-              source={require("../../../assets/png/avt.png")}
-              height={60}
-              width={60}
-            />
-          </View>
+        ListHeaderComponent={
           <View>
-            <Text style={styles.textHello}>Hello</Text>
-            <Text style={styles.textName}>Matsuura Yuki</Text>
-          </View>
-        </View>
+            <View style={styles.viewHeader}>
+              <Image
+                source={require("../../../assets/png/avt.png")}
+                style={styles.imageAvt}
+              />
+              <View>
+                <Text style={styles.textHello} numberOfLines={2}>
+                  Hello
+                </Text>
+                <Text style={styles.textName}>Matsuura Yuki</Text>
+              </View>
+            </View>
 
-        {/* <View style={styles.viewNotification}>
-          <Image source={require("../../../assets/png/notifi.png")} />
-          <View style={styles.containerText}>
-            <Text style={styles.titleNotification}>News for you</Text>
-            <Text style={styles.bodyNotification}>
-              You don’t have enough{" "}
-              <Text style={{ fontWeight: "600" }}>TomoCoins!</Text>
-            </Text>
-            <Text style={styles.bodyNotification}>
-              Please purchase some in the store.
-            </Text>
-          </View>
-        </View> */}
-        <Image
-          source={require("../../../assets/png/News.png")}
-          resizeMode="cover"
-          width={width - 48}
-          style={{ marginVertical: 36 }}
-        />
+            <View style={styles.viewNotification}>
+              <Image source={require("../../../assets/png/notifi.png")} />
+              <View style={styles.containerText}>
+                <Text style={styles.titleNotification}>News for you</Text>
+                <Text style={styles.bodyNotification}>
+                  You don’t have enough{" "}
+                  <Text style={{ fontWeight: "600" }}>TomoCoins!</Text>
+                </Text>
+                <Text style={styles.bodyNotification}>
+                  Please purchase some in the store.
+                </Text>
+              </View>
+            </View>
 
-        <View>
-          <Text style={styles.textName}>Joined communities</Text>
+            <View>
+              <Text style={styles.textName}>Joined communities</Text>
+              <FlatList
+                data={dataTest}
+                keyExtractor={keyExtractor}
+                renderItem={renderItemCommunities}
+                horizontal
+                style={styles.flatList}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+          </View>
+        }
+        ListFooterComponent={
           <FlatList
-            data={dataTest}
+            data={listOthers}
+            // initialNumToRender={4}
+            renderItem={({ item }) => (
+              <BaseCategory item={item} isShowTick={false} />
+            )}
             keyExtractor={keyExtractor}
-            renderItem={renderItem}
-            horizontal
-            style={styles.flatList}
-            showsHorizontalScrollIndicator={false}
+            ListHeaderComponent={<Text style={styles.textName}>Others</Text>}
+            ListFooterComponent={
+              <View>
+                <BaseButton
+                  title={listOthers.length > 4 ? "Hide" : "See all"}
+                  IconRight={<VectorRight />}
+                  backgroundColor={theme.colors.Neutral0}
+                  color={theme.colors.primary}
+                  onPress={() => setSeeAll(!isSeeAll)}
+                />
+                <View style={styles.viewButton}>
+                  <BaseButton
+                    title="Purchase TomoCoins"
+                    backgroundColor={theme.colors.Neutral1}
+                    color={theme.colors.Neutral10}
+                    IconLeft={<TomoCoins style={{ marginHorizontal: 23 }} />}
+                    style={styles.buttonGray}
+                  />
+                  <BaseButton
+                    title="Introduce via Twitter"
+                    backgroundColor={theme.colors.Neutral1}
+                    color={theme.colors.Neutral10}
+                    IconLeft={<ViaTwitter style={{ marginHorizontal: 23 }} />}
+                    style={styles.buttonGray}
+                  />
+                  <BaseButton
+                    title="Introduce via Facebook"
+                    backgroundColor={theme.colors.Neutral1}
+                    color={theme.colors.Neutral10}
+                    IconLeft={<ViaFacebook style={{ marginHorizontal: 23 }} />}
+                    style={styles.buttonGray}
+                  />
+                </View>
+              </View>
+            }
           />
-        </View>
-
-        <View>
-          <Text>Others</Text>
-          {dataTest.map((item, index) => {
-            return (
-              <BaseCommunities item={item} key={index} isShowTick={false} />
-            );
-          })}
-          <BaseButton
-            title="See all"
-            IconRight={<VectorRight />}
-            backgroundColor={theme.colors.Neutral0}
-            color={theme.colors.primary}
-          />
-        </View>
-
-        <View style={styles.viewButton}>
-          <BaseButton
-            title="Purchase TomoCoins"
-            backgroundColor={theme.colors.Neutral1}
-            color={theme.colors.Neutral10}
-            IconLeft={<TomoCoins style={{ marginHorizontal: 23 }} />}
-            style={styles.buttonGray}
-          />
-          <BaseButton
-            title="Introduce via Twitter"
-            backgroundColor={theme.colors.Neutral1}
-            color={theme.colors.Neutral10}
-            IconLeft={<ViaTwitter style={{ marginHorizontal: 23 }} />}
-            style={styles.buttonGray}
-          />
-          <BaseButton
-            title="Introduce via Facebook"
-            backgroundColor={theme.colors.Neutral1}
-            color={theme.colors.Neutral10}
-            IconLeft={<ViaFacebook style={{ marginHorizontal: 23 }} />}
-            style={styles.buttonGray}
-          />
-        </View>
-      </ScrollView>
+        }
+      />
     </View>
   );
 }
 
-const dataTest = [{ id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }];
+const dataTest = [
+  { id: 1 },
+  { id: 2 },
+  { id: 3 },
+  { id: 4 },
+  { id: 5 },
+  { id: 6 },
+  { id: 7 },
+  { id: 8 },
+  { id: 9 },
+  { id: 10 },
+  { id: 11 },
+  { id: 12 },
+];
 
 const styles = StyleSheet.create({
   container: {
@@ -147,6 +180,7 @@ const styles = StyleSheet.create({
     //
     paddingHorizontal: 24,
     // paddingBottom: 84,
+    paddingTop: 59,
   },
   scrollView: {
     paddingTop: 56,
@@ -161,7 +195,6 @@ const styles = StyleSheet.create({
   itemFooter: {
     height: 2,
     flex: 1,
-    // backgroundColor: "red",
   },
   viewButton: {
     marginBottom: 84,
@@ -170,15 +203,10 @@ const styles = StyleSheet.create({
     height: 68,
     marginTop: 12,
     justifyContent: "flex-start",
-    // paddingHorizontal: 23,
   },
   viewHeader: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  viewAvatar: {
-    borderRadius: 30,
-    marginRight: 20,
   },
   textHello: {
     fontWeight: "400",
@@ -213,9 +241,16 @@ const styles = StyleSheet.create({
   },
   containerText: {
     marginLeft: 19,
+    flex: 1,
   },
   flatList: {
     paddingVertical: 20,
+  },
+  imageAvt: {
+    height: 60,
+    width: 60,
+    borderRadius: 30,
+    marginRight: 20,
   },
 
   //item

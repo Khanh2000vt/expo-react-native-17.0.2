@@ -2,17 +2,15 @@ import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { theme } from "../../constants/index";
 import { Tick } from "../Icon";
-import { BaseCommunitiesProps } from "./BaseCommunitiesModel";
+import { BaseCategoryProps } from "./BaseCategoryModel";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
-function BaseCommunities({
-  item,
-  onPress,
-  isShowTick = true,
-}: BaseCommunitiesProps) {
+
+function BaseCategory({ item, onPress, isShowTick = true }: BaseCategoryProps) {
   const [tick, setTick] = useState<boolean>(false);
+
   function handleOnPress() {
-    !!onPress && onPress(!tick, item);
+    !!onPress && onPress(item, !tick);
     setTick(!tick);
   }
   return (
@@ -33,14 +31,15 @@ function BaseCommunities({
           <Tick />
         </View>
       )}
-      <Image
-        source={require("../../../assets/png/imgTest.png")}
-        width={74}
-        height={74}
-      />
+      <View>
+        <Image
+          source={require("../../../assets/png/imgTest.png")}
+          style={styles.image}
+        />
+      </View>
       <View style={styles.body}>
-        <Text style={styles.textTitle}>Movies</Text>
-        <Text style={styles.textBody}>123443 members</Text>
+        <Text style={styles.textTitle}>{item.title || "Anime"}</Text>
+        <Text style={styles.textBody}>{item.members || 100} members</Text>
       </View>
     </TouchableOpacity>
   );
@@ -80,6 +79,11 @@ const styles = StyleSheet.create({
     color: colors.Neutral4,
     marginVertical: 2,
   },
+  image: {
+    width: 74,
+    height: 74,
+    // borderRadius: 12,
+  },
 });
 
-export default BaseCommunities;
+export default BaseCategory;

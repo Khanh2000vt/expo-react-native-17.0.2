@@ -12,29 +12,30 @@ import MyTabBar from "./MyTabBar/MyTabBar";
 
 const Tab = createBottomTabNavigator();
 function MainStack() {
-  const [barVisibility, setBarVisibility] =
-    useState<NavigationBar.NavigationBarVisibility>();
-  useEffect(() => {
-    Platform.OS === "android" && navigationConfig();
-  }, [barVisibility]);
+  // const [barVisibility, setBarVisibility] =
+  //   useState<NavigationBar.NavigationBarVisibility>();
+  // useEffect(() => {
+  //   Platform.OS === "android" && navigationConfig();
+  // }, [barVisibility]);
 
-  Platform.OS === "android" &&
-    NavigationBar.addVisibilityListener(({ visibility }) => {
-      if (visibility === "visible") {
-        setBarVisibility(visibility);
-      }
-    });
+  // Platform.OS === "android" &&
+  //   NavigationBar.addVisibilityListener(({ visibility }) => {
+  //     if (visibility === "visible") {
+  //       setBarVisibility(visibility);
+  //     }
+  //   });
 
-  const navigationConfig = async () => {
-    // Hide it
-    NavigationBar.setVisibilityAsync("hidden");
-  };
+  // const navigationConfig = async () => {
+  //   // Hide it
+  //   NavigationBar.setVisibilityAsync("hidden");
+  // };
 
   return (
     <Tab.Navigator
       tabBar={(props) => <MyTabBar {...props} />}
       screenOptions={{
         headerShown: false,
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tab.Screen name="HomeStack" component={HomeStack} />

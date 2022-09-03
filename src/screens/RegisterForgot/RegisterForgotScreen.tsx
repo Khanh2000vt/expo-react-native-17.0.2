@@ -127,12 +127,12 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
         />
         <BaseInput
           title="Password"
+          option="password"
           value={formik.values.password}
           styleContainer={styles.inputContainer}
           onChangeText={formik.handleChange("password")}
           placeholder="Your password"
           placeholderTextColor={colors.Neutral3}
-          IconView={<EyeSlash height={24} width={24} />}
           error={formik.touched.password}
           messageError={formik.errors.password}
         />

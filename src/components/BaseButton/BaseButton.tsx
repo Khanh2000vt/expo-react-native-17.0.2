@@ -25,7 +25,7 @@ function BaseButton({
 }: BaseButtonProps) {
   return (
     <TouchableOpacity
-      activeOpacity={0.6}
+      activeOpacity={0.8}
       onPress={onPress}
       style={[
         styles.container,

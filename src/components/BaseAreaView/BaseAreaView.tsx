@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 
 import { Container } from "../../constants/index";
 import { PropsBaseScrollView } from "./BaseAreaViewProps";
-import BaseHeader from "./components/BaseHeader/BaseHeader";
+import { BaseHeader } from "../BaseHeader";
 import { theme } from "../../constants/index";
 const colors = theme.colors;
 function BaseAreaView({
