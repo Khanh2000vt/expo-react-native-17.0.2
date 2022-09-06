@@ -2,8 +2,8 @@ import { ColorValue, StyleProp, TextStyle, ViewStyle } from "react-native";
 
 interface BaseButtonProps {
   title: string;
-  IconRight?: React.ReactNode;
-  IconLeft?: React.ReactNode;
+  IconRight?: React.ReactNode | JSX.Element;
+  IconLeft?: React.ReactNode | JSX.Element;
   color?: ColorValue | undefined;
   backgroundColor?: ColorValue | undefined;
   onPress?: () => void | undefined;

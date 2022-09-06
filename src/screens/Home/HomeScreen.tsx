@@ -14,7 +14,7 @@ import {
   BaseButton,
   BaseCategory,
   TomoCoins,
-  VectorRight,
+  CaretRight,
   ViaFacebook,
   ViaTwitter,
 } from "../../components";
@@ -121,7 +121,7 @@ function HomeScreen({ navigation }: { navigation: any }) {
               <View>
                 <BaseButton
                   title={listOthers.length > 4 ? "Hide" : "See all"}
-                  IconRight={<VectorRight />}
+                  IconRight={<CaretRight />}
                   backgroundColor={theme.colors.Neutral0}
                   color={theme.colors.primary}
                   onPress={() => setSeeAll(!isSeeAll)}

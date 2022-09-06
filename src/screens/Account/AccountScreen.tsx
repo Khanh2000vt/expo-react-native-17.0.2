@@ -19,14 +19,14 @@ import {
 import BaseAlert from "../../components/BaseAlert/BaseAlert";
 import { BaseButtonProps } from "../../components/BaseButton/BaseButtonModel";
 import { theme } from "../../constants";
-function AccountScreen() {
+function AccountScreen({ navigation }: { navigation: any }) {
   const [isVisible, setVisible] = useState<boolean>(false);
   const accountMenu = [
     {
       id: 1,
       title: "Your profile",
       icon: <UserCircle />,
-      onPress: () => {},
+      onPress: () => navigation.navigate("YourProfileScreen"),
     },
     {
       id: 2,

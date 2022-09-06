@@ -121,7 +121,7 @@ const dataTest = [
   { id: 9, title: "Native", members: "1243" },
   { id: 10, title: "Jock", members: "375" },
   { id: 11, title: "Home", members: "578" },
-  { id: 12, title: "Screen", members: "431" },
+  { id: 12, title: "Screen", members: "431", gender: "male", age: 18 },
 ];
 
 const styles = StyleSheet.create({

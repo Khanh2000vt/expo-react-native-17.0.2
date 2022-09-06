@@ -1,4 +1,4 @@
-import { StyleProp, ViewStyle } from "react-native";
+import { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 interface PropsBaseHeader {
   title?: string;
@@ -7,6 +7,7 @@ interface PropsBaseHeader {
   onPressLeft?: () => void;
   onPressRight?: () => void;
   styleHeader?: StyleProp<ViewStyle> | undefined;
+  styleTitleHeader?: StyleProp<TextStyle> | undefined;
 }
 
 export type { PropsBaseHeader };

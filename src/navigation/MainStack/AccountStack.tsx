@@ -4,6 +4,7 @@ import {
   BlockListScreen,
   ChangePasswordScreen,
   FriendRequestScreen,
+  UpdateProfileScreen,
   WaitingForApprovalScreen,
   YourProfileScreen,
 } from "../../screens";
@@ -17,6 +18,10 @@ function AccountStack() {
     >
       <Stack.Screen name="AccountScreen" component={AccountScreen} />
       <Stack.Screen name="YourProfileScreen" component={YourProfileScreen} />
+      <Stack.Screen
+        name="UpdateProfileScreen"
+        component={UpdateProfileScreen}
+      />
       <Stack.Screen
         name="WaitingForApprovalScreen"
         component={WaitingForApprovalScreen}

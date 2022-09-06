@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { CommunityDetailScreen } from "../screens";
 import LoginStackScreen from "./AuthStack/LoginStack";
 import MainStack from "./MainStack/MainStack";
 
@@ -12,6 +13,10 @@ function RootStackScreen() {
     >
       {/* <RootStack.Screen name="LoginStackScreen" component={LoginStackScreen} /> */}
       <RootStack.Screen name="MainStack" component={MainStack} />
+      <RootStack.Screen
+        name="CommunityDetailScreen"
+        component={CommunityDetailScreen}
+      />
     </RootStack.Navigator>
   );
 }

@@ -4,6 +4,8 @@ import { FlatList, StyleSheet, Text, View } from "react-native";
 import { BaseCategory, BaseInput } from "../../components";
 import { theme } from "../../constants";
 import { useDebounce } from "../../hooks";
+import dataTest from "./data.json";
+import { getFindCommunity } from "./handle";
 function CommunitiesScreen({ navigation }: { navigation: any }) {
   //input state
   const [value, onChangeValue] = useState<string>();
@@ -12,17 +14,19 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
 
   useEffect(() => {
     getCategories();
-  }, []);
+  }, [debounce]);
 
   const getCategories = async () => {
     try {
-      const res = await axios(
-        "http://follower-matching-api.adamo.tech/api/user/categories"
-      );
-      console.log(res);
+      // const res = await axios(
+      //   "http://follower-matching-api.adamo.tech/api/user/categories"
+      // );
+      const res = getFindCommunity(debounce);
+      setListCategories([...res]);
+      // console.log(res);
     } catch (e) {
       // console.log("e: ", e);
-      setListCategories([...dataTest]);
+      setListCategories([]);
     }
   };
 
@@ -69,21 +73,6 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
 }
 
 //CommunityDetail
-
-const dataTest = [
-  { id: 1, title: "Gaming", members: "256" },
-  { id: 2, title: "Outdoors", members: "3621" },
-  { id: 3, title: "Music", members: "1056" },
-  { id: 4, title: "Movies", members: "20335" },
-  { id: 5, title: "News and Society", members: "256" },
-  { id: 6, title: "Automotive", members: "1334" },
-  { id: 7, title: "Macro", members: "1434" },
-  { id: 8, title: "React", members: "5634" },
-  { id: 9, title: "Native", members: "1243" },
-  { id: 10, title: "Jock", members: "375" },
-  { id: 11, title: "Home", members: "578" },
-  { id: 12, title: "Screen", members: "431" },
-];
 
 const styles = StyleSheet.create({
   container: {

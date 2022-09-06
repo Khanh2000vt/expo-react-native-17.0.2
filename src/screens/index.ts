@@ -17,6 +17,7 @@ export { default as CommunityDetailScreen } from "./CommunityDetail/CommunityDet
 // Account tab
 export { default as AccountScreen } from "./Account/AccountScreen";
 export { default as YourProfileScreen } from "./YourProfile/YourProfileScreen";
+export { default as UpdateProfileScreen } from "./UpdateProfile/UpdateProfileScreen";
 export { default as WaitingForApprovalScreen } from "./WaitingForApproval/WaitingForApprovalScreen";
 export { default as FriendRequestScreen } from "./FriendRequest/FriendRequestScreen";
 export { default as BlockListScreen } from "./BlockList/BlockListScreen";

@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CommunitiesScreen, CommunityDetailScreen } from "../../screens";
+import { CommunitiesScreen } from "../../screens";
 
 const Stack = createNativeStackNavigator();
 function CommunitiesStack() {
@@ -10,10 +10,6 @@ function CommunitiesStack() {
       }}
     >
       <Stack.Screen name="CommunitiesScreen" component={CommunitiesScreen} />
-      <Stack.Screen
-        name="CommunityDetailScreen"
-        component={CommunityDetailScreen}
-      />
     </Stack.Navigator>
   );
 }

@@ -133,7 +133,7 @@ function Vector(props: any) {
   );
 }
 
-function VectorBack(props: any) {
+function VectorBack({ stroke, ...props }: any) {
   return (
     <Svg
       width={12}
@@ -145,7 +145,7 @@ function VectorBack(props: any) {
     >
       <Path
         d="M10.5 18.75L1.75 10l8.75-8.75"
-        stroke="#191B1D"
+        stroke={stroke || "#191B1D"}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -172,7 +172,7 @@ function CircleComplete(props: any) {
   );
 }
 
-function VectorRight(props: any) {
+function CaretRight({ stroke, ...props }: any) {
   return (
     <Svg
       width={7}
@@ -184,7 +184,7 @@ function VectorRight(props: any) {
     >
       <Path
         d="M1 1l5 5-5 5"
-        stroke="#3FAEC7"
+        stroke={stroke || "#3FAEC7"}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -613,6 +613,52 @@ function Warnings(props: any) {
   );
 }
 
+function PencilLine(props: any) {
+  return (
+    <Svg
+      width={28}
+      height={28}
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M10.5 23.625H5.25a.875.875 0 01-.875-.875v-4.887a.875.875 0 01.256-.62L17.756 4.12a.875.875 0 011.238 0l4.887 4.887a.875.875 0 010 1.238L10.5 23.625zM14.875 7L21 13.125"
+        stroke="#fff"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M23.625 23.625H10.5l-6.07-6.07"
+        stroke="#fff"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function Bell(props: any) {
+  return (
+    <Svg
+      width={30}
+      height={30}
+      viewBox="0 0 30 30"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M21.939 21.29c-.29-1.069-.46-2.996.373-6.106l.172-.642c1.075-4.01-1.262-8.159-5.208-9.248l-.056-.015a7.49 7.49 0 00-9.167 5.308l-.194.725c-.833 3.11-1.944 4.693-2.73 5.474a1.5 1.5 0 00.666 2.514l3.533.946a3.75 3.75 0 007.244 1.942l3.533.946a1.5 1.5 0 001.834-1.844zm-9.571 2.1a2.252 2.252 0 01-1.591-2.755l4.346 1.164a2.252 2.252 0 01-2.755 1.591z"
+        fill="#56C2FF"
+      />
+    </Svg>
+  );
+}
+
 export {
   ArrowDownIcon,
   ArrowRight,
@@ -625,7 +671,7 @@ export {
   TabHome,
   TabCommunities,
   TabAccount,
-  VectorRight,
+  CaretRight,
   TomoCoins,
   ViaTwitter,
   ViaFacebook,
@@ -640,4 +686,6 @@ export {
   LockKeyOpen,
   SignOut,
   Warnings,
+  PencilLine,
+  Bell,
 };

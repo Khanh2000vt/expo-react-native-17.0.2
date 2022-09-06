@@ -10,3 +10,4 @@ export * from "./Icon";
 export * from "./BaseModal";
 export * from "./BaseHeader";
 export * from "./BaseMember";
+export * from "./BaseProfile";

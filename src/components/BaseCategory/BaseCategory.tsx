@@ -39,7 +39,9 @@ function BaseCategory({ item, onPress, isShowTick = true }: BaseCategoryProps) {
       </View>
       <View style={styles.body}>
         <Text style={styles.textTitle}>{item.title || "Anime"}</Text>
-        <Text style={styles.textBody}>{item.members || 100} members</Text>
+        {!!item.members && (
+          <Text style={styles.textBody}>{item.members} members</Text>
+        )}
       </View>
     </TouchableOpacity>
   );

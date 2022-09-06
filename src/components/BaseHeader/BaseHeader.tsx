@@ -11,6 +11,7 @@ function BaseHeader({
   onPressLeft,
   onPressRight,
   styleHeader,
+  styleTitleHeader,
 }: PropsBaseHeader) {
   return (
     <View style={[styles.container, styleHeader]}>
@@ -23,7 +24,7 @@ function BaseHeader({
       ) : (
         <View />
       )}
-      <Text style={styles.textTitle}>{title}</Text>
+      <Text style={[styles.textTitle, styleTitleHeader]}>{title}</Text>
       {!!IconRight ? (
         <TouchableOpacity onPress={onPressRight} style={styles.button}>
           {IconRight}
