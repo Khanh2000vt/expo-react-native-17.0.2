@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import {
   BaseButton,
   LockKeyOpen,
@@ -19,7 +20,9 @@ import {
 import BaseAlert from "../../components/BaseAlert/BaseAlert";
 import { BaseButtonProps } from "../../components/BaseButton/BaseButtonModel";
 import { theme } from "../../constants";
+import { logoutAuth } from "../../redux";
 function AccountScreen({ navigation }: { navigation: any }) {
+  const dispatch = useDispatch();
   const [isVisible, setVisible] = useState<boolean>(false);
   const accountMenu = [
     {
@@ -52,7 +55,10 @@ function AccountScreen({ navigation }: { navigation: any }) {
     {
       title: "Log out",
       option: "fill",
-      onPress: () => {},
+      onPress: () => {
+        setVisible(false);
+        dispatch(logoutAuth());
+      },
     },
     {
       title: "Cancel",

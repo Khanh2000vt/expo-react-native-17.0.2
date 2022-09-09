@@ -130,7 +130,9 @@ function BaseInput({
           </TouchableOpacity>
         )}
       </View>
-      {error && <Text style={styles.textError}>{messageError}</Text>}
+      {error && !!messageError && (
+        <Text style={styles.textError}>{messageError}</Text>
+      )}
       {option === Option.SEARCH_FILTER && (
         <Modal
           isVisible={isModalVisible}

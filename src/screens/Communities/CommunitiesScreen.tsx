@@ -1,31 +1,44 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { BaseCategory, BaseInput } from "../../components";
 import { theme } from "../../constants";
 import { useDebounce } from "../../hooks";
-import dataTest from "./data.json";
 import { getFindCommunity } from "./handle";
+
 function CommunitiesScreen({ navigation }: { navigation: any }) {
   //input state
   const [value, onChangeValue] = useState<string>();
+  const [isLoading, setLoading] = useState<boolean>(true);
   const debounce = useDebounce(value);
   const [listCategories, setListCategories] = useState<{}[]>([]);
+  const [listFilter, setListFilter] = useState<{}[]>([]);
 
   useEffect(() => {
     getCategories();
-  }, [debounce]);
+  }, []);
+
+  useEffect(() => {
+    const listFilter = getFindCommunity(debounce, listCategories);
+    setListFilter([...listFilter]);
+  }, [debounce, listCategories]);
 
   const getCategories = async () => {
     try {
-      // const res = await axios(
-      //   "http://follower-matching-api.adamo.tech/api/user/categories"
-      // );
-      const res = getFindCommunity(debounce);
-      setListCategories([...res]);
-      // console.log(res);
+      const res = await axios(
+        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/joined"
+      );
+      console.log("res: ", res.data[0]);
+      setListCategories([...res.data]);
+      setLoading(false);
     } catch (e) {
-      // console.log("e: ", e);
+      console.log("error: ", e);
       setListCategories([]);
     }
   };
@@ -60,14 +73,19 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
         value={value}
         onChangeText={onChangeValue}
       />
-      <FlatList
-        data={listCategories}
-        renderItem={renderItem}
-        keyExtractor={keyExtractor}
-        ListEmptyComponent={<Text>Null ...</Text>}
-        initialNumToRender={8}
-        style={styles.flatList}
-      />
+      {/*  */}
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={listFilter}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+          ListEmptyComponent={<Text>No results were found !</Text>}
+          initialNumToRender={8}
+          style={styles.flatList}
+        />
+      )}
     </View>
   );
 }

@@ -19,27 +19,28 @@ import {
   ViaTwitter,
 } from "../../components";
 import { theme } from "../../constants";
-const { width, height } = Dimensions.get("window");
+import dataCommunities from "../../helper/dataCommunities.json";
+import dataJoinedCommunities from "../../helper/dataJoinedCommunities.json";
 function HomeScreen({ navigation }: { navigation: any }) {
-  const [isSeeAll, setSeeAll] = useState<boolean>(false);
+  const [joinedCommunities, setJoinedCommunities] = useState<{}[]>([]);
   const [listOthers, setListOthers] = useState<{}[]>([]);
-  const dataCompact = dataTest.slice(0, 4);
   useEffect(() => {
-    if (isSeeAll) {
-      setListOthers([...dataTest]);
-    } else {
-      setListOthers([...dataCompact]);
-    }
-  }, [isSeeAll]);
+    const resOther = dataCommunities;
+    const resJoined = dataJoinedCommunities;
+    setJoinedCommunities(resJoined);
+    setListOthers(resOther.slice(0, 4));
+  }, []);
 
   // flatList
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItemCommunities = ({ item }: { item: any }) => {
+  const renderJoinedCommunity = ({ item }: { item: any }) => {
     return (
       <TouchableOpacity
         activeOpacity={0.6}
         style={styles.containerItem}
-        onPress={() => console.log("press")}
+        onPress={() =>
+          navigation.navigate("CommunityDetailScreen", { item: item })
+        }
       >
         <Image source={require("../../../assets/png/typeReview.png")} />
         <LinearGradient
@@ -56,7 +57,7 @@ function HomeScreen({ navigation }: { navigation: any }) {
             },
           ]}
         />
-        <Text style={styles.textItem}>Anime</Text>
+        <Text style={styles.textItem}>{item.title}</Text>
       </TouchableOpacity>
     );
   };
@@ -80,7 +81,6 @@ function HomeScreen({ navigation }: { navigation: any }) {
                 <Text style={styles.textName}>Matsuura Yuki</Text>
               </View>
             </View>
-
             <View style={styles.viewNotification}>
               <Image source={require("../../../assets/png/notifi.png")} />
               <View style={styles.containerText}>
@@ -94,13 +94,12 @@ function HomeScreen({ navigation }: { navigation: any }) {
                 </Text>
               </View>
             </View>
-
             <View>
               <Text style={styles.textName}>Joined communities</Text>
               <FlatList
-                data={dataTest}
+                data={joinedCommunities}
                 keyExtractor={keyExtractor}
-                renderItem={renderItemCommunities}
+                renderItem={renderJoinedCommunity}
                 horizontal
                 style={styles.flatList}
                 showsHorizontalScrollIndicator={false}
@@ -120,11 +119,11 @@ function HomeScreen({ navigation }: { navigation: any }) {
             ListFooterComponent={
               <View>
                 <BaseButton
-                  title={listOthers.length > 4 ? "Hide" : "See all"}
+                  title="See all"
                   IconRight={<CaretRight />}
                   backgroundColor={theme.colors.Neutral0}
                   color={theme.colors.primary}
-                  onPress={() => setSeeAll(!isSeeAll)}
+                  onPress={() => navigation.navigate("CommunitiesStack")}
                 />
                 <View style={styles.viewButton}>
                   <BaseButton
@@ -157,21 +156,6 @@ function HomeScreen({ navigation }: { navigation: any }) {
     </View>
   );
 }
-
-const dataTest = [
-  { id: 1 },
-  { id: 2 },
-  { id: 3 },
-  { id: 4 },
-  { id: 5 },
-  { id: 6 },
-  { id: 7 },
-  { id: 8 },
-  { id: 9 },
-  { id: 10 },
-  { id: 11 },
-  { id: 12 },
-];
 
 const styles = StyleSheet.create({
   container: {

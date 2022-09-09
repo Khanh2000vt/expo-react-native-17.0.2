@@ -1,12 +1,15 @@
-import dataTest from "./data.json";
-function getFindCommunity(value: string): any[] {
-  let data = dataTest;
-  if (value === "") {
-    return data;
+function getFindCommunity(value: string, list: any[]): any[] {
+  let data = list;
+  if (value === "" || value === undefined) {
+    return [...data];
   } else {
-    return data.filter((item) => {
-      return item.title.indexOf(value) !== -1;
-    });
+    return data
+      .filter((item) => {
+        return item.title.toLowerCase().indexOf(value.toLowerCase()) !== -1;
+      })
+      .sort((a, b) => {
+        return a.title.indexOf(value) - b.title.indexOf(value);
+      });
   }
 }
 

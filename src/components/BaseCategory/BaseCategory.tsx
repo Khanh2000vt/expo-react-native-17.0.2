@@ -32,13 +32,10 @@ function BaseCategory({ item, onPress, isShowTick = true }: BaseCategoryProps) {
         </View>
       )}
       <View>
-        <Image
-          source={require("../../../assets/png/imgTest.png")}
-          style={styles.image}
-        />
+        <Image source={{ uri: item.image_url }} style={styles.image} />
       </View>
       <View style={styles.body}>
-        <Text style={styles.textTitle}>{item.title || "Anime"}</Text>
+        <Text style={styles.textTitle}>{item.title}</Text>
         {!!item.members && (
           <Text style={styles.textBody}>{item.members} members</Text>
         )}
@@ -84,7 +81,7 @@ const styles = StyleSheet.create({
   image: {
     width: 74,
     height: 74,
-    // borderRadius: 12,
+    borderRadius: 12,
   },
 });
 

@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import {
@@ -8,28 +9,32 @@ import {
   BaseAreaView,
   BaseButton,
   BaseInput,
-  EyeSlash,
 } from "../../components";
 import { Container, theme } from "../../constants/index";
+import { loginAuth } from "../../redux";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
 function LoginScreen({ navigation }: { navigation: any }) {
-  // const [isHide, setIsHide] = useState<boolean>(true);
+  const dispatch = useDispatch();
+  function handleLogin(value: any) {
+    dispatch(loginAuth());
+  }
+
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: "bac@gmail.com",
+      password: "1234566789",
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email address").required("Required"),
       password: Yup.string()
         .required("No password provided.")
-        .min(8, "Password is too short - should be 8 chars minimum.")
-        .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
+        .min(6, "Password is too short - should be 6 chars minimum."),
+      // .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
     }),
-    onSubmit: (values) => console.log(values),
+    onSubmit: (values) => handleLogin(values),
   });
 
   function handleForgotPassword() {
