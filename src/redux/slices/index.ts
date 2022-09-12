@@ -6,9 +6,13 @@ export * from "./auth";
 import mainReducer from "./main";
 export * from "./main";
 
+import joinedCommunitiesReducers from "./JoinedCommunities";
+export * from "./JoinedCommunities";
+
 const productReducer = combineReducers({
   auth: authReducer,
   main: mainReducer,
+  joined: joinedCommunitiesReducers,
 });
 
 export type RootState = ReturnType<typeof productReducer>;

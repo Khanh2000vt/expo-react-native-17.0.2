@@ -1,7 +1,15 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux";
-import { CommunityDetailScreen } from "../screens";
+import {
+  BlockListScreen,
+  ChangePasswordScreen,
+  CommunityDetailScreen,
+  FriendRequestScreen,
+  UpdateProfileScreen,
+  WaitingForApprovalScreen,
+  YourProfileScreen,
+} from "../screens";
 import LoginStackScreen from "./AuthStack/LoginStack";
 import MainStack from "./MainStack/MainStack";
 
@@ -25,6 +33,27 @@ function RootStackScreen() {
       <RootStack.Screen
         name="CommunityDetailScreen"
         component={CommunityDetailScreen}
+      />
+      <RootStack.Screen
+        name="YourProfileScreen"
+        component={YourProfileScreen}
+      />
+      <RootStack.Screen
+        name="UpdateProfileScreen"
+        component={UpdateProfileScreen}
+      />
+      <RootStack.Screen
+        name="WaitingForApprovalScreen"
+        component={WaitingForApprovalScreen}
+      />
+      <RootStack.Screen
+        name="FriendRequestScreen"
+        component={FriendRequestScreen}
+      />
+      <RootStack.Screen name="BlockListScreen" component={BlockListScreen} />
+      <RootStack.Screen
+        name="ChangePasswordScreen"
+        component={ChangePasswordScreen}
       />
     </RootStack.Navigator>
   );

@@ -17,24 +17,6 @@ function AccountStack() {
       }}
     >
       <Stack.Screen name="AccountScreen" component={AccountScreen} />
-      <Stack.Screen name="YourProfileScreen" component={YourProfileScreen} />
-      <Stack.Screen
-        name="UpdateProfileScreen"
-        component={UpdateProfileScreen}
-      />
-      <Stack.Screen
-        name="WaitingForApprovalScreen"
-        component={WaitingForApprovalScreen}
-      />
-      <Stack.Screen
-        name="FriendRequestScreen"
-        component={FriendRequestScreen}
-      />
-      <Stack.Screen name="BlockListScreen" component={BlockListScreen} />
-      <Stack.Screen
-        name="ChangePasswordScreen"
-        component={ChangePasswordScreen}
-      />
     </Stack.Navigator>
   );
 }

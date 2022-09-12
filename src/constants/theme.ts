@@ -11,7 +11,10 @@ export const theme = {
     Neutral6: "#5A636D",
     Neutral8: "#2B3641",
     Neutral10: "#191B1D",
+    Semantic1: "#FEA827",
+    Semantic2: "#406FF1",
     Semantic4: "#FF4C41",
+    Semantic5: "#7CAE12",
   },
   fontSize: {
     font12: 12,

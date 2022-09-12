@@ -19,17 +19,39 @@ import {
   ViaTwitter,
 } from "../../components";
 import { theme } from "../../constants";
-import dataCommunities from "../../helper/dataCommunities.json";
-import dataJoinedCommunities from "../../helper/dataJoinedCommunities.json";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getJoined, RootState } from "../../redux";
+
 function HomeScreen({ navigation }: { navigation: any }) {
-  const [joinedCommunities, setJoinedCommunities] = useState<{}[]>([]);
+  const dispatch = useDispatch();
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const joinedCommunities = useSelector(
+    (state: RootState) => state.joined.communities
+  );
   const [listOthers, setListOthers] = useState<{}[]>([]);
   useEffect(() => {
-    const resOther = dataCommunities;
-    const resJoined = dataJoinedCommunities;
-    setJoinedCommunities(resJoined);
-    setListOthers(resOther.slice(0, 4));
+    getJoinedCommunities();
+    getListOthers();
   }, []);
+
+  async function getListOthers() {
+    try {
+      const res = await axios(
+        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/communities?p=1&l=4"
+      );
+      console.log("getListOthers: ", res.data[0]);
+      setListOthers([...res.data]);
+      // setLoading(false);
+    } catch (e) {
+      console.log("error: ", e);
+      setListOthers([]);
+    }
+  }
+
+  function getJoinedCommunities() {
+    dispatch(getJoined());
+  }
 
   // flatList
   const keyExtractor = useCallback((_, index) => index.toString(), []);
@@ -39,10 +61,13 @@ function HomeScreen({ navigation }: { navigation: any }) {
         activeOpacity={0.6}
         style={styles.containerItem}
         onPress={() =>
-          navigation.navigate("CommunityDetailScreen", { item: item })
+          navigation.navigate("CommunityDetailScreen", { community: item })
         }
       >
-        <Image source={require("../../../assets/png/typeReview.png")} />
+        <Image
+          source={{ uri: item.image_url }}
+          style={styles.imageJoinedCommunity}
+        />
         <LinearGradient
           colors={["rgba(20, 13, 41, 0)", "rgba(20, 13, 40, 0.91)"]}
           start={{ x: 0, y: 0 }}
@@ -112,7 +137,15 @@ function HomeScreen({ navigation }: { navigation: any }) {
             data={listOthers}
             // initialNumToRender={4}
             renderItem={({ item }) => (
-              <BaseCategory item={item} isShowTick={false} />
+              <BaseCategory
+                item={item}
+                isShowTick={false}
+                onPress={() =>
+                  navigation.navigate("CommunityDetailScreen", {
+                    community: item,
+                  })
+                }
+              />
             )}
             keyExtractor={keyExtractor}
             ListHeaderComponent={<Text style={styles.textName}>Others</Text>}
@@ -250,6 +283,11 @@ const styles = StyleSheet.create({
     color: theme.colors.Neutral0,
     fontSize: theme.fontSize.font16,
     fontWeight: "600",
+  },
+  imageJoinedCommunity: {
+    height: 129,
+    width: 210,
+    borderRadius: 16,
   },
 });
 

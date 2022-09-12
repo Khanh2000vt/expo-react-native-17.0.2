@@ -1,7 +1,14 @@
 import { useFormik } from "formik";
 import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useDispatch } from "react-redux";
+import {
+  ActivityIndicator,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import {
@@ -11,20 +18,21 @@ import {
   BaseInput,
 } from "../../components";
 import { Container, theme } from "../../constants/index";
-import { loginAuth } from "../../redux";
+import { loginAuth, RootState } from "../../redux";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
 function LoginScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
-  function handleLogin(value: any) {
+  const isLoading = useSelector((state: RootState) => state.auth.isLoading);
+  function handleLogin(_value: any) {
     dispatch(loginAuth());
   }
 
   const formik = useFormik({
     initialValues: {
-      email: "bac@gmail.com",
+      email: "macro@gmail.com",
       password: "1234566789",
     },
     validationSchema: Yup.object({
@@ -45,6 +53,15 @@ function LoginScreen({ navigation }: { navigation: any }) {
   function handleRegister() {
     console.log("RegisterScreen");
     navigation.navigate("RegisterScreen");
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.loadingLogin}>
+        <ActivityIndicator size="large" />
+        <Text>Login ...</Text>
+      </View>
+    );
   }
 
   return (
@@ -145,29 +162,31 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   textTitle: {
-    // fontFamily: "NotoSans-Medium",
     color: colors.Neutral10,
     fontSize: fontSize.font28,
     fontWeight: "600",
     textAlign: "center",
   },
   textForgotPassword: {
-    // fontFamily: "NotoSans-Medium",
     color: colors.Neutral4,
     fontSize: fontSize.font16,
     fontWeight: "500",
   },
   text: {
-    // fontFamily: "NotoSans-Medium",
     color: colors.Neutral8,
     fontSize: fontSize.font16,
     fontWeight: "400",
   },
   textActive: {
-    // fontFamily: "NotoSans-Medium",
     fontSize: fontSize.font16,
     fontWeight: "600",
     color: colors.primary,
+  },
+  loadingLogin: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colors.Neutral0,
   },
 });
 export default LoginScreen;

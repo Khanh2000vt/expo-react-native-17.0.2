@@ -6,7 +6,12 @@ import { BaseCategoryProps } from "./BaseCategoryModel";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
-function BaseCategory({ item, onPress, isShowTick = true }: BaseCategoryProps) {
+function BaseCategory({
+  item,
+  onPress,
+  isShowTick = true,
+  style,
+}: BaseCategoryProps) {
   const [tick, setTick] = useState<boolean>(false);
 
   function handleOnPress() {
@@ -16,7 +21,7 @@ function BaseCategory({ item, onPress, isShowTick = true }: BaseCategoryProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
-      style={[styles.container]}
+      style={[styles.container, style]}
       onPress={handleOnPress}
     >
       {isShowTick && (

@@ -192,6 +192,8 @@ const styles = StyleSheet.create({
   styleHeader: {
     height: 50,
     paddingHorizontal: 33,
+    // paddingTop: 80,
+    // marginTop: 80,
   },
   inputContainer: {
     marginBottom: 16,

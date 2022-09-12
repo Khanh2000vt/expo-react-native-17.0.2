@@ -25,6 +25,7 @@ function BaseAreaView({
   scroll = false,
   ...props
 }: PropsBaseScrollView) {
+  //SafeAreaView
   return (
     <SafeAreaView style={styles.safeAreaView}>
       {header && (

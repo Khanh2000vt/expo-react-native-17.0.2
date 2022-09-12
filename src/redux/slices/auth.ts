@@ -18,9 +18,9 @@ export const loginAuth: any = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios(
-        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/login"
+        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/login/1"
       );
-      return response.data[0].token;
+      return response.data.token;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -40,14 +40,20 @@ const authSlice = createSlice({
       .addCase(loginAuth.pending, (state: IState) => {
         state.isLoading = true;
       })
-      .addCase(loginAuth.fulfilled, (state: IState, action: any) => {
-        state.isLoading = false;
-        state.token = action.payload;
-      })
-      .addCase(loginAuth.rejected, (state: IState, action: any) => {
-        state.isLoading = false;
-        state.errorMessage = action.payload;
-      });
+      .addCase(
+        loginAuth.fulfilled,
+        (state: IState, action: PayloadAction<any>) => {
+          state.isLoading = false;
+          state.token = action.payload;
+        }
+      )
+      .addCase(
+        loginAuth.rejected,
+        (state: IState, action: PayloadAction<any>) => {
+          state.isLoading = false;
+          state.errorMessage = action.payload;
+        }
+      );
   },
 });
 

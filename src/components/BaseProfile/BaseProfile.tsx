@@ -7,11 +7,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { theme } from "../../constants";
+import { RootState } from "../../redux";
 import { BaseButton } from "../BaseButton";
 import BaseCategory from "../BaseCategory/BaseCategory";
 import { BaseHeader } from "../BaseHeader";
-import { Bell, CaretRight, PencilLine, SvgCopy, VectorBack } from "../Icon";
+import {
+  Bell,
+  CaretRight,
+  Coin,
+  Crown,
+  PencilLine,
+  SvgCopy,
+  Users,
+  VectorBack,
+} from "../Icon";
 import { BaseProfileProps } from "./BaseProfileModel";
 
 const activitiesLog = [
@@ -50,6 +61,75 @@ function BaseProfile({
   joinedCommunities = [],
   elementProfileSelf,
 }: BaseProfileProps) {
+  const joined = useSelector((state: RootState) => state.joined.communities);
+  const listAmount = [
+    {
+      id: 1,
+      icon: <Users />,
+      amount: "2050",
+      color: theme.colors.Semantic5,
+      onPress: () => {},
+    },
+    {
+      id: 2,
+      icon: <Crown />,
+      amount: "1024",
+      color: theme.colors.Semantic2,
+      onPress: () => {},
+    },
+    {
+      id: 3,
+      icon: <Coin />,
+      amount: "12000",
+      color: theme.colors.Semantic1,
+      onPress: () => {},
+    },
+  ];
+
+  const listSocialTest = [
+    {
+      id: 1,
+      title: "Matsuura Yuki official",
+      icon: (
+        <Image
+          source={require("../../../assets/png/logo_youtube.png")}
+          style={styles.iconSocial}
+        />
+      ),
+    },
+    {
+      id: 2,
+      title: "@Yuki.Matsuura",
+      icon: (
+        <Image
+          source={require("../../../assets/png/logo_instagram.png")}
+          style={styles.iconSocial}
+        />
+      ),
+    },
+    {
+      id: 3,
+      title: "@YukiMatsuura23",
+      icon: (
+        <Image
+          source={require("../../../assets/png/logo_twitter.png")}
+          style={styles.iconSocial}
+        />
+      ),
+    },
+    {
+      id: 4,
+      title: "Matsuura Yuki",
+      icon: (
+        <Image
+          source={require("../../../assets/png/logo_facebook.png")}
+          style={styles.iconSocial}
+          resizeMode="cover"
+        />
+      ),
+    },
+  ];
+
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
   const renderItemActivitiesLog = ({ item }: { item: any }) => (
@@ -151,8 +231,6 @@ function BaseProfile({
               />
             </View>
 
-            <View></View>
-
             <View style={styles.accountViewBody}>
               <Text style={styles.textNameAccount}>Matsuura Yuki</Text>
               <View style={styles.accountViewID}>
@@ -163,26 +241,64 @@ function BaseProfile({
               </View>
             </View>
 
-            <View>
-              <Text>Introduction</Text>
-              <Text>
+            <View style={styles.amountView}>
+              {listAmount.map((item) => {
+                return (
+                  <BaseButton
+                    title={item.amount}
+                    IconLeft={item.icon}
+                    color={item.color}
+                    backgroundColor={theme.colors.colorInput}
+                    style={styles.buttonListAmount}
+                    styleText={styles.textButtonListAmount}
+                    key={item.id}
+                  />
+                );
+              })}
+            </View>
+
+            <View style={styles.viewSocial}>
+              {listSocialTest.map((item) => {
+                return (
+                  <BaseButton
+                    title={item.title}
+                    key={item.id}
+                    IconLeft={item.icon}
+                    style={styles.buttonListSocial}
+                    styleText={styles.textButtonSocial}
+                    backgroundColor={theme.colors.colorInput}
+                    color={theme.colors.Neutral10}
+                  />
+                );
+              })}
+            </View>
+
+            <View style={styles.viewIntroduction}>
+              <Text style={styles.textTitle}>Introduction</Text>
+              <Text style={styles.textBodyIntroduction}>
                 Hello world, I’m Yuki from Japan and I’m creating the beautiful
                 videos. I wish Facebook would notify me when someone deletes me.
                 That way I could ‘Like’ it. My brain is divided into two parts.
               </Text>
             </View>
 
-            <View>
-              <Text>Joined communities</Text>
-              <View>
-                {joinedCommunities.map((joinedCommunity, index) => {
+            <View style={styles.viewJoinedCommunities}>
+              <Text style={styles.textTitle}>Joined communities</Text>
+              <View style={styles.bodyJoinedCommunities}>
+                {joined.map((joinedCommunity, index) => {
                   return (
-                    <BaseCategory
-                      item={joinedCommunity}
-                      onPress={() => {}}
-                      isShowTick={false}
+                    <TouchableOpacity
+                      style={styles.viewJoinedCommunity}
                       key={index}
-                    />
+                    >
+                      <Image
+                        source={{ uri: joinedCommunity.image_url }}
+                        style={styles.imageJoined}
+                      />
+                      <Text style={styles.textJoinedCommunity}>
+                        {joinedCommunity.title}
+                      </Text>
+                    </TouchableOpacity>
                   );
                 })}
               </View>
@@ -220,13 +336,15 @@ const styles = StyleSheet.create({
   },
   accountViewBody: {
     flex: 1,
-    marginLeft: 20,
+    // marginLeft: 20,
+    alignItems: "center",
+    marginTop: 14,
   },
   textNameAccount: {
-    color: theme.colors.Neutral10,
+    color: theme.colors.darkerPrimary,
     fontWeight: "600",
-    fontSize: theme.fontSize.font16,
-    marginBottom: 7,
+    fontSize: theme.fontSize.font24,
+    marginBottom: 4,
   },
   accountViewID: {
     flexDirection: "row",
@@ -255,6 +373,87 @@ const styles = StyleSheet.create({
     color: theme.colors.Neutral0,
     fontWeight: "700",
     fontSize: theme.fontSize.font12,
+  },
+  amountView: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 25,
+  },
+  buttonListAmount: {
+    paddingVertical: 8,
+    paddingLeft: 20,
+    paddingRight: 16,
+    borderRadius: 100,
+    height: undefined,
+    marginHorizontal: 8,
+  },
+  textButtonListAmount: {
+    marginHorizontal: 0,
+    marginLeft: 12,
+  },
+  viewSocial: {
+    marginTop: 30,
+    paddingHorizontal: 24,
+  },
+  iconSocial: {
+    width: 24,
+  },
+  buttonListSocial: {
+    marginVertical: 6,
+    paddingVertical: 17,
+    paddingHorizontal: 24,
+    justifyContent: "flex-start",
+  },
+  textButtonSocial: {
+    paddingHorizontal: 16,
+  },
+  textTitle: {
+    fontWeight: "600",
+    fontSize: theme.fontSize.font24,
+    color: theme.colors.Neutral10,
+    lineHeight: 33,
+  },
+  viewIntroduction: {
+    marginTop: 42,
+    paddingHorizontal: 24,
+  },
+  textBodyIntroduction: {
+    fontWeight: "400",
+    fontSize: theme.fontSize.font16,
+    color: theme.colors.Neutral6,
+    flex: 1,
+    lineHeight: 26,
+    marginTop: 20,
+  },
+  viewJoinedCommunities: {
+    marginTop: 48,
+    paddingHorizontal: 24,
+  },
+  bodyJoinedCommunities: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+  },
+  viewJoinedCommunity: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: theme.colors.colorInput,
+    padding: 10,
+    paddingRight: 16,
+    borderRadius: 16,
+    marginVertical: 8,
+    marginRight: 15,
+    // flex: 1,
+  },
+  textJoinedCommunity: {
+    fontWeight: "600",
+    fontSize: theme.fontSize.font18,
+    color: theme.colors.Neutral6,
+    marginLeft: 16,
+  },
+  imageJoined: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
   },
 });
 

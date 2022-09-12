@@ -567,7 +567,7 @@ function LockKeyOpen(props: any) {
   );
 }
 
-function SignOut(props: any) {
+function SignOut({ stroke, strokeWidth, ...props }: any) {
   return (
     <Svg
       width={32}
@@ -579,8 +579,8 @@ function SignOut(props: any) {
     >
       <Path
         d="M21.751 10.75L27 16l-5.249 5.25M13 16h13.996M13 27H6a1 1 0 01-1-1V6a1 1 0 011-1h7"
-        stroke="#191B1D"
-        strokeWidth={1.5}
+        stroke={stroke || "#191B1D"}
+        strokeWidth={strokeWidth || 1.5}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -659,6 +659,126 @@ function Bell(props: any) {
   );
 }
 
+function SingOut19(props: any) {
+  return (
+    <Svg
+      width={19}
+      height={19}
+      viewBox="0 0 19 19"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M12.915 6.383L16.031 9.5l-3.116 3.117M7.719 9.5h8.31M7.719 16.031H3.562a.594.594 0 01-.593-.593V3.562a.594.594 0 01.594-.593h4.156"
+        stroke="#fff"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function Users(props: any) {
+  return (
+    <Svg
+      width={21}
+      height={20}
+      viewBox="0 0 21 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M7.375 12.5a4.062 4.062 0 100-8.125 4.062 4.062 0 000 8.125z"
+        stroke="#2B3641"
+        strokeMiterlimit={10}
+      />
+      <Path
+        d="M12.642 4.526a4.063 4.063 0 111.102 7.974M1.75 15.422a6.876 6.876 0 0111.25 0M13.744 12.5a6.867 6.867 0 015.625 2.921"
+        stroke="#2B3641"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function Crown(props: any) {
+  return (
+    <Svg
+      width={21}
+      height={20}
+      viewBox="0 0 21 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M4.026 15.314a.627.627 0 00.78.458 21.398 21.398 0 0111.386-.001.626.626 0 00.779-.458l1.99-8.462a.626.626 0 00-.861-.715l-3.952 1.757a.625.625 0 01-.8-.268l-2.301-4.142a.625.625 0 00-1.093 0L7.653 7.625a.625.625 0 01-.8.268L2.9 6.136a.625.625 0 00-.862.714l1.988 8.464zM8 12.631a23.902 23.902 0 015 0"
+        stroke="#2B3641"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function Coin(props: any) {
+  return (
+    <Svg
+      width={21}
+      height={20}
+      viewBox="0 0 21 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M10.5 11.875c4.487 0 8.125-1.679 8.125-3.75 0-2.071-3.638-3.75-8.125-3.75s-8.125 1.679-8.125 3.75c0 2.071 3.638 3.75 8.125 3.75zM10.5 11.875v3.75"
+        stroke="#2B3641"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M2.375 8.125v3.75c0 1.875 3.125 3.75 8.125 3.75s8.125-1.875 8.125-3.75v-3.75M15.5 11.102v3.75M5.5 11.102v3.75"
+        stroke="#2B3641"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function Eye(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M16 6.999C6 6.999 2 16 2 16s4 8.999 14 8.999S30 16 30 16s-4-9.001-14-9.001z"
+        stroke="#3FAEC7"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M16 21a5 5 0 100-10 5 5 0 000 10z"
+        stroke="#3FAEC7"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
 export {
   ArrowDownIcon,
   ArrowRight,
@@ -688,4 +808,9 @@ export {
   Warnings,
   PencilLine,
   Bell,
+  SingOut19,
+  Users,
+  Crown,
+  Coin,
+  Eye,
 };

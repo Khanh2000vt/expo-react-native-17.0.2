@@ -1,22 +1,29 @@
-import React, { useCallback } from "react";
+import axios from "axios";
+import React, { useCallback, useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  ImageBackground,
+  ActivityIndicator,
   FlatList,
-  ScrollView,
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import {
   BaseButton,
   BaseHeader,
   BaseInput,
   BaseMember,
+  CaretRight,
+  SingOut19,
   SvgInfo,
   SvgMessages,
   VectorBack,
 } from "../../components";
 import { theme } from "../../constants";
+import { useDebounce } from "../../hooks";
 
 function CommunityDetailScreen({
   route,
@@ -25,10 +32,73 @@ function CommunityDetailScreen({
   route: any;
   navigation: any;
 }) {
-  const { item } = route.params;
+  const { community } = route.params;
+  const [isJoined, setIsJoined] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [value, onChangeValue] = useState<string>("");
+  const [filter, onChangeFilter] = useState<{
+    minAge: string;
+    maxAge: string;
+    gender: string;
+  }>();
+  const debounce = useDebounce(value);
+  const [members, setMembers] = useState<any[]>([]);
+  const [filterMembers, setFilterMembers] = useState<any[]>([]);
+  useEffect(() => {
+    getMembers();
+  }, []);
+
+  useEffect(() => {
+    let listMembers = members;
+    if (members.length > 0) {
+      if (debounce) {
+        console.log("Di vao 1");
+        listMembers = listMembers.filter((member) => {
+          return (
+            member.name.toLowerCase().indexOf(debounce.toLowerCase()) !== -1
+          );
+        });
+      }
+      if (!!filter?.minAge) {
+        console.log("Di vao 2");
+        listMembers = listMembers.filter((member) => {
+          return member.age >= filter?.minAge;
+        });
+      }
+      if (!!filter?.maxAge) {
+        console.log("Di vao 3");
+        listMembers = listMembers.filter((member) => {
+          return member.age <= filter?.maxAge;
+        });
+      }
+      if (filter?.gender) {
+        let isMale = filter?.gender === "male";
+        console.log("Di vao 4", isMale);
+        listMembers = listMembers.filter((member) => {
+          return member.gender === isMale;
+        });
+      }
+    }
+    console.log("listMembers: ", listMembers);
+    setFilterMembers([...listMembers]);
+  }, [debounce, filter]);
+
+  async function getMembers() {
+    try {
+      const res = await axios(
+        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/members"
+      );
+      setMembers([...res.data]);
+      setFilterMembers([...res.data]);
+      setIsLoading(false);
+    } catch (e) {
+      setMembers([]);
+    }
+  }
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item }: { item: any }) => <BaseMember />;
+  const renderItem = ({ item }: { item: any }) => <BaseMember item={item} />;
   return (
+    <KeyboardAwareScrollView enableOnAndroid  contentContainerStyle={{ flexGrow: 1}}>
     <View style={styles.container}>
       <BaseHeader
         IconLeft={<VectorBack />}
@@ -45,27 +115,35 @@ function CommunityDetailScreen({
           <View>
             <View style={styles.body}>
               <View style={styles.poster}>
-                <ImageBackground
-                  source={require("../../../assets/png/Background.png")}
-                  resizeMode="stretch"
+                <Image
+                  source={{ uri: community.image_url }}
                   style={styles.imageBackground}
-                >
-                  <View style={styles.backgroundAbsolute} />
-                  <View>
-                    <Text style={styles.textTitle}>{item.title}</Text>
-                    <Text style={styles.textMembers}>
-                      {item.members} members
-                    </Text>
-                  </View>
-                  <BaseButton
-                    title="Participate"
-                    style={styles.buttonPoster}
-                    onPress={() => {}}
-                  />
-                </ImageBackground>
+                  resizeMode="stretch"
+                />
+                <View style={styles.backgroundAbsolute} />
+                <View>
+                  <Text style={styles.textTitle}>{community.title}</Text>
+                  <Text style={styles.textMembers}>
+                    {community.members} members
+                  </Text>
+                </View>
+                <BaseButton
+                  title={isJoined ? "Leaving" : "Participate"}
+                  IconRight={isJoined && <SingOut19 />}
+                  style={styles.buttonPoster}
+                  backgroundColor={
+                    isJoined ? theme.colors.Semantic4 : theme.colors.primary
+                  }
+                  onPress={() => setIsJoined(!isJoined)}
+                />
               </View>
 
-              <View style={styles.viewAdvForum}>
+              <View
+                style={[
+                  styles.viewAdvForum,
+                  { paddingBottom: isJoined ? 20 : 34 },
+                ]}
+              >
                 <View style={styles.flex}>
                   <SvgMessages />
                   <View style={styles.viewTextAdvForum}>
@@ -77,12 +155,21 @@ function CommunityDetailScreen({
                     </Text>
                   </View>
                 </View>
-                <View style={[styles.flex, styles.viewInfoAdvForum]}>
-                  <SvgInfo />
-                  <Text style={styles.textInfoAdvForum}>
-                    Join community to enter this forum
-                  </Text>
-                </View>
+                {isJoined ? (
+                  <TouchableOpacity
+                    style={[styles.flex, styles.viewInfoAdvForum]}
+                  >
+                    <Text style={styles.textButtonGoForum}>Go to forum</Text>
+                    <CaretRight stroke={theme.colors.darkerPrimary} />
+                  </TouchableOpacity>
+                ) : (
+                  <View style={[styles.flex, styles.viewInfoAdvForum]}>
+                    <SvgInfo />
+                    <Text style={styles.textInfoAdvForum}>
+                      Join community to enter this forum
+                    </Text>
+                  </View>
+                )}
               </View>
 
               <View>
@@ -91,38 +178,34 @@ function CommunityDetailScreen({
                   option="search-filter"
                   placeholder="Search by Name"
                   styleContainer={styles.inputSearch}
-                  onPressFilter={() => {}}
+                  onPressFilter={onChangeFilter}
+                  onChangeText={onChangeValue}
                 />
               </View>
             </View>
           </View>
         }
         ListFooterComponent={
-          <FlatList
-            data={dataTest}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-          />
+          isLoading ? (
+            <View style={{ paddingBottom: 40 }}>
+              <ActivityIndicator />
+            </View>
+          ) : (
+              <FlatList
+                data={filterMembers}
+                renderItem={renderItem}
+                keyExtractor={keyExtractor}
+                ListEmptyComponent={<Text>Empty</Text>}
+                style={styles.flatListMember}
+              />
+          )
         }
       />
     </View>
+
+     </KeyboardAwareScrollView>
   );
 }
-
-const dataTest = [
-  { id: 1, title: "Gaming", members: "256" },
-  { id: 2, title: "Outdoors", members: "3621" },
-  { id: 3, title: "Music", members: "1056" },
-  { id: 4, title: "Movies", members: "20335" },
-  { id: 5, title: "News and Society", members: "256" },
-  { id: 6, title: "Automotive", members: "1334" },
-  { id: 7, title: "Macro", members: "1434" },
-  { id: 8, title: "React", members: "5634" },
-  { id: 9, title: "Native", members: "1243" },
-  { id: 10, title: "Jock", members: "375" },
-  { id: 11, title: "Home", members: "578" },
-  { id: 12, title: "Screen", members: "431", gender: "male", age: 18 },
-];
 
 const styles = StyleSheet.create({
   flex: {
@@ -143,15 +226,19 @@ const styles = StyleSheet.create({
   },
   poster: {
     height: 205,
-    borderRadius: 8,
-  },
-  imageBackground: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
     paddingTop: 35,
     borderRadius: 8,
     paddingBottom: 28,
+  },
+  imageBackground: {
+    borderRadius: 8,
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
   textTitle: {
     fontSize: theme.fontSize.font24,
@@ -182,7 +269,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.colorInput,
     borderRadius: 8,
     paddingTop: 26,
-    paddingBottom: 34,
     paddingHorizontal: 24,
     marginTop: 24,
     marginBottom: 36,
@@ -197,6 +283,12 @@ const styles = StyleSheet.create({
     color: theme.colors.Neutral10,
     marginBottom: 9,
   },
+  textButtonGoForum: {
+    fontSize: theme.fontSize.font16,
+    fontWeight: "600",
+    color: theme.colors.darkerPrimary,
+    marginHorizontal: 14,
+  },
   textBodyAdvForum: {
     fontWeight: "400",
     fontSize: theme.fontSize.font16,
@@ -205,6 +297,7 @@ const styles = StyleSheet.create({
   viewInfoAdvForum: {
     alignItems: "center",
     marginTop: 32,
+    justifyContent: "center",
   },
   textInfoAdvForum: {
     fontWeight: "600",
@@ -221,6 +314,9 @@ const styles = StyleSheet.create({
   inputSearch: {
     marginVertical: 24,
     marginBottom: 16,
+  },
+  flatListMember: {
+    // flex: 1,
   },
 });
 

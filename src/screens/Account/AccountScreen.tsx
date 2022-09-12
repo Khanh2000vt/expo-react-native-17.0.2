@@ -48,6 +48,7 @@ function AccountScreen({ navigation }: { navigation: any }) {
       title: "Log out",
       icon: <SignOut />,
       onPress: () => setVisible(!isVisible),
+      // onPress: () => dispatch(logoutAuth()), // test
     },
   ];
 
@@ -57,7 +58,9 @@ function AccountScreen({ navigation }: { navigation: any }) {
       option: "fill",
       onPress: () => {
         setVisible(false);
-        dispatch(logoutAuth());
+        setTimeout(() => {
+          dispatch(logoutAuth());
+        } , 500)
       },
     },
     {
@@ -66,6 +69,8 @@ function AccountScreen({ navigation }: { navigation: any }) {
       onPress: () => setVisible(false),
     },
   ];
+
+  console.log("isVisible: ", isVisible);
   return (
     <View style={styles.container}>
       <ScrollView

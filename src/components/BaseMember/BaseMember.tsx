@@ -1,24 +1,21 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
-import { SlidersHorizontal, SvgUser } from "../Icon";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { theme } from "../../constants";
-function BaseMember() {
+import { SvgUser } from "../Icon";
+interface IBaseMember {
+  item: any;
+}
+function BaseMember({ item }: IBaseMember) {
   return (
     <View style={[styles.container, styles.flex]}>
-      <Image
-        source={require("../../../assets/png/Rectangle68.png")}
-        style={styles.image}
-      />
+      <Image source={{ uri: item.avatar }} style={styles.image} />
       <View style={styles.body}>
-        <Text style={styles.textName}>Jenny Wilson</Text>
+        <Text style={styles.textName}>{item.name}</Text>
         <View style={styles.flex}>
-          <Text style={styles.textIndexMember}>2050</Text>
+          <Text style={styles.textIndexMember}>{item.friend}</Text>
           <SvgUser />
         </View>
-        <Text style={styles.textDescription}>
-          I want to empower entrepreneurs and have a tangible impact in my
-          community.
-        </Text>
+        <Text style={styles.textDescription}>{item.introduce}</Text>
       </View>
     </View>
   );

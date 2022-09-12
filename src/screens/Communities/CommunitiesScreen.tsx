@@ -32,7 +32,7 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
   const getCategories = async () => {
     try {
       const res = await axios(
-        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/joined"
+        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/communities"
       );
       console.log("res: ", res.data[0]);
       setListCategories([...res.data]);
@@ -46,7 +46,7 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
   //function
   function handleOnPressCategories(item: any) {
     navigation.navigate("CommunityDetailScreen", {
-      item: item,
+      community: item,
     });
   }
 
@@ -73,7 +73,6 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
         value={value}
         onChangeText={onChangeValue}
       />
-      {/*  */}
       {isLoading ? (
         <ActivityIndicator />
       ) : (

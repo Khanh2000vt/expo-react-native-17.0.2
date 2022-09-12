@@ -10,7 +10,13 @@ import {
 import Modal from "react-native-modal";
 import { Input, theme } from "../../constants/index";
 import { BaseButton } from "../BaseButton";
-import { EyeSlash, MagnifyingGlass, SlidersHorizontal, Tick } from "../Icon";
+import {
+  Eye,
+  EyeSlash,
+  MagnifyingGlass,
+  SlidersHorizontal,
+  Tick,
+} from "../Icon";
 import { PropsBaseInput } from "./BaseInputModel";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
@@ -118,7 +124,11 @@ function BaseInput({
             style={styles.viewIcon}
             onPress={() => setHidePassword(!hidePassword)}
           >
-            <EyeSlash height={24} width={24} />
+            {hidePassword ? (
+              <EyeSlash height={24} width={24} />
+            ) : (
+              <Eye height={24} width={24} />
+            )}
           </TouchableOpacity>
         )}
         {option === Option.SEARCH_FILTER && (
