@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   BaseButton,
   LockKeyOpen,
@@ -20,9 +20,10 @@ import {
 import BaseAlert from "../../components/BaseAlert/BaseAlert";
 import { BaseButtonProps } from "../../components/BaseButton/BaseButtonModel";
 import { theme } from "../../constants";
-import { logoutAuth } from "../../redux";
+import { logoutAuth, RootState } from "../../redux";
 function AccountScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
   const [isVisible, setVisible] = useState<boolean>(false);
   const accountMenu = [
     {
@@ -60,7 +61,7 @@ function AccountScreen({ navigation }: { navigation: any }) {
         setVisible(false);
         setTimeout(() => {
           dispatch(logoutAuth());
-        } , 500)
+        }, 500);
       },
     },
     {
@@ -70,7 +71,6 @@ function AccountScreen({ navigation }: { navigation: any }) {
     },
   ];
 
-  console.log("isVisible: ", isVisible);
   return (
     <View style={styles.container}>
       <ScrollView
@@ -80,14 +80,11 @@ function AccountScreen({ navigation }: { navigation: any }) {
         <Text style={styles.textTitle}>Account</Text>
 
         <View style={styles.accountView}>
-          <Image
-            source={require("../../../assets/png/Rectangle68.png")}
-            style={styles.imageAccount}
-          />
+          <Image source={{ uri: user.avatar }} style={styles.imageAccount} />
           <View style={styles.accountViewBody}>
-            <Text style={styles.textNameAccount}>Matsuura Yuki</Text>
+            <Text style={styles.textNameAccount}>{user.name}</Text>
             <View style={styles.accountViewID}>
-              <Text style={styles.textID}>ID: 1752648</Text>
+              <Text style={styles.textID}>ID: {user.id_account}</Text>
               <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
                 <SvgCopy />
               </TouchableOpacity>

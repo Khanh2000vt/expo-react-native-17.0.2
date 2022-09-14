@@ -24,7 +24,7 @@ function BaseIntroduction({}: BaseIntroductionProps) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    flex: 1,
+    // flex: 1,
     marginBottom: 16,
   },
   viewSNS: {

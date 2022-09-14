@@ -155,6 +155,7 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
             styleContainer={{ marginRight: 8 }}
             error={formik.touched.gender}
             messageError={formik.errors.gender}
+            value={formik.values.gender}
           />
           <BaseModal
             data={ListYear()}
@@ -164,6 +165,7 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
             styleContainer={{ marginLeft: 8 }}
             error={formik.touched.birthYear}
             messageError={formik.errors.birthYear}
+            value={formik.values.birthYear}
           />
         </View>
         <BaseInput

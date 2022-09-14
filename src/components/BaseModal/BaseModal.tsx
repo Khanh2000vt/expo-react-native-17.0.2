@@ -23,10 +23,10 @@ function BaseModal({
   messageError,
   styleContainer,
   style,
+  value,
   ...props
 }: BaseModalProps) {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
-  const [indexSelected, setIndexSelected] = useState<number>(-1);
   const refFlatList = useRef<FlatList>(null);
   const keyExtractor = useCallback((_, index) => index.toString(), []);
   const renderItem = ({ item, index }: { item: any; index: number }) => {
@@ -37,14 +37,13 @@ function BaseModal({
         onPress={() => handleSelectedItem(item, index)}
       >
         <Text>{item.label}</Text>
-        {index === indexSelected && <Tick stroke={colors.primary} />}
+        {item.value === value && <Tick stroke={colors.primary} />}
       </TouchableOpacity>
     );
   };
 
   function handleSelectedItem(item: any, index: number) {
     onChangeValue && onChangeValue(item.value);
-    setIndexSelected(index);
     setModalVisible(false);
   }
 
@@ -58,7 +57,9 @@ function BaseModal({
         {...props}
       >
         <Text style={styles.textLabel}>
-          {indexSelected !== -1 ? data[indexSelected].label : placeholder}
+          {!!value
+            ? data.find((element) => element.value === value)?.label
+            : placeholder}
         </Text>
         <ArrowDownIcon />
       </TouchableOpacity>
@@ -76,7 +77,9 @@ function BaseModal({
         onModalWillShow={() =>
           refFlatList.current?.scrollToIndex({
             animated: false,
-            index: indexSelected !== -1 ? indexSelected : 0,
+            index: !!value
+              ? data.findIndex((element) => element.value === value)
+              : 0,
             viewPosition: 0,
           })
         }
@@ -127,6 +130,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     borderRadius: 8,
+    marginTop: 4,
   },
   containerModal: {
     backgroundColor: "#fff",

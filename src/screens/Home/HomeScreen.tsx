@@ -1,38 +1,37 @@
+import axios from "axios";
+import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  Dimensions,
   FlatList,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
+import { useDispatch, useSelector } from "react-redux";
 import {
   BaseButton,
   BaseCategory,
-  TomoCoins,
   CaretRight,
+  TomoCoins,
   ViaFacebook,
   ViaTwitter,
 } from "../../components";
 import { theme } from "../../constants";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { getJoined, RootState } from "../../redux";
+import { getJoined, loginAuth, RootState } from "../../redux";
 
 function HomeScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
-  const [isLoading, setLoading] = useState<boolean>(true);
   const joinedCommunities = useSelector(
     (state: RootState) => state.joined.communities
   );
+  const user = useSelector((state: RootState) => state.auth.user);
   const [listOthers, setListOthers] = useState<{}[]>([]);
   useEffect(() => {
     getJoinedCommunities();
     getListOthers();
+    dispatch(loginAuth());
   }, []);
 
   async function getListOthers() {
@@ -40,11 +39,8 @@ function HomeScreen({ navigation }: { navigation: any }) {
       const res = await axios(
         "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/communities?p=1&l=4"
       );
-      console.log("getListOthers: ", res.data[0]);
       setListOthers([...res.data]);
-      // setLoading(false);
     } catch (e) {
-      console.log("error: ", e);
       setListOthers([]);
     }
   }
@@ -95,15 +91,12 @@ function HomeScreen({ navigation }: { navigation: any }) {
         ListHeaderComponent={
           <View>
             <View style={styles.viewHeader}>
-              <Image
-                source={require("../../../assets/png/avt.png")}
-                style={styles.imageAvt}
-              />
+              <Image source={{ uri: user.avatar }} style={styles.imageAvt} />
               <View>
                 <Text style={styles.textHello} numberOfLines={2}>
                   Hello
                 </Text>
-                <Text style={styles.textName}>Matsuura Yuki</Text>
+                <Text style={styles.textName}>{user.name}</Text>
               </View>
             </View>
             <View style={styles.viewNotification}>

@@ -1,3 +1,4 @@
+import { FormikErrors, FormikTouched } from "formik";
 import { StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
 
 interface PropsBaseInput extends TextInputProps {
@@ -6,8 +7,13 @@ interface PropsBaseInput extends TextInputProps {
   styleContainer?: StyleProp<ViewStyle> | undefined;
   styleTitle?: StyleProp<TextStyle> | undefined;
   styleBody?: StyleProp<ViewStyle> | undefined;
-  error?: boolean | undefined;
-  messageError?: string;
+  error?: boolean | FormikTouched<any> | FormikTouched<any>[] | undefined;
+  messageError?:
+    | string
+    | string[]
+    | FormikErrors<any>
+    | FormikErrors<any>[]
+    | undefined;
   onPressFilter?: (value: {
     minAge: string;
     maxAge: string;

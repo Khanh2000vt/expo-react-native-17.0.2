@@ -1,5 +1,7 @@
-import React, { useCallback } from "react";
+import axios from "axios";
+import React, { useCallback, useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
@@ -7,11 +9,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import { getJoined, RootState } from "../../redux";
 import { theme } from "../../constants";
-import { RootState } from "../../redux";
+import { formatTime } from "../../utils";
 import { BaseButton } from "../BaseButton";
-import BaseCategory from "../BaseCategory/BaseCategory";
 import { BaseHeader } from "../BaseHeader";
 import {
   Bell,
@@ -25,62 +28,46 @@ import {
 } from "../Icon";
 import { BaseProfileProps } from "./BaseProfileModel";
 
-const activitiesLog = [
-  {
-    id: 1,
-    name: "Chotan Dai",
-    comment: "uploaded a new video “5 tips for studying” on Youtube",
-    time: "9 Jul 2021, 12:00AM ",
-    seen: false,
-  },
-  {
-    id: 2,
-    name: "Wade Warren",
-    comment: "posted a new post on Facebook",
-    time: "9 Jul 2021, 12:00AM ",
-    seen: false,
-  },
-  {
-    id: 3,
-    name: "jeWicky24",
-    comment: "joined a new community",
-    time: "9 Jul 2021, 12:00AM ",
-    seen: true,
-  },
-];
-
-const dataTest = [
-  {
-    type: "",
-  },
-];
-
 function BaseProfile({
   navigation,
   isProfileSelf = false,
   joinedCommunities = [],
   elementProfileSelf,
 }: BaseProfileProps) {
+  const [indexLog, setIndexLog] = useState<number>(3);
+  const [isLoading, setLoading] = useState<boolean>(true);
+  const [activities, setActivities] = useState<any[]>([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // dispatch(getJoined());
+  }, []);
+
+  useEffect(() => {
+    getActivitiesLog();
+  }, [indexLog]);
+
   const joined = useSelector((state: RootState) => state.joined.communities);
+  const user = useSelector((state: RootState) => state.auth.user);
   const listAmount = [
     {
       id: 1,
       icon: <Users />,
-      amount: "2050",
+      amount: user.friend,
       color: theme.colors.Semantic5,
       onPress: () => {},
     },
     {
       id: 2,
       icon: <Crown />,
-      amount: "1024",
+      amount: user.crown,
       color: theme.colors.Semantic2,
       onPress: () => {},
     },
     {
       id: 3,
       icon: <Coin />,
-      amount: "12000",
+      amount: user.coin,
       color: theme.colors.Semantic1,
       onPress: () => {},
     },
@@ -133,18 +120,40 @@ function BaseProfile({
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
   const renderItemActivitiesLog = ({ item }: { item: any }) => (
-    <View>
-      <View>
-        <Image source={require("../../../assets/png/avt.png")} />
+    <TouchableOpacity style={styles.viewActivityLog} activeOpacity={0.8}>
+      <View style={styles.viewHeaderActivity}>
+        <View
+          style={[
+            styles.pointLog,
+            {
+              backgroundColor: item.seen
+                ? theme.colors.Neutral0
+                : theme.colors.Semantic2,
+            },
+          ]}
+        />
+        <Image source={{ uri: item.avatar }} style={styles.avatarLog} />
       </View>
-      <View>
-        <Text>
-          {item.name} <Text>{item.comment}</Text>
+      <View style={{ flex: 1 }}>
+        <Text style={styles.textNameActivityLog}>
+          {item.name}{" "}
+          <Text style={styles.textCommentActivityLog}>{item.comment}</Text>
         </Text>
-        <Text>{item.time}</Text>
+        <Text style={styles.textTimeActivityLog}>
+          {formatTime(item.createdAt)}
+        </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
+
+  const getActivitiesLog = async () => {
+    setLoading(true);
+    const res = await axios(
+      `https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/log?p=1&l=${indexLog}`
+    );
+    setLoading(false);
+    setActivities([...res.data]);
+  };
 
   const iconRightButton = (index: string) => (
     <View style={styles.iconRightButtonStyle}>
@@ -156,36 +165,55 @@ function BaseProfile({
     if (isProfileSelf) {
       return (
         <View>
-          <View>
-            <Text>Activities log</Text>
+          <View style={styles.viewActivitiesLog}>
+            <Text style={styles.textTitle}>Activities log</Text>
             <FlatList
               keyExtractor={keyExtractor}
-              data={activitiesLog}
+              data={activities}
               renderItem={renderItemActivitiesLog}
+              style={styles.flatListActivitiesLog}
             />
+            {isLoading && (
+              <View style={styles.viewActivityIndicator}>
+                <ActivityIndicator />
+              </View>
+            )}
             <BaseButton
               title="Older activities"
               IconRight={<CaretRight />}
               backgroundColor={theme.colors.Neutral0}
               color={theme.colors.primary}
+              onPress={() => setIndexLog(indexLog + 5)}
+              style={styles.buttonOlderActivities}
             />
           </View>
 
-          <View>
-            <View>
+          <View style={styles.notification}>
+            <View style={styles.notificationHeader}>
               <Bell />
-              <Text>Notification from Followers</Text>
+              <Text style={styles.titleNotification}>
+                Notification from Followers
+              </Text>
             </View>
-            <View></View>
+            <View style={styles.notificationBody}>
+              <Text style={styles.textNameNotification}>
+                Photo Kid
+                <Text style={styles.textCommentNotification}>
+                  {" "}
+                  joined thanks to you! You get 300tm!
+                </Text>
+              </Text>
+            </View>
           </View>
 
-          <View>
+          <View style={styles.viewButtonProfileSelf}>
             <BaseButton
               title="Waiting for approval"
               backgroundColor={theme.colors.Neutral1}
               color={theme.colors.Neutral10}
               IconRight={iconRightButton("5")}
               style={styles.buttonProfileSelf}
+              onPress={() => navigation.navigate("WaitingForApprovalScreen")}
             />
             <BaseButton
               title="Friend request sent"
@@ -193,6 +221,7 @@ function BaseProfile({
               color={theme.colors.Neutral10}
               IconRight={iconRightButton("22")}
               style={styles.buttonProfileSelf}
+              onPress={() => navigation.navigate("FriendRequestScreen")}
             />
           </View>
         </View>
@@ -221,20 +250,20 @@ function BaseProfile({
                 IconLeft={<VectorBack stroke={theme.colors.Neutral0} />}
                 onPressLeft={() => navigation.goBack()}
                 IconRight={<PencilLine />}
-                onPressRight={() => navigation.navigate("UpdateProfileScreenO")}
+                onPressRight={() => navigation.navigate("UpdateProfileScreen")}
                 styleHeader={styles.styleHeader}
                 styleTitleHeader={styles.styleTitleHeader}
               />
               <Image
-                source={require("../../../assets/png/avt.png")}
+                source={{ uri: user.avatar }}
                 style={styles.profileImageAvt}
               />
             </View>
 
             <View style={styles.accountViewBody}>
-              <Text style={styles.textNameAccount}>Matsuura Yuki</Text>
+              <Text style={styles.textNameAccount}>{user.name}</Text>
               <View style={styles.accountViewID}>
-                <Text style={styles.textID}>ID: 1752648</Text>
+                <Text style={styles.textID}>ID: {user.id_account}</Text>
                 <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
                   <SvgCopy />
                 </TouchableOpacity>
@@ -276,9 +305,7 @@ function BaseProfile({
             <View style={styles.viewIntroduction}>
               <Text style={styles.textTitle}>Introduction</Text>
               <Text style={styles.textBodyIntroduction}>
-                Hello world, I’m Yuki from Japan and I’m creating the beautiful
-                videos. I wish Facebook would notify me when someone deletes me.
-                That way I could ‘Like’ it. My brain is divided into two parts.
+                {user.introduction}
               </Text>
             </View>
 
@@ -357,8 +384,15 @@ const styles = StyleSheet.create({
   },
 
   //button profile self
+  viewButtonProfileSelf: {
+    paddingHorizontal: 24,
+    marginTop: 68,
+    marginBottom: 81,
+  },
   buttonProfileSelf: {
     justifyContent: "space-between",
+    height: 68,
+    marginBottom: 12,
   },
   iconRightButtonStyle: {
     backgroundColor: theme.colors.darkerPrimary,
@@ -454,6 +488,105 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 12,
+  },
+  //activities log
+  viewActivityIndicator: {
+    marginTop: 20,
+  },
+  viewActivitiesLog: {
+    marginTop: 40,
+  },
+  flatListActivitiesLog: {
+    backgroundColor: theme.colors.colorInput,
+    paddingTop: 16,
+    paddingBottom: 11,
+    paddingHorizontal: 24,
+  },
+  viewActivityLog: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 20,
+  },
+  avatarLog: {
+    width: 48,
+    height: 48,
+    borderRadius: 100,
+    marginLeft: 4,
+    marginRight: 16,
+  },
+  viewHeaderActivity: {
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
+  },
+  pointLog: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+  },
+  textNameActivityLog: {
+    flex: 1,
+    fontWeight: "600",
+    fontSize: theme.fontSize.font14,
+    lineHeight: 22.4,
+    color: theme.colors.Neutral10,
+  },
+  textCommentActivityLog: {
+    color: theme.colors.Neutral6,
+    fontWeight: "400",
+  },
+  textTimeActivityLog: {
+    fontWeight: "400",
+    fontSize: theme.fontSize.font12,
+    color: theme.colors.Neutral6,
+    lineHeight: 19,
+    marginTop: 8,
+  },
+  buttonOlderActivities: {
+    height: undefined,
+    paddingVertical: 17,
+  },
+  //notification
+  notification: {
+    paddingHorizontal: 24,
+    marginTop: 45,
+  },
+  notificationHeader: {
+    borderRadius: 8,
+    borderBottomRightRadius: 0,
+    borderBottomLeftRadius: 0,
+    backgroundColor: theme.colors.darkerPrimary,
+    flexDirection: "row",
+    alignItems: "center",
+    // justifyContent: "center",
+    paddingTop: 16,
+    paddingBottom: 15,
+    paddingHorizontal: 24,
+  },
+  notificationBody: {
+    borderRadius: 8,
+    borderTopRightRadius: 0,
+    borderTopLeftRadius: 0,
+    backgroundColor: theme.colors.primary,
+    paddingHorizontal: 24,
+    paddingTop: 12,
+    paddingBottom: 16,
+  },
+  titleNotification: {
+    fontWeight: "600",
+    fontSize: theme.fontSize.font18,
+    lineHeight: 29,
+    color: theme.colors.Neutral0,
+    marginLeft: 14,
+  },
+  textNameNotification: {
+    fontWeight: "600",
+    fontSize: theme.fontSize.font16,
+    lineHeight: 26,
+    color: theme.colors.Neutral0,
+  },
+  textCommentNotification: {
+    fontWeight: "500",
   },
 });
 

@@ -5,12 +5,14 @@ interface IState {
   isLoading: boolean;
   errorMessage: string;
   token: string | null;
+  user: any;
 }
 
 const initialState: IState = {
   isLoading: false,
   errorMessage: "",
   token: null,
+  user: {},
 };
 
 export const loginAuth: any = createAsyncThunk(
@@ -20,7 +22,7 @@ export const loginAuth: any = createAsyncThunk(
       const response = await axios(
         "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/login/1"
       );
-      return response.data.token;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -44,7 +46,8 @@ const authSlice = createSlice({
         loginAuth.fulfilled,
         (state: IState, action: PayloadAction<any>) => {
           state.isLoading = false;
-          state.token = action.payload;
+          state.token = action.payload.token;
+          state.user = action.payload;
         }
       )
       .addCase(
