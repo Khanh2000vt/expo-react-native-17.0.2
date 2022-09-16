@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
-  KeyboardAvoidingView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -22,7 +21,7 @@ import {
   SvgMessages,
   VectorBack,
 } from "../../components";
-import { theme } from "../../constants";
+import { OtherProfile, theme } from "../../constants";
 import { useDebounce } from "../../hooks";
 
 function CommunityDetailScreen({
@@ -32,7 +31,7 @@ function CommunityDetailScreen({
   route: any;
   navigation: any;
 }) {
-  const { community } = route.params;
+  const { community, joined } = route.params;
   const [isJoined, setIsJoined] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [value, onChangeValue] = useState<string>("");
@@ -46,13 +45,13 @@ function CommunityDetailScreen({
   const [filterMembers, setFilterMembers] = useState<any[]>([]);
   useEffect(() => {
     getMembers();
+    setIsJoined(!!joined);
   }, []);
 
   useEffect(() => {
     let listMembers = members;
     if (members.length > 0) {
       if (debounce) {
-        console.log("Di vao 1");
         listMembers = listMembers.filter((member) => {
           return (
             member.name.toLowerCase().indexOf(debounce.toLowerCase()) !== -1
@@ -60,26 +59,22 @@ function CommunityDetailScreen({
         });
       }
       if (!!filter?.minAge) {
-        console.log("Di vao 2");
         listMembers = listMembers.filter((member) => {
           return member.age >= filter?.minAge;
         });
       }
       if (!!filter?.maxAge) {
-        console.log("Di vao 3");
         listMembers = listMembers.filter((member) => {
           return member.age <= filter?.maxAge;
         });
       }
       if (filter?.gender) {
         let isMale = filter?.gender === "male";
-        console.log("Di vao 4", isMale);
         listMembers = listMembers.filter((member) => {
           return member.gender === isMale;
         });
       }
     }
-    console.log("listMembers: ", listMembers);
     setFilterMembers([...listMembers]);
   }, [debounce, filter]);
 
@@ -96,101 +91,115 @@ function CommunityDetailScreen({
     }
   }
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item }: { item: any }) => <BaseMember item={item} />;
+  const renderItem = ({ item }: { item: any }) => (
+    <BaseMember
+      item={item}
+      onPress={(userOther: any) => {
+        navigation.navigate("OtherProfileScreen", {
+          userOther: userOther,
+          type: OtherProfile.OTHER,
+        });
+      }}
+    />
+  );
   return (
-    <KeyboardAwareScrollView enableOnAndroid  contentContainerStyle={{ flexGrow: 1}}>
-    <View style={styles.container}>
-      <BaseHeader
-        IconLeft={<VectorBack />}
-        onPressLeft={() => navigation.goBack()}
-        styleHeader={styles.styleHeader}
-      />
-      <FlatList
-        data={[]}
-        renderItem={() => <></>}
-        keyExtractor={keyExtractor}
-        style={styles.flatListContainer}
-        showsVerticalScrollIndicator={false}
-        ListHeaderComponent={
-          <View>
-            <View style={styles.body}>
-              <View style={styles.poster}>
-                <Image
-                  source={{ uri: community.image_url }}
-                  style={styles.imageBackground}
-                  resizeMode="stretch"
-                />
-                <View style={styles.backgroundAbsolute} />
+    <KeyboardAwareScrollView
+      enableOnAndroid
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
+      <View style={styles.container}>
+        <BaseHeader
+          IconLeft={<VectorBack />}
+          onPressLeft={() => navigation.goBack()}
+          styleHeader={styles.styleHeader}
+        />
+        <FlatList
+          data={[]}
+          renderItem={() => <></>}
+          keyExtractor={keyExtractor}
+          style={styles.flatListContainer}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <View>
+              <View style={styles.body}>
+                <View style={styles.poster}>
+                  <Image
+                    source={{ uri: community.image_url }}
+                    style={styles.imageBackground}
+                    resizeMode="stretch"
+                  />
+                  <View style={styles.backgroundAbsolute} />
+                  <View>
+                    <Text style={styles.textTitle}>{community.title}</Text>
+                    <Text style={styles.textMembers}>
+                      {community.members} members
+                    </Text>
+                  </View>
+                  <BaseButton
+                    title={isJoined ? "Leaving" : "Participate"}
+                    IconRight={isJoined && <SingOut19 />}
+                    style={styles.buttonPoster}
+                    backgroundColor={
+                      isJoined ? theme.colors.Semantic4 : theme.colors.primary
+                    }
+                    onPress={() => setIsJoined(!isJoined)}
+                  />
+                </View>
+
+                <View
+                  style={[
+                    styles.viewAdvForum,
+                    { paddingBottom: isJoined ? 20 : 34 },
+                  ]}
+                >
+                  <View style={styles.flex}>
+                    <SvgMessages />
+                    <View style={styles.viewTextAdvForum}>
+                      <Text style={styles.textTitleAdvForum}>
+                        Real-time Forum
+                      </Text>
+                      <Text style={styles.textBodyAdvForum}>
+                        Join now to give real-time PR about yourself
+                      </Text>
+                    </View>
+                  </View>
+                  {isJoined ? (
+                    <TouchableOpacity
+                      style={[styles.flex, styles.viewInfoAdvForum]}
+                      onPress={() => navigation.navigate("ForumStack")}
+                    >
+                      <Text style={styles.textButtonGoForum}>Go to forum</Text>
+                      <CaretRight stroke={theme.colors.darkerPrimary} />
+                    </TouchableOpacity>
+                  ) : (
+                    <View style={[styles.flex, styles.viewInfoAdvForum]}>
+                      <SvgInfo />
+                      <Text style={styles.textInfoAdvForum}>
+                        Join community to enter this forum
+                      </Text>
+                    </View>
+                  )}
+                </View>
+
                 <View>
-                  <Text style={styles.textTitle}>{community.title}</Text>
-                  <Text style={styles.textMembers}>
-                    {community.members} members
-                  </Text>
+                  <Text style={styles.textTitleMembers}>Members</Text>
+                  <BaseInput
+                    option="search-filter"
+                    placeholder="Search by Name"
+                    styleContainer={styles.inputSearch}
+                    onPressFilter={onChangeFilter}
+                    onChangeText={onChangeValue}
+                  />
                 </View>
-                <BaseButton
-                  title={isJoined ? "Leaving" : "Participate"}
-                  IconRight={isJoined && <SingOut19 />}
-                  style={styles.buttonPoster}
-                  backgroundColor={
-                    isJoined ? theme.colors.Semantic4 : theme.colors.primary
-                  }
-                  onPress={() => setIsJoined(!isJoined)}
-                />
-              </View>
-
-              <View
-                style={[
-                  styles.viewAdvForum,
-                  { paddingBottom: isJoined ? 20 : 34 },
-                ]}
-              >
-                <View style={styles.flex}>
-                  <SvgMessages />
-                  <View style={styles.viewTextAdvForum}>
-                    <Text style={styles.textTitleAdvForum}>
-                      Real-time Forum
-                    </Text>
-                    <Text style={styles.textBodyAdvForum}>
-                      Join now to give real-time PR about yourself
-                    </Text>
-                  </View>
-                </View>
-                {isJoined ? (
-                  <TouchableOpacity
-                    style={[styles.flex, styles.viewInfoAdvForum]}
-                  >
-                    <Text style={styles.textButtonGoForum}>Go to forum</Text>
-                    <CaretRight stroke={theme.colors.darkerPrimary} />
-                  </TouchableOpacity>
-                ) : (
-                  <View style={[styles.flex, styles.viewInfoAdvForum]}>
-                    <SvgInfo />
-                    <Text style={styles.textInfoAdvForum}>
-                      Join community to enter this forum
-                    </Text>
-                  </View>
-                )}
-              </View>
-
-              <View>
-                <Text style={styles.textTitleMembers}>Members</Text>
-                <BaseInput
-                  option="search-filter"
-                  placeholder="Search by Name"
-                  styleContainer={styles.inputSearch}
-                  onPressFilter={onChangeFilter}
-                  onChangeText={onChangeValue}
-                />
               </View>
             </View>
-          </View>
-        }
-        ListFooterComponent={
-          isLoading ? (
-            <View style={{ paddingBottom: 40 }}>
-              <ActivityIndicator />
-            </View>
-          ) : (
+          }
+          ListFooterComponent={
+            isLoading ? (
+              <View style={{ paddingBottom: 40 }}>
+                <ActivityIndicator />
+              </View>
+            ) : (
               <FlatList
                 data={filterMembers}
                 renderItem={renderItem}
@@ -198,12 +207,11 @@ function CommunityDetailScreen({
                 ListEmptyComponent={<Text>Empty</Text>}
                 style={styles.flatListMember}
               />
-          )
-        }
-      />
-    </View>
-
-     </KeyboardAwareScrollView>
+            )
+          }
+        />
+      </View>
+    </KeyboardAwareScrollView>
   );
 }
 

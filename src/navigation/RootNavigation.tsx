@@ -9,8 +9,11 @@ import {
   UpdateProfileScreen,
   WaitingForApprovalScreen,
   YourProfileScreen,
+  OtherProfileScreen,
+  PurchaseTomoCoinScreen,
 } from "../screens";
 import LoginStackScreen from "./AuthStack/LoginStack";
+import ForumStack from "./MainStack/ForumStack";
 import MainStack from "./MainStack/MainStack";
 
 const RootStack = createNativeStackNavigator();
@@ -55,6 +58,15 @@ function RootStackScreen() {
         name="ChangePasswordScreen"
         component={ChangePasswordScreen}
       />
+      <RootStack.Screen
+        name="OtherProfileScreen"
+        component={OtherProfileScreen}
+      />
+      <RootStack.Screen
+        name="PurchaseTomoCoinScreen"
+        component={PurchaseTomoCoinScreen}
+      />
+      <RootStack.Screen name="ForumStack" component={ForumStack} />
     </RootStack.Navigator>
   );
 }

@@ -57,7 +57,10 @@ function HomeScreen({ navigation }: { navigation: any }) {
         activeOpacity={0.6}
         style={styles.containerItem}
         onPress={() =>
-          navigation.navigate("CommunityDetailScreen", { community: item })
+          navigation.navigate("CommunityDetailScreen", {
+            community: item,
+            joined: true,
+          })
         }
       >
         <Image
@@ -91,12 +94,22 @@ function HomeScreen({ navigation }: { navigation: any }) {
         ListHeaderComponent={
           <View>
             <View style={styles.viewHeader}>
-              <Image source={{ uri: user.avatar }} style={styles.imageAvt} />
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate("YourProfileScreen")}
+              >
+                <Image source={{ uri: user.avatar }} style={styles.imageAvt} />
+              </TouchableOpacity>
               <View>
                 <Text style={styles.textHello} numberOfLines={2}>
                   Hello
                 </Text>
-                <Text style={styles.textName}>{user.name}</Text>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  onPress={() => navigation.navigate("YourProfileScreen")}
+                >
+                  <Text style={styles.textName}>{user.name}</Text>
+                </TouchableOpacity>
               </View>
             </View>
             <View style={styles.viewNotification}>
@@ -158,6 +171,9 @@ function HomeScreen({ navigation }: { navigation: any }) {
                     color={theme.colors.Neutral10}
                     IconLeft={<TomoCoins style={{ marginHorizontal: 23 }} />}
                     style={styles.buttonGray}
+                    onPress={() =>
+                      navigation.navigate("PurchaseTomoCoinScreen")
+                    }
                   />
                   <BaseButton
                     title="Introduce via Twitter"

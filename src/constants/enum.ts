@@ -13,4 +13,11 @@ enum Button {
   HEIGHT = 56,
 }
 
-export { Input, Container, Button };
+enum OtherProfile {
+  OTHER,
+  REQUEST_PENDING,
+  INVITATION,
+  FRIEND,
+}
+
+export { Input, Container, Button, OtherProfile };

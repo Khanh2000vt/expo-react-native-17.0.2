@@ -36,6 +36,26 @@ const authSlice = createSlice({
     logoutAuth: () => {
       return initialState;
     },
+    addCoins: (state: IState, action: PayloadAction<any>) => {
+      let coin = state.user.coin + action.payload;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          coin: coin,
+        },
+      };
+    },
+    spendCoins: (state: IState, action: PayloadAction<any>) => {
+      let coin = state.user.coin - action.payload;
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          coin: coin,
+        },
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -60,7 +80,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { logoutAuth } = authSlice.actions;
+export const { logoutAuth, addCoins, spendCoins } = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 

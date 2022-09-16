@@ -18,7 +18,6 @@ import {
   Warnings,
 } from "../../components";
 import BaseAlert from "../../components/BaseAlert/BaseAlert";
-import { BaseButtonProps } from "../../components/BaseButton/BaseButtonModel";
 import { theme } from "../../constants";
 import { logoutAuth, RootState } from "../../redux";
 function AccountScreen({ navigation }: { navigation: any }) {
@@ -36,13 +35,13 @@ function AccountScreen({ navigation }: { navigation: any }) {
       id: 2,
       title: "Block List",
       icon: <Prohibit />,
-      onPress: () => {},
+      onPress: () => navigation.navigate("BlockListScreen"),
     },
     {
       id: 3,
       title: "Change password",
       icon: <LockKeyOpen />,
-      onPress: () => {},
+      onPress: () => navigation.navigate("ChangePasswordScreen"),
     },
     {
       id: 4,
@@ -50,24 +49,6 @@ function AccountScreen({ navigation }: { navigation: any }) {
       icon: <SignOut />,
       onPress: () => setVisible(!isVisible),
       // onPress: () => dispatch(logoutAuth()), // test
-    },
-  ];
-
-  const arrayButtonAlert: BaseButtonProps[] = [
-    {
-      title: "Log out",
-      option: "fill",
-      onPress: () => {
-        setVisible(false);
-        setTimeout(() => {
-          dispatch(logoutAuth());
-        }, 500);
-      },
-    },
-    {
-      title: "Cancel",
-      option: "solid",
-      onPress: () => setVisible(false),
     },
   ];
 
@@ -80,9 +61,19 @@ function AccountScreen({ navigation }: { navigation: any }) {
         <Text style={styles.textTitle}>Account</Text>
 
         <View style={styles.accountView}>
-          <Image source={{ uri: user.avatar }} style={styles.imageAccount} />
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate("YourProfileScreen")}
+          >
+            <Image source={{ uri: user.avatar }} style={styles.imageAccount} />
+          </TouchableOpacity>
           <View style={styles.accountViewBody}>
-            <Text style={styles.textNameAccount}>{user.name}</Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => navigation.navigate("YourProfileScreen")}
+            >
+              <Text style={styles.textNameAccount}>{user.name}</Text>
+            </TouchableOpacity>
             <View style={styles.accountViewID}>
               <Text style={styles.textID}>ID: {user.id_account}</Text>
               <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
@@ -117,11 +108,29 @@ function AccountScreen({ navigation }: { navigation: any }) {
           styleText={styles.buttonText}
         />
       </ScrollView>
-      <BaseAlert
-        title="Do you want to Log out?"
-        isVisible={isVisible}
-        arrayButton={arrayButtonAlert}
-      />
+      <BaseAlert isVisible={isVisible}>
+        <View style={styles.bodyAlert}>
+          <Text style={styles.textTitleAlert}>Do you want to Log out?</Text>
+        </View>
+        <View style={[styles.viewButtonAlert]}>
+          <BaseButton
+            title="Log out"
+            style={[styles.buttonAlert, { marginLeft: 0 }]}
+            onPress={() => {
+              setVisible(false);
+              setTimeout(() => {
+                dispatch(logoutAuth());
+              }, 500);
+            }}
+          />
+          <BaseButton
+            title="Cancel"
+            option="solid"
+            style={[styles.buttonAlert, { marginRight: 0 }]}
+            onPress={() => setVisible(false)}
+          />
+        </View>
+      </BaseAlert>
     </View>
   );
 }
@@ -194,6 +203,22 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: "600",
     fontSize: theme.fontSize.font16,
+  },
+  bodyAlert: {
+    marginBottom: 64,
+  },
+  viewButtonAlert: {
+    flexDirection: "row",
+  },
+  textTitleAlert: {
+    textAlign: "center",
+    fontSize: theme.fontSize.font18,
+    color: theme.colors.Neutral8,
+    fontWeight: "500",
+  },
+  buttonAlert: {
+    flex: 1,
+    marginHorizontal: 15,
   },
 });
 

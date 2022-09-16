@@ -1,14 +1,12 @@
 import { useFormik } from "formik";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import * as Yup from "yup";
 import {
   ArrowRight,
   BaseAreaView,
   BaseButton,
   BaseInput,
   BaseModal,
-  EyeSlash,
   VectorBack,
 } from "../../components";
 import { gender, theme } from "../../constants";

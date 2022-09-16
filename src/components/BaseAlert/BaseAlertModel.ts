@@ -1,13 +1,11 @@
 import { StyleProp, ViewStyle } from "react-native";
-import { BaseButtonProps } from "../BaseButton/BaseButtonModel";
 
 interface BaseAlertProps {
-  title?: string;
+  children: React.ReactNode;
   isVisible: boolean;
-  arrayButton?: BaseButtonProps[];
   styleContainer?: StyleProp<ViewStyle> | undefined;
-  styleBody?: StyleProp<ViewStyle> | undefined;
-  styleViewButton?: StyleProp<ViewStyle> | undefined;
+  onBackButtonPress?: () => void;
+  onBackdropPress?: () => void;
 }
 
 export type { BaseAlertProps };

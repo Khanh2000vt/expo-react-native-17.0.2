@@ -11,3 +11,5 @@ export * from "./BaseModal";
 export * from "./BaseHeader";
 export * from "./BaseMember";
 export * from "./BaseProfile";
+export * from "./BaseNotification";
+export * from "./BasePopupRequest";

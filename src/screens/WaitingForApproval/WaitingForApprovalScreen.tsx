@@ -1,19 +1,35 @@
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
   ActivityIndicator,
+  FlatList,
   Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { BaseButton, BaseHeader, Users, VectorBack } from "../../components";
-import { theme } from "../../constants";
-
+import { useDispatch } from "react-redux";
+import {
+  BaseButton,
+  BaseHeader,
+  BaseNotification,
+  BasePopupRequest,
+  Users,
+  VectorBack,
+} from "../../components";
+import { EventNotification } from "../../components/BaseNotification/BaseNotificationModel";
+import { OtherProfile, theme } from "../../constants";
+import { spendCoins } from "../../redux";
+import { handleTimeToNow } from "../../utils";
 function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<any[]>([]);
+  const [userSelected, setUserSelected] = useState<any>({});
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [notifications, setNotifications] = useState<EventNotification[]>([]);
   useEffect(() => {
     getListUser();
   }, []);
@@ -30,15 +46,34 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
       setUsers([]);
     }
   }
+
+  function handlePressItem(item: any) {
+    navigation.navigate("OtherProfileScreen", {
+      userOther: item,
+      type: OtherProfile.INVITATION,
+    });
+  }
+
   const keyExtractor = useCallback((_, index) => index.toString(), []);
   const renderItem = ({ item }: { item: any }) => {
     return (
       <View style={styles.containerItem}>
-        <Image source={{ uri: item.avatar }} style={styles.avatar} />
-        <View style={styles.bodyItem}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => handlePressItem(item)}
+        >
+          <Image source={{ uri: item.avatar }} style={styles.avatar} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.bodyItem}
+          activeOpacity={0.8}
+          onPress={() => handlePressItem(item)}
+        >
           <View style={styles.viewTextTitle}>
             <Text style={styles.textName}>{item.name}</Text>
-            <Text style={styles.textTime}>2 days ago</Text>
+            <Text style={styles.textTime}>
+              {handleTimeToNow(item.createdAt)}
+            </Text>
           </View>
           <View style={[styles.flex, styles.viewFriend]}>
             <Text style={styles.textFriend}>{item.friend}</Text>
@@ -63,7 +98,10 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
             <BaseButton
               title="Accept"
               style={[styles.button, styles.buttonAccept]}
-              onPress={() => handleAccept(item)}
+              onPress={() => {
+                setUserSelected(item);
+                setIsVisible(true);
+              }}
             />
             <BaseButton
               title="Reject"
@@ -73,21 +111,41 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
               onPress={() => handleReject(item)}
             />
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     );
   };
 
   function handleAccept(user: any) {
-    handleTest(user);
-  }
-  function handleReject(user: any) {
-    handleTest(user);
+    handleStatusUsers(user);
+    dispatch(spendCoins(500));
+    pushNotification(user, true);
+    setIsVisible(false);
   }
 
-  function handleTest(user: any) {
-    let index = users.indexOf(user);
-    setUsers([...users.slice(0, index), ...users.slice(index + 1)]);
+  function handleReject(user: any) {
+    handleStatusUsers(user);
+    pushNotification(user, false);
+  }
+
+  function pushNotification(user: any, accept: boolean) {
+    let notificationsNew = [
+      {
+        name: user.name,
+        id: Date.now().toString(),
+        accept: accept,
+      },
+    ].concat(notifications);
+    if (notifications.length === 5) {
+      setNotifications(notificationsNew.slice(0, -1));
+    } else {
+      setNotifications(notificationsNew);
+    }
+  }
+
+  function handleStatusUsers(value: any) {
+    console.log("index: ", users.indexOf(value));
+    setUsers(users.filter((user) => user.id !== value.id));
     // axios({
     //   method: "DELETE",
     //   url: "https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/approval",
@@ -96,6 +154,13 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
     //   },
     // });
   }
+
+  function handlePressNotification(id: string) {
+    setNotifications(
+      notifications.filter((notification) => notification.id !== id)
+    );
+  }
+
   return (
     <View style={styles.container}>
       <BaseHeader
@@ -114,6 +179,28 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
           style={styles.flatList}
         />
       )}
+
+      <BasePopupRequest
+        isVisible={isVisible}
+        accept
+        coinRequest={500}
+        onBackButtonPress={() => setIsVisible(false)}
+        onBackdropPress={() => setIsVisible(false)}
+        onPressCancel={() => setIsVisible(false)}
+        onPressOK={() => {
+          handleAccept(userSelected);
+        }}
+      />
+
+      <ScrollView style={styles.notifications}>
+        {notifications.map((notification) => (
+          <BaseNotification
+            key={notification.id}
+            onPress={handlePressNotification}
+            notification={notification}
+          />
+        ))}
+      </ScrollView>
     </View>
   );
 }
@@ -125,6 +212,8 @@ const styles = StyleSheet.create({
   },
   flatList: {
     paddingHorizontal: 24,
+    paddingTop: 20,
+    marginTop: 17,
   },
   styleHeader: {
     paddingHorizontal: 33,
@@ -213,6 +302,12 @@ const styles = StyleSheet.create({
   },
   buttonReject: {
     marginHorizontal: 8,
+  },
+  notifications: {
+    position: "absolute",
+    top: 30,
+    width: "100%",
+    paddingHorizontal: 16,
   },
 });
 

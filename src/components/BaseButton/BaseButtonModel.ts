@@ -1,7 +1,7 @@
 import { ColorValue, StyleProp, TextStyle, ViewStyle } from "react-native";
 
 interface BaseButtonProps {
-  title: string;
+  title: string | React.ReactNode;
   IconRight?: React.ReactNode | JSX.Element;
   IconLeft?: React.ReactNode | JSX.Element;
   color?: ColorValue | undefined;

@@ -380,7 +380,7 @@ function SvgMessages(props: any) {
   );
 }
 
-function SvgInfo(props: any) {
+function SvgInfo({ stroke, ...props }: any) {
   return (
     <Svg
       width={28}
@@ -392,21 +392,21 @@ function SvgInfo(props: any) {
     >
       <Path
         d="M14 24.5c5.799 0 10.5-4.701 10.5-10.5S19.799 3.5 14 3.5 3.5 8.201 3.5 14 8.201 24.5 14 24.5z"
-        stroke="#3FAEC7"
+        stroke={stroke || "#3FAEC7"}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M13.125 13.125H14v6.125h.875"
-        stroke="#3FAEC7"
+        stroke={stroke || "#3FAEC7"}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <Path
         d="M13.781 10.5a1.313 1.313 0 100-2.625 1.313 1.313 0 000 2.625z"
-        fill="#3FAEC7"
+        fill={stroke || "#3FAEC7"}
       />
     </Svg>
   );
@@ -779,6 +779,81 @@ function Eye(props: any) {
   );
 }
 
+function CheckCircle(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M16 3a13 13 0 1013 13A13.015 13.015 0 0016 3zm6.191 10.724l-7.334 7a1.003 1.003 0 01-1.382 0l-3.666-3.5a1 1 0 011.382-1.448l2.975 2.841 6.643-6.34a1 1 0 011.382 1.447z"
+        fill="#3FAEC7"
+      />
+    </Svg>
+  );
+}
+
+function MinusCircle(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M16 3a13 13 0 1013 13A13.015 13.015 0 0016 3zm5 14H11a1 1 0 010-2h10a1 1 0 010 2z"
+        fill="#A8ACAE"
+      />
+    </Svg>
+  );
+}
+
+function WarningsFill(props: any) {
+  return (
+    <Svg
+      width={48}
+      height={48}
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M44.39 35.244l-16.494-28.5a4.502 4.502 0 00-7.79 0v.001L3.612 35.244a4.5 4.5 0 003.893 6.754h32.991a4.5 4.5 0 003.894-6.754zM22.5 19.5a1.5 1.5 0 013 0V27a1.5 1.5 0 11-3 0v-7.5zM24 36a2.25 2.25 0 110-4.5 2.25 2.25 0 010 4.5z"
+        fill="#FF4C41"
+      />
+    </Svg>
+  );
+}
+
+function CurrencyJpy(props: any) {
+  return (
+    <Svg
+      width={20}
+      height={20}
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M6.25 13.125h7.5M6.25 10.625h7.5M10 10.625v6.25M15.625 3.75L10 10.625 4.375 3.75"
+        stroke="#2B3641"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
 export {
   ArrowDownIcon,
   ArrowRight,
@@ -813,4 +888,8 @@ export {
   Crown,
   Coin,
   Eye,
+  CheckCircle,
+  MinusCircle,
+  WarningsFill,
+  CurrencyJpy,
 };

@@ -9,113 +9,57 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 
-import { getJoined, RootState } from "../../redux";
-import { theme } from "../../constants";
+import { OtherProfile, theme } from "../../constants";
 import { formatTime } from "../../utils";
+import BaseAlert from "../BaseAlert/BaseAlert";
 import { BaseButton } from "../BaseButton";
 import { BaseHeader } from "../BaseHeader";
 import {
   Bell,
   CaretRight,
-  Coin,
-  Crown,
   PencilLine,
   SvgCopy,
-  Users,
   VectorBack,
+  Warnings,
+  WarningsFill,
 } from "../Icon";
 import { BaseProfileProps } from "./BaseProfileModel";
 
 function BaseProfile({
   navigation,
   isProfileSelf = false,
-  joinedCommunities = [],
   elementProfileSelf,
+  avatar,
+  name,
+  idAccount,
+  introduction,
+  listAmount = [],
+  listSocial = [],
+  listJoined = [],
+  type = OtherProfile.OTHER,
 }: BaseProfileProps) {
   const [indexLog, setIndexLog] = useState<number>(3);
   const [isLoading, setLoading] = useState<boolean>(true);
   const [activities, setActivities] = useState<any[]>([]);
-  const dispatch = useDispatch();
+  const [status, setStatus] = useState<OtherProfile>(OtherProfile.OTHER);
+  const [isShowAlert, setIsShowAlert] = useState<boolean>(false);
 
   useEffect(() => {
-    // dispatch(getJoined());
+    setStatus(type);
   }, []);
-
   useEffect(() => {
     getActivitiesLog();
   }, [indexLog]);
 
-  const joined = useSelector((state: RootState) => state.joined.communities);
-  const user = useSelector((state: RootState) => state.auth.user);
-  const listAmount = [
-    {
-      id: 1,
-      icon: <Users />,
-      amount: user.friend,
-      color: theme.colors.Semantic5,
-      onPress: () => {},
-    },
-    {
-      id: 2,
-      icon: <Crown />,
-      amount: user.crown,
-      color: theme.colors.Semantic2,
-      onPress: () => {},
-    },
-    {
-      id: 3,
-      icon: <Coin />,
-      amount: user.coin,
-      color: theme.colors.Semantic1,
-      onPress: () => {},
-    },
-  ];
-
-  const listSocialTest = [
-    {
-      id: 1,
-      title: "Matsuura Yuki official",
-      icon: (
-        <Image
-          source={require("../../../assets/png/logo_youtube.png")}
-          style={styles.iconSocial}
-        />
-      ),
-    },
-    {
-      id: 2,
-      title: "@Yuki.Matsuura",
-      icon: (
-        <Image
-          source={require("../../../assets/png/logo_instagram.png")}
-          style={styles.iconSocial}
-        />
-      ),
-    },
-    {
-      id: 3,
-      title: "@YukiMatsuura23",
-      icon: (
-        <Image
-          source={require("../../../assets/png/logo_twitter.png")}
-          style={styles.iconSocial}
-        />
-      ),
-    },
-    {
-      id: 4,
-      title: "Matsuura Yuki",
-      icon: (
-        <Image
-          source={require("../../../assets/png/logo_facebook.png")}
-          style={styles.iconSocial}
-          resizeMode="cover"
-        />
-      ),
-    },
-  ];
+  const getActivitiesLog = async () => {
+    setLoading(true);
+    const res = await axios(
+      `https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/log?p=1&l=${indexLog}`
+    );
+    setLoading(false);
+    setActivities([...res.data]);
+  };
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
@@ -146,15 +90,6 @@ function BaseProfile({
     </TouchableOpacity>
   );
 
-  const getActivitiesLog = async () => {
-    setLoading(true);
-    const res = await axios(
-      `https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/log?p=1&l=${indexLog}`
-    );
-    setLoading(false);
-    setActivities([...res.data]);
-  };
-
   const iconRightButton = (index: string) => (
     <View style={styles.iconRightButtonStyle}>
       <Text style={styles.textIconRightButton}>{index}</Text>
@@ -163,75 +98,183 @@ function BaseProfile({
 
   const ListFooterComponent = () => {
     if (isProfileSelf) {
-      return (
-        <View>
-          <View style={styles.viewActivitiesLog}>
-            <Text style={styles.textTitle}>Activities log</Text>
-            <FlatList
-              keyExtractor={keyExtractor}
-              data={activities}
-              renderItem={renderItemActivitiesLog}
-              style={styles.flatListActivitiesLog}
-            />
-            {isLoading && (
-              <View style={styles.viewActivityIndicator}>
-                <ActivityIndicator />
-              </View>
-            )}
-            <BaseButton
-              title="Older activities"
-              IconRight={<CaretRight />}
-              backgroundColor={theme.colors.Neutral0}
-              color={theme.colors.primary}
-              onPress={() => setIndexLog(indexLog + 5)}
-              style={styles.buttonOlderActivities}
-            />
-          </View>
-
-          <View style={styles.notification}>
-            <View style={styles.notificationHeader}>
-              <Bell />
-              <Text style={styles.titleNotification}>
-                Notification from Followers
-              </Text>
-            </View>
-            <View style={styles.notificationBody}>
-              <Text style={styles.textNameNotification}>
-                Photo Kid
-                <Text style={styles.textCommentNotification}>
-                  {" "}
-                  joined thanks to you! You get 300tm!
-                </Text>
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.viewButtonProfileSelf}>
-            <BaseButton
-              title="Waiting for approval"
-              backgroundColor={theme.colors.Neutral1}
-              color={theme.colors.Neutral10}
-              IconRight={iconRightButton("5")}
-              style={styles.buttonProfileSelf}
-              onPress={() => navigation.navigate("WaitingForApprovalScreen")}
-            />
-            <BaseButton
-              title="Friend request sent"
-              backgroundColor={theme.colors.Neutral1}
-              color={theme.colors.Neutral10}
-              IconRight={iconRightButton("22")}
-              style={styles.buttonProfileSelf}
-              onPress={() => navigation.navigate("FriendRequestScreen")}
-            />
-          </View>
-        </View>
-      );
+      return renderProfileSelf();
     } else {
-      return <></>;
+      if (status === OtherProfile.REQUEST_PENDING) {
+        return renderProfileRequestPending();
+      } else if (status === OtherProfile.INVITATION) {
+        return renderProfileInvitation();
+      } else if (status === OtherProfile.FRIEND) {
+        return renderProfileFriend();
+      } else {
+        return renderProfileOther();
+      }
     }
   };
+
+  function handlePressBlock() {
+    setIsShowAlert(true);
+  }
+
+  function renderProfileOther() {
+    return (
+      <View style={styles.footerOtherUser}>
+        <BaseButton
+          title="Send RuiTomo Request"
+          style={{ marginVertical: 12 }}
+          onPress={() => {
+            setStatus(OtherProfile.REQUEST_PENDING);
+          }}
+        />
+        <BaseButton
+          title="Block user"
+          style={{ marginVertical: 12 }}
+          option="solid"
+          color={theme.colors.Semantic4}
+          IconRight={<Warnings />}
+          onPress={handlePressBlock}
+        />
+      </View>
+    );
+  }
+
+  function renderProfileFriend() {
+    return (
+      <View style={styles.footerOtherUser}>
+        <Text style={styles.textNotificationTitle}>
+          You have become RuiTomo
+        </Text>
+        <BaseButton
+          title="Block user"
+          style={{ marginVertical: 12, marginTop: 55 }}
+          option="solid"
+          color={theme.colors.Semantic4}
+          IconRight={<Warnings />}
+          onPress={handlePressBlock}
+        />
+      </View>
+    );
+  }
+
+  function renderProfileInvitation() {
+    return (
+      <View style={styles.footerOtherUser}>
+        <View style={{ flexDirection: "row" }}>
+          <BaseButton
+            title="Accept"
+            style={{ marginVertical: 12, flex: 1, marginRight: 8 }}
+            onPress={() => {
+              setStatus(OtherProfile.FRIEND);
+            }}
+          />
+          <BaseButton
+            title="Reject"
+            style={{ marginVertical: 12, flex: 1, marginLeft: 8 }}
+            option="solid"
+            color={theme.colors.Neutral4}
+            onPress={() => {
+              setStatus(OtherProfile.OTHER);
+            }}
+          />
+        </View>
+        <BaseButton
+          title="Block user"
+          style={{ marginVertical: 12 }}
+          option="solid"
+          color={theme.colors.Semantic4}
+          IconRight={<Warnings />}
+          onPress={handlePressBlock}
+        />
+      </View>
+    );
+  }
+
+  function renderProfileRequestPending() {
+    return (
+      <View style={[styles.footerOtherUser, { marginTop: 52 }]}>
+        <Text style={styles.textNotificationTitle}>Request Pending...</Text>
+        <Text style={styles.textFooterBody}>
+          Your RuiTomo request has been sent
+        </Text>
+        <BaseButton
+          title="Block user"
+          style={styles.buttonFooter}
+          option="solid"
+          color={theme.colors.Semantic4}
+          IconRight={<Warnings />}
+          onPress={handlePressBlock}
+        />
+      </View>
+    );
+  }
+
+  function renderProfileSelf() {
+    return (
+      <View>
+        <View style={styles.viewActivitiesLog}>
+          <Text style={styles.textTitle}>Activities log</Text>
+          <FlatList
+            keyExtractor={keyExtractor}
+            data={activities}
+            renderItem={renderItemActivitiesLog}
+            style={styles.flatListActivitiesLog}
+          />
+          {isLoading && (
+            <View style={styles.viewActivityIndicator}>
+              <ActivityIndicator />
+            </View>
+          )}
+          <BaseButton
+            title="Older activities"
+            IconRight={<CaretRight />}
+            backgroundColor={theme.colors.Neutral0}
+            color={theme.colors.primary}
+            onPress={() => setIndexLog(indexLog + 5)}
+            style={styles.buttonOlderActivities}
+          />
+        </View>
+
+        <View style={styles.notification}>
+          <View style={styles.notificationHeader}>
+            <Bell />
+            <Text style={styles.titleNotification}>
+              Notification from Followers
+            </Text>
+          </View>
+          <View style={styles.notificationBody}>
+            <Text style={styles.textNameNotification}>
+              Photo Kid
+              <Text style={styles.textCommentNotification}>
+                {" "}
+                joined thanks to you! You get 300tm!
+              </Text>
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.viewButtonProfileSelf}>
+          <BaseButton
+            title="Waiting for approval"
+            backgroundColor={theme.colors.Neutral1}
+            color={theme.colors.Neutral10}
+            IconRight={iconRightButton("5")}
+            style={styles.buttonProfileSelf}
+            onPress={() => navigation.navigate("WaitingForApprovalScreen")}
+          />
+          <BaseButton
+            title="Friend request sent"
+            backgroundColor={theme.colors.Neutral1}
+            color={theme.colors.Neutral10}
+            IconRight={iconRightButton("22")}
+            style={styles.buttonProfileSelf}
+            onPress={() => navigation.navigate("FriendRequestScreen")}
+          />
+        </View>
+      </View>
+    );
+  }
   return (
-    <View>
+    <View style={styles.container}>
       <FlatList
         data={[]}
         renderItem={() => <></>}
@@ -246,24 +289,23 @@ function BaseProfile({
                 style={styles.profileImageCover}
               />
               <BaseHeader
-                title="Your profile"
+                title={isProfileSelf ? "Your profile" : undefined}
                 IconLeft={<VectorBack stroke={theme.colors.Neutral0} />}
                 onPressLeft={() => navigation.goBack()}
-                IconRight={<PencilLine />}
-                onPressRight={() => navigation.navigate("UpdateProfileScreen")}
+                IconRight={isProfileSelf && <PencilLine />}
+                onPressRight={() =>
+                  isProfileSelf && navigation.navigate("UpdateProfileScreen")
+                }
                 styleHeader={styles.styleHeader}
                 styleTitleHeader={styles.styleTitleHeader}
               />
-              <Image
-                source={{ uri: user.avatar }}
-                style={styles.profileImageAvt}
-              />
+              <Image source={{ uri: avatar }} style={styles.profileImageAvt} />
             </View>
 
             <View style={styles.accountViewBody}>
-              <Text style={styles.textNameAccount}>{user.name}</Text>
+              <Text style={styles.textNameAccount}>{name}</Text>
               <View style={styles.accountViewID}>
-                <Text style={styles.textID}>ID: {user.id_account}</Text>
+                <Text style={styles.textID}>ID: {idAccount}</Text>
                 <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
                   <SvgCopy />
                 </TouchableOpacity>
@@ -286,33 +328,33 @@ function BaseProfile({
               })}
             </View>
 
-            <View style={styles.viewSocial}>
-              {listSocialTest.map((item) => {
-                return (
-                  <BaseButton
-                    title={item.title}
-                    key={item.id}
-                    IconLeft={item.icon}
-                    style={styles.buttonListSocial}
-                    styleText={styles.textButtonSocial}
-                    backgroundColor={theme.colors.colorInput}
-                    color={theme.colors.Neutral10}
-                  />
-                );
-              })}
-            </View>
+            {(status === OtherProfile.FRIEND || isProfileSelf) && (
+              <View style={styles.viewSocial}>
+                {listSocial.map((item) => {
+                  return (
+                    <BaseButton
+                      title={item.title}
+                      key={item.id}
+                      IconLeft={item.icon}
+                      style={styles.buttonListSocial}
+                      styleText={styles.textButtonSocial}
+                      backgroundColor={theme.colors.colorInput}
+                      color={theme.colors.Neutral10}
+                    />
+                  );
+                })}
+              </View>
+            )}
 
             <View style={styles.viewIntroduction}>
               <Text style={styles.textTitle}>Introduction</Text>
-              <Text style={styles.textBodyIntroduction}>
-                {user.introduction}
-              </Text>
+              <Text style={styles.textBodyIntroduction}>{introduction}</Text>
             </View>
 
             <View style={styles.viewJoinedCommunities}>
               <Text style={styles.textTitle}>Joined communities</Text>
               <View style={styles.bodyJoinedCommunities}>
-                {joined.map((joinedCommunity, index) => {
+                {listJoined.map((joinedCommunity, index) => {
                   return (
                     <TouchableOpacity
                       style={styles.viewJoinedCommunity}
@@ -333,12 +375,47 @@ function BaseProfile({
           </View>
         }
       />
+      <BaseAlert
+        isVisible={isShowAlert}
+        onBackButtonPress={() => setIsShowAlert(false)}
+        onBackdropPress={() => setIsShowAlert(false)}
+        styleContainer={styles.baseAlertContainer}
+      >
+        <WarningsFill />
+        <View style={styles.bodyAlert}>
+          <Text style={styles.textAlert}>
+            Are you sure you want to block{" "}
+            <Text style={styles.textNameAlert}>Matsuura Yuki</Text>
+          </Text>
+        </View>
+        <View style={styles.viewButtonAlert}>
+          <BaseButton
+            title="Block"
+            style={styles.buttonAlert}
+            backgroundColor={theme.colors.Semantic4}
+            onPress={() => {
+              setIsShowAlert(false);
+              navigation.goBack();
+            }}
+          />
+          <BaseButton
+            title="Cancel"
+            option="solid"
+            color={theme.colors.Neutral6}
+            style={styles.buttonAlert}
+            onPress={() => setIsShowAlert(false)}
+          />
+        </View>
+      </BaseAlert>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    // flex: 1,
+    backgroundColor: theme.colors.Neutral0,
+  },
   profileContainer: {
     height: 212 + 54,
     justifyContent: "flex-end",
@@ -428,9 +505,6 @@ const styles = StyleSheet.create({
   viewSocial: {
     marginTop: 30,
     paddingHorizontal: 24,
-  },
-  iconSocial: {
-    width: 24,
   },
   buttonListSocial: {
     marginVertical: 6,
@@ -587,6 +661,64 @@ const styles = StyleSheet.create({
   },
   textCommentNotification: {
     fontWeight: "500",
+  },
+  //others
+  footerOtherUser: {
+    marginTop: 60,
+    marginBottom: 104,
+    paddingHorizontal: 24,
+  },
+  textNotificationTitle: {
+    fontWeight: "600",
+    fontSize: theme.fontSize.font18,
+    lineHeight: 24.52,
+    color: theme.colors.darkerPrimary,
+    textAlign: "center",
+  },
+  textFooterBody: {
+    fontSize: theme.fontSize.font16,
+    fontWeight: "400",
+    lineHeight: 21.79,
+    color: theme.colors.Neutral6,
+    textAlign: "center",
+  },
+  buttonFooter: {
+    marginTop: 42,
+  },
+  //alert
+  baseAlertContainer: {
+    alignItems: "center",
+    paddingHorizontal: 0,
+    paddingBottom: 0,
+  },
+  viewButtonAlert: {
+    flexDirection: "row",
+    paddingTop: 29,
+    paddingBottom: 36,
+    paddingHorizontal: 12,
+    marginTop: 29,
+    borderTopWidth: 1,
+    borderColor: theme.colors.Neutral3,
+  },
+  bodyAlert: {
+    paddingHorizontal: 28,
+    marginTop: 22,
+  },
+  buttonAlert: {
+    flex: 1,
+    marginHorizontal: 16,
+  },
+  textAlert: {
+    fontWeight: "400",
+    fontSize: theme.fontSize.font18,
+    lineHeight: 28.8,
+    color: theme.colors.Neutral8,
+    // flex: 1,
+    textAlign: "center",
+  },
+  textNameAlert: {
+    fontWeight: "600",
+    color: theme.colors.Neutral10,
   },
 });
 

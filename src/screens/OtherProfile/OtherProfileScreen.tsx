@@ -1,33 +1,25 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { useSelector } from "react-redux";
-import { BaseProfile, Coin, Crown, Users } from "../../components";
+import { BaseProfile, Users } from "../../components";
 import { theme } from "../../constants";
 import { RootState } from "../../redux";
 
-function YourProfileScreen({ navigation }: { navigation: any }) {
+function OtherProfileScreen({
+  route,
+  navigation,
+}: {
+  route: any;
+  navigation: any;
+}) {
+  const { userOther, type } = route.params;
   const joined = useSelector((state: RootState) => state.joined.communities);
-  const user = useSelector((state: RootState) => state.auth.user);
   const listAmount = [
     {
       id: 1,
       icon: <Users />,
-      amount: user.friend,
+      amount: userOther.friend,
       color: theme.colors.Semantic5,
-      onPress: () => {},
-    },
-    {
-      id: 2,
-      icon: <Crown />,
-      amount: user.crown,
-      color: theme.colors.Semantic2,
-      onPress: () => {},
-    },
-    {
-      id: 3,
-      icon: <Coin />,
-      amount: user.coin,
-      color: theme.colors.Semantic1,
       onPress: () => {},
     },
   ];
@@ -49,7 +41,7 @@ function YourProfileScreen({ navigation }: { navigation: any }) {
       title: "@Yuki.Matsuura",
       icon: (
         <Image
-          source={require("../../../assets/png/logo_twitter.png")}
+          source={require("../../../assets/png/logo_instagram.png")}
           style={styles.iconSocial}
         />
       ),
@@ -80,16 +72,16 @@ function YourProfileScreen({ navigation }: { navigation: any }) {
     },
   ];
   return (
-    <View style={styles.container}>
+    <View>
       <BaseProfile
+        avatar={userOther.avatar}
+        name={userOther.name}
+        idAccount={userOther.id_account}
+        introduction={userOther.introduction}
         navigation={navigation}
-        isProfileSelf
-        avatar={user.avatar}
-        name={user.name}
-        idAccount={user.id_account}
-        introduction={user.introduction}
         listAmount={listAmount}
         listSocial={listSocial}
+        type={type}
         listJoined={joined}
       />
     </View>
@@ -106,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default YourProfileScreen;
+export default OtherProfileScreen;

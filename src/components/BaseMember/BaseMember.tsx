@@ -1,13 +1,18 @@
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { theme } from "../../constants";
 import { SvgUser } from "../Icon";
 interface IBaseMember {
   item: any;
+  onPress: (item: any) => void;
 }
-function BaseMember({ item }: IBaseMember) {
+function BaseMember({ item, onPress }: IBaseMember) {
   return (
-    <View style={[styles.container, styles.flex]}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      style={[styles.container, styles.flex]}
+      onPress={() => onPress(item)}
+    >
       <Image source={{ uri: item.avatar }} style={styles.image} />
       <View style={styles.body}>
         <Text style={styles.textName}>{item.name}</Text>
@@ -17,7 +22,7 @@ function BaseMember({ item }: IBaseMember) {
         </View>
         <Text style={styles.textDescription}>{item.introduce}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 
