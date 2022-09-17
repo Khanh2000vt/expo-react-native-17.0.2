@@ -85,4 +85,40 @@ function handleTimeToNow(data: string | undefined): string | undefined {
   }
 }
 
-export { handleTimeToNow };
+function handleTimeCreateAt(data: string | undefined): string | undefined {
+  if (data === undefined) {
+    return undefined;
+  }
+  const now = new Date();
+  const time = new Date(data);
+  const year = now.getFullYear() - time.getFullYear();
+  const month = now.getMonth() - time.getMonth();
+  const day = now.getDate() - time.getDate();
+  const hours = now.getHours() - time.getHours();
+  const minutes = now.getMinutes() - time.getMinutes();
+  const seconds = now.getSeconds() - time.getSeconds();
+
+  if (year !== 0) {
+    return year + " year";
+  } else {
+    if (month !== 0) {
+      return month + " month";
+    } else {
+      if (day !== 0) {
+        return day + " day";
+      } else {
+        if (hours !== 0) {
+          return hours + "h";
+        } else {
+          if (minutes !== 0) {
+            return minutes + "m";
+          } else {
+            return seconds + "s";
+          }
+        }
+      }
+    }
+  }
+}
+
+export { handleTimeToNow, handleTimeCreateAt };

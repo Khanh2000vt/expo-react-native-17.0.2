@@ -13,3 +13,5 @@ export * from "./BaseMember";
 export * from "./BaseProfile";
 export * from "./BaseNotification";
 export * from "./BasePopupRequest";
+export * from "./BasePost";
+export * from "./BaseInteractive";

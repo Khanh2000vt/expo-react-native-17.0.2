@@ -1,5 +1,5 @@
 import React from "react";
-import Svg, { Path } from "react-native-svg";
+import Svg, { Path, Rect } from "react-native-svg";
 function ArrowDownIcon(props: any) {
   return (
     <Svg
@@ -854,6 +854,147 @@ function CurrencyJpy(props: any) {
   );
 }
 
+function Pencil(props: any) {
+  return (
+    <Svg
+      width={48}
+      height={48}
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Rect width={48} height={48} rx={8} fill="#3FAEC7" />
+      <Path
+        d="M20.347 33.103h-4.623a.828.828 0 01-.828-.827v-4.623a.827.827 0 01.243-.585l12.414-12.414a.828.828 0 011.17 0l4.623 4.623a.828.828 0 010 1.17L20.932 32.861a.828.828 0 01-.585.242zM24.828 17.38l5.793 5.792M20.637 33.05l-5.688-5.687"
+        stroke="#fff"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M26.497 33.118h3.31m3.31 0h-3.31m0 0v-3.325m0 3.325v3.296"
+        stroke="#fff"
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
+
+function HeartOutline(props: any) {
+  return (
+    <Svg
+      width={28}
+      height={28}
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M5.038 7.371a5.25 5.25 0 000 7.425L14 23.758l8.962-8.962a5.25 5.25 0 00-7.424-7.425L14 8.91 12.462 7.37a5.25 5.25 0 00-7.424 0v0z"
+        stroke="#2B3641"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function HeartFill(props: any) {
+  return (
+    <Svg
+      width={32}
+      height={32}
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M5.757 8.424a6 6 0 000 8.485L16 27.152l10.243-10.243a6 6 0 10-8.486-8.485L16 10.18l-1.757-1.757a6 6 0 00-8.486 0z"
+        fill="#FF4C41"
+      />
+    </Svg>
+  );
+}
+
+function Annotation(props: any) {
+  return (
+    <Svg
+      width={28}
+      height={28}
+      viewBox="0 0 28 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M14 23.333l-4.667-4.666h-3.5A2.333 2.333 0 013.5 16.332V7a2.333 2.333 0 012.333-2.333h16.334A2.333 2.333 0 0124.5 7v9.333a2.333 2.333 0 01-2.333 2.334h-3.5L14 23.332z"
+        stroke="#2B3641"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function ImageSVG(props: any) {
+  return (
+    <Svg
+      width={36}
+      height={36}
+      viewBox="0 0 36 36"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M30.031 7.063H5.97c-.604 0-1.094.49-1.094 1.093v19.688c0 .604.49 1.093 1.094 1.093H30.03c.604 0 1.094-.49 1.094-1.093V8.156c0-.604-.49-1.094-1.094-1.094z"
+        stroke="#3FAEC7"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M4.875 23.469l6.883-6.883a1.093 1.093 0 011.547 0l6.11 6.11a1.091 1.091 0 001.546 0l2.828-2.829a1.094 1.094 0 011.547 0l5.789 5.79"
+        stroke="#3FAEC7"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path
+        d="M21.828 15.813a1.64 1.64 0 100-3.282 1.64 1.64 0 000 3.281z"
+        fill="#3FAEC7"
+      />
+    </Svg>
+  );
+}
+
+function SvgX(props: any) {
+  return (
+    <Svg
+      width={22}
+      height={22}
+      viewBox="0 0 22 22"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <Path
+        d="M17.188 4.813L4.813 17.188M17.188 17.188L4.813 4.813"
+        stroke="#fff"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
 export {
   ArrowDownIcon,
   ArrowRight,
@@ -892,4 +1033,10 @@ export {
   MinusCircle,
   WarningsFill,
   CurrencyJpy,
+  Pencil,
+  HeartOutline,
+  HeartFill,
+  Annotation,
+  ImageSVG,
+  SvgX,
 };

@@ -26,3 +26,5 @@ export { default as CommunityDetailScreen } from "./CommunityDetail/CommunityDet
 export { default as AccountScreen } from "./Account/AccountScreen";
 //Forum
 export { default as ForumScreen } from "./Forum/ForumScreen";
+export { default as ForumDetailScreen } from "./ForumDetail/ForumDetailScreen";
+export { default as NewPostScreen } from "./NewPost/NewPostScreen";

@@ -2,10 +2,19 @@ export const formatTime = (value: string): string => {
   const date = new Date(value);
   return `${date.getDate()} ${convertMonthToText(
     date.getMonth()
-  )} ${date.getFullYear()}, ${getTime(date)}`;
+  )} ${date.getFullYear()}, ${getTimeCreate(value)}`;
 };
 
-const getTime = (date: Date): string => {
+export const getDateCreate = (value: string): string => {
+  const date = new Date(value);
+  return `${date.getDate()} ${convertMonthToText(
+    date.getMonth()
+  )} ${date.getFullYear()}`;
+};
+
+export const getTimeCreate = (value: string): string => {
+  const date = new Date(value);
+
   let hours = date.getHours();
   let minutes = date.getMinutes();
   let minutesText = minutes < 10 ? `0${minutes}` : `${minutes}`;

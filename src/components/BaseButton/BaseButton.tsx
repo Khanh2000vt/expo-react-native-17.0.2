@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 13,
     textAlign: "center",
     textAlignVertical: "center",
+    lineHeight: 22,
   },
 });
 

@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     fontSize: fontSize.font24,
     fontWeight: "600",
     textAlign: "center",
+    lineHeight: 32.69,
   },
 });
 
