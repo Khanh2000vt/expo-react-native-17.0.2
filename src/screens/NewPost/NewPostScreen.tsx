@@ -1,15 +1,16 @@
+import * as ImagePicker from "expo-image-picker";
 import React, { useCallback, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
+  FlatList,
   Image,
+  StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
-  FlatList,
+  View,
 } from "react-native";
 import { useSelector } from "react-redux";
-import * as ImagePicker from "expo-image-picker";
+import { ForumApi } from "../../api";
 import { BaseHeader, ImageSVG, SvgX, VectorBack } from "../../components";
 import { theme } from "../../constants";
 import { RootState } from "../../redux";
@@ -36,7 +37,7 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
       setImages([result.uri].concat(images));
     }
   };
-  function handlePressPost() {
+  async function handlePressPost() {
     if (
       (!textTitle || textTitle.trim().length === 0) &&
       (!textBody || textBody.trim().length === 0) &&
@@ -46,7 +47,6 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
     }
     const dateCreate = new Date();
     const newPost = {
-      id: dateCreate.toISOString,
       name: user.name,
       avatar: user.avatar,
       createdAt: dateCreate.toISOString(),
@@ -56,6 +56,7 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
       replies: 0,
       image: images[0],
     };
+    // const a = await ForumApi.postNewPost(newPost);
     onPressPost(newPost);
     navigation.goBack();
   }

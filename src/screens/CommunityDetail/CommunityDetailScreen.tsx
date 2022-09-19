@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -10,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { MembersApi } from "../../api";
 import {
   BaseButton,
   BaseHeader,
@@ -80,11 +80,9 @@ function CommunityDetailScreen({
 
   async function getMembers() {
     try {
-      const res = await axios(
-        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/members"
-      );
-      setMembers([...res.data]);
-      setFilterMembers([...res.data]);
+      const res: any = await MembersApi.getAll();
+      setMembers([...res]);
+      setFilterMembers([...res]);
       setIsLoading(false);
     } catch (e) {
       setMembers([]);

@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
@@ -12,6 +11,7 @@ import {
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useSelector } from "react-redux";
+import { ForumApi, RepliesApi } from "../../api";
 import {
   Annotation,
   BaseButton,
@@ -36,43 +36,41 @@ function ForumDetailScreen({
 }) {
   const { postFocus, liked } = route.params;
   const user = useSelector((state: RootState) => state.auth.user);
-  const [isLoadingPost, setIsLoadingPost] = useState<boolean>(true);
+  const [isLoadMore, setIsLoadMore] = useState<boolean>(true);
   const [isLoadingReplies, setIsLoadingReplies] = useState<boolean>(true);
-  const [post, setPost] = useState<any>({});
+  const [post] = useState<any>(postFocus);
   const [replies, setReplies] = useState<any[]>([]);
+  const [pageCurrent, setPageCurrent] = useState<number>(1);
 
   useEffect(() => {
-    console.log("postFocus: ", postFocus);
-    setPost(postFocus);
-    setIsLoadingPost(false);
-    getPostById();
+    // getPostById();
+    console.log("pageCurrent: ", pageCurrent);
     getReplies();
-  }, []);
+  }, [pageCurrent]);
 
   async function getReplies() {
     try {
-      const res = await axios(
-        "https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/replies"
-      );
-      setReplies([...res.data]);
-      setIsLoadingReplies(false);
+      const params = { p: pageCurrent, l: 10 };
+      const res: any = await RepliesApi.getAll(params);
+      setReplies(replies.concat(res));
+      setIsLoadMore(false);
+      isLoadingReplies && setIsLoadingReplies(false);
     } catch (e) {
-      setReplies([]);
+      // setReplies([]);
     }
   }
 
-  async function getPostById() {
-    // try {
-    //   const res = await axios(
-    //     `https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/forum/${idPost}`
-    //   );
-    //   console.log("res-post: ", res.data);
-    //   setPost(res.data);
-    // setPost(postFocus);
-    // } catch (e) {
-    //   setPost({});
-    // }
-  }
+  // async function getPostById() {
+  //   try {
+  //     setPost(postFocus);
+  //     setIsLoadingPost(false);
+  //   } catch (e) {}
+  // }
+  const handleEndReached = () => {
+    console.log("handleEndReached");
+    setIsLoadMore(true);
+    setPageCurrent(pageCurrent + 1);
+  };
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
@@ -82,70 +80,6 @@ function ForumDetailScreen({
 
   function ListHeaderComponent() {
     const [isLiked, setIsLiked] = useState<boolean>(liked);
-    return (
-      <View style={styles.containerHeaderComponent}>
-        <View style={styles.flex}>
-          <Image source={{ uri: post.avatar }} style={styles.avatarUserPost} />
-          <View style={styles.header}>
-            <Text style={styles.textName}>{post.name}</Text>
-            <View style={styles.flex}>
-              <Text style={styles.textTime}>
-                {getTimeCreate(post.createdAt)}
-              </Text>
-              <View style={styles.ellipse} />
-              <Text style={styles.textTime}>
-                {getDateCreate(post.createdAt)}
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <View>
-          <Text style={styles.textTitle}>{post.title}</Text>
-          <Text style={styles.textBody}>{post.body}</Text>
-          <Image
-            source={{ uri: post.image }}
-            style={styles.image}
-            resizeMode="cover"
-          />
-        </View>
-
-        <View style={styles.flex}>
-          <View style={[styles.flex, { marginRight: 28 }]}>
-            <TouchableOpacity
-              style={styles.touchableOpacity}
-              activeOpacity={0.8}
-              onPress={() => setIsLiked(!isLiked)}
-            >
-              {isLiked ? (
-                <HeartFill width={32} height={32} />
-              ) : (
-                <HeartOutline width={32} height={32} />
-              )}
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.8}>
-              <Text style={styles.textLikes}>
-                {handleAmountLikes(post.likes)} likes
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.flex}>
-            <TouchableOpacity
-              style={styles.touchableOpacity}
-              activeOpacity={0.8}
-            >
-              <Annotation width={32} height={32} />
-            </TouchableOpacity>
-            <Text style={styles.textLikes}>
-              {handleAmountLikes(post.replies)} replies
-            </Text>
-          </View>
-        </View>
-      </View>
-    );
-  }
-
-  const ListFooterComponent = () => {
     const [comment, onChangeComment] = useState<string>();
 
     function handlePressReply() {
@@ -163,7 +97,69 @@ function ForumDetailScreen({
       setReplies([userComment].concat(replies));
     }
     return (
-      <View>
+      <View style={styles.containerHeaderComponent}>
+        <View style={{ paddingHorizontal: 24 }}>
+          <View style={styles.flex}>
+            <Image
+              source={{ uri: post.avatar }}
+              style={styles.avatarUserPost}
+            />
+            <View style={styles.header}>
+              <Text style={styles.textName}>{post.name}</Text>
+              <View style={styles.flex}>
+                <Text style={styles.textTime}>
+                  {getTimeCreate(post.createdAt)}
+                </Text>
+                <View style={styles.ellipse} />
+                <Text style={styles.textTime}>
+                  {getDateCreate(post.createdAt)}
+                </Text>
+              </View>
+            </View>
+          </View>
+
+          <View>
+            <Text style={styles.textTitle}>{post.title}</Text>
+            <Text style={styles.textBody}>{post.body}</Text>
+            <Image
+              source={{ uri: post.image }}
+              style={styles.image}
+              resizeMode="cover"
+            />
+          </View>
+
+          <View style={styles.flex}>
+            <View style={[styles.flex, { marginRight: 28 }]}>
+              <TouchableOpacity
+                style={styles.touchableOpacity}
+                activeOpacity={0.8}
+                onPress={() => setIsLiked(!isLiked)}
+              >
+                {isLiked ? (
+                  <HeartFill width={32} height={32} />
+                ) : (
+                  <HeartOutline width={32} height={32} />
+                )}
+              </TouchableOpacity>
+              <TouchableOpacity activeOpacity={0.8}>
+                <Text style={styles.textLikes}>
+                  {handleAmountLikes(post.likes)} likes
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.flex}>
+              <TouchableOpacity
+                style={styles.touchableOpacity}
+                activeOpacity={0.8}
+              >
+                <Annotation width={32} height={32} />
+              </TouchableOpacity>
+              <Text style={styles.textLikes}>
+                {handleAmountLikes(post.replies)} replies
+              </Text>
+            </View>
+          </View>
+        </View>
         <View style={[styles.flex, styles.viewReply]}>
           <Image source={{ uri: user.avatar }} style={styles.avatarUser} />
           <TextInput
@@ -181,20 +177,16 @@ function ForumDetailScreen({
             onPress={handlePressReply}
           />
         </View>
-
-        {isLoadingReplies ? (
-          <ActivityIndicator style={styles.activityIndicator} />
-        ) : (
-          <FlatList
-            data={replies}
-            renderItem={renderItem}
-            keyExtractor={keyExtractor}
-            style={styles.flatListReplies}
-          />
-        )}
       </View>
     );
+  }
+
+  const ListFooterComponent = () => {
+    return isLoadMore ? (
+      <ActivityIndicator style={styles.activityIndicator} />
+    ) : null;
   };
+
   return (
     <View style={styles.container}>
       <BaseHeader
@@ -202,22 +194,16 @@ function ForumDetailScreen({
         onPressLeft={() => navigation.goBack()}
         styleHeader={styles.styleHeader}
       />
-
-      <KeyboardAwareScrollView>
-        {isLoadingPost ? (
-          <ActivityIndicator style={styles.activityIndicator} />
-        ) : (
-          <FlatList
-            data={[]}
-            renderItem={() => <></>}
-            keyExtractor={keyExtractor}
-            style={styles.flatList}
-            showsVerticalScrollIndicator={false}
-            ListHeaderComponent={ListHeaderComponent}
-            ListFooterComponent={ListFooterComponent}
-          />
-        )}
-      </KeyboardAwareScrollView>
+      <FlatList
+        data={replies}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        // showsVerticalScrollIndicator={false}
+        ListHeaderComponent={ListHeaderComponent}
+        onEndReached={handleEndReached}
+        onEndReachedThreshold={0}
+        ListFooterComponent={ListFooterComponent}
+      />
     </View>
   );
 }
@@ -227,10 +213,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerHeaderComponent: {
-    paddingHorizontal: 24,
+    // paddingHorizontal: 24,
     paddingVertical: 20,
     borderTopWidth: 1,
-    borderBottomWidth: 1,
     borderColor: theme.colors.Neutral2,
   },
   styleHeader: {
@@ -244,10 +229,6 @@ const styles = StyleSheet.create({
   },
   activityIndicator: {
     marginTop: 40,
-  },
-  flatList: {
-    // paddingTop: 20,
-    // marginTop: 17,
   },
   textTitle: {
     fontWeight: "600",
@@ -268,7 +249,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     // width: 336,
-    resizeMode: "stretch",
+    resizeMode: "cover",
     height: 224,
     borderRadius: 8,
     marginBottom: 26,
@@ -313,9 +294,6 @@ const styles = StyleSheet.create({
     color: theme.colors.Neutral4,
     marginTop: 2,
   },
-  flatListReplies: {
-    backgroundColor: theme.colors.Neutral1,
-  },
   avatarUser: {
     width: 48,
     height: 48,
@@ -339,6 +317,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingTop: 27,
     paddingBottom: 23,
+    borderTopWidth: 1,
+    borderColor: theme.colors.Neutral2,
   },
 });
 

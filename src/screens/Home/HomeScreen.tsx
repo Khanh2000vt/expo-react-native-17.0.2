@@ -1,4 +1,3 @@
-import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -10,9 +9,11 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { CommunitiesApi } from "../../api";
 import {
   BaseButton,
   BaseCategory,
+  BasePlaceholder,
   CaretRight,
   TomoCoins,
   ViaFacebook,
@@ -26,8 +27,12 @@ function HomeScreen({ navigation }: { navigation: any }) {
   const joinedCommunities = useSelector(
     (state: RootState) => state.joined.communities
   );
+  const isLoadingJoined = useSelector(
+    (state: RootState) => state.joined.isLoading
+  );
   const user = useSelector((state: RootState) => state.auth.user);
-  const [listOthers, setListOthers] = useState<{}[]>([]);
+  const [listOthers, setListOthers] = useState<any[]>([]);
+  const [isLoadingOthers, setIsLoadingOther] = useState<boolean>(true);
   useEffect(() => {
     getJoinedCommunities();
     getListOthers();
@@ -36,10 +41,10 @@ function HomeScreen({ navigation }: { navigation: any }) {
 
   async function getListOthers() {
     try {
-      const res = await axios(
-        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/communities?p=1&l=4"
-      );
-      setListOthers([...res.data]);
+      const params = { p: 1, l: 4 };
+      const res: any = await CommunitiesApi.getParams(params);
+      setIsLoadingOther(false);
+      setListOthers([...res]);
     } catch (e) {
       setListOthers([]);
     }
@@ -127,72 +132,79 @@ function HomeScreen({ navigation }: { navigation: any }) {
             </View>
             <View>
               <Text style={styles.textName}>Joined communities</Text>
-              <FlatList
-                data={joinedCommunities}
-                keyExtractor={keyExtractor}
-                renderItem={renderJoinedCommunity}
-                horizontal
-                style={styles.flatList}
-                showsHorizontalScrollIndicator={false}
-              />
+              {isLoadingJoined ? (
+                <View style={[{ flexDirection: "row" }, styles.flatList]}>
+                  {BasePlaceholder.CommunityJoined(3)}
+                </View>
+              ) : (
+                <FlatList
+                  data={joinedCommunities}
+                  keyExtractor={keyExtractor}
+                  renderItem={renderJoinedCommunity}
+                  horizontal
+                  style={styles.flatList}
+                  showsHorizontalScrollIndicator={false}
+                />
+              )}
             </View>
           </View>
         }
         ListFooterComponent={
-          <FlatList
-            data={listOthers}
-            // initialNumToRender={4}
-            renderItem={({ item }) => (
-              <BaseCategory
-                item={item}
-                isShowTick={false}
-                onPress={() =>
-                  navigation.navigate("CommunityDetailScreen", {
-                    community: item,
-                  })
+          <View>
+            <Text style={styles.textName}>Others</Text>
+            {isLoadingOthers ? (
+              <View>{BasePlaceholder.Community(4)}</View>
+            ) : (
+              <FlatList
+                data={listOthers}
+                renderItem={({ item }) => (
+                  <BaseCategory
+                    item={item}
+                    isShowTick={false}
+                    onPress={() =>
+                      navigation.navigate("CommunityDetailScreen", {
+                        community: item,
+                      })
+                    }
+                  />
+                )}
+                keyExtractor={keyExtractor}
+                ListFooterComponent={
+                  <BaseButton
+                    title="See all"
+                    IconRight={<CaretRight />}
+                    backgroundColor={theme.colors.Neutral0}
+                    color={theme.colors.primary}
+                    onPress={() => navigation.navigate("CommunitiesStack")}
+                  />
                 }
               />
             )}
-            keyExtractor={keyExtractor}
-            ListHeaderComponent={<Text style={styles.textName}>Others</Text>}
-            ListFooterComponent={
-              <View>
-                <BaseButton
-                  title="See all"
-                  IconRight={<CaretRight />}
-                  backgroundColor={theme.colors.Neutral0}
-                  color={theme.colors.primary}
-                  onPress={() => navigation.navigate("CommunitiesStack")}
-                />
-                <View style={styles.viewButton}>
-                  <BaseButton
-                    title="Purchase TomoCoins"
-                    backgroundColor={theme.colors.Neutral1}
-                    color={theme.colors.Neutral10}
-                    IconLeft={<TomoCoins style={{ marginHorizontal: 23 }} />}
-                    style={styles.buttonGray}
-                    onPress={() =>
-                      navigation.navigate("PurchaseTomoCoinScreen")
-                    }
-                  />
-                  <BaseButton
-                    title="Introduce via Twitter"
-                    backgroundColor={theme.colors.Neutral1}
-                    color={theme.colors.Neutral10}
-                    IconLeft={<ViaTwitter style={{ marginHorizontal: 23 }} />}
-                    style={styles.buttonGray}
-                  />
-                  <BaseButton
-                    title="Introduce via Facebook"
-                    backgroundColor={theme.colors.Neutral1}
-                    color={theme.colors.Neutral10}
-                    IconLeft={<ViaFacebook style={{ marginHorizontal: 23 }} />}
-                    style={styles.buttonGray}
-                  />
-                </View>
-              </View>
-            }
-          />
+            <View style={styles.viewButton}>
+              <BaseButton
+                title="Purchase TomoCoins"
+                backgroundColor={theme.colors.Neutral1}
+                color={theme.colors.Neutral10}
+                IconLeft={<TomoCoins style={{ marginHorizontal: 23 }} />}
+                style={styles.buttonGray}
+                onPress={() => navigation.navigate("PurchaseTomoCoinScreen")}
+              />
+              <BaseButton
+                title="Introduce via Twitter"
+                backgroundColor={theme.colors.Neutral1}
+                color={theme.colors.Neutral10}
+                IconLeft={<ViaTwitter style={{ marginHorizontal: 23 }} />}
+                style={styles.buttonGray}
+              />
+              <BaseButton
+                title="Introduce via Facebook"
+                backgroundColor={theme.colors.Neutral1}
+                color={theme.colors.Neutral10}
+                IconLeft={<ViaFacebook style={{ marginHorizontal: 23 }} />}
+                style={styles.buttonGray}
+              />
+            </View>
+          </View>
         }
       />
     </View>
@@ -203,9 +215,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    //
     paddingHorizontal: 24,
-    // paddingBottom: 84,
     paddingTop: 59,
   },
   scrollView: {
@@ -263,7 +273,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     fontSize: theme.fontSize.font14,
     color: theme.colors.Neutral6,
-    // marginVertical: 4,
   },
   containerText: {
     marginLeft: 19,

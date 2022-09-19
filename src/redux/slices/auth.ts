@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from ".";
+import { LoginApi } from "../../api";
 interface IState {
   isLoading: boolean;
   errorMessage: string;
@@ -19,10 +20,11 @@ export const loginAuth: any = createAsyncThunk(
   "user/login",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await axios(
-        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/login/1"
-      );
-      return response.data;
+      const response = await LoginApi.getAll();
+      // const response = await axios(
+      //   "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/login/1"
+      // );
+      return response;
     } catch (error) {
       return rejectWithValue(error);
     }

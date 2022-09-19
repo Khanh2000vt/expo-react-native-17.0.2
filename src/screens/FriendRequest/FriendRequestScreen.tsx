@@ -1,5 +1,3 @@
-//FriendRequestScreen
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
@@ -10,6 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { ApprovalApi } from "../../api";
 import { BaseHeader, Users, VectorBack } from "../../components";
 import { OtherProfile, theme } from "../../constants";
 import { handleTimeToNow } from "../../utils";
@@ -22,11 +21,9 @@ function FriendRequestScreen({ navigation }: { navigation: any }) {
 
   async function getListUser() {
     try {
-      const res = await axios(
-        "https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/approval"
-      );
+      const res: any = await ApprovalApi.getAll();
 
-      setUsers([...res.data]);
+      setUsers([...res]);
       setIsLoading(false);
     } catch (e) {
       setUsers([]);

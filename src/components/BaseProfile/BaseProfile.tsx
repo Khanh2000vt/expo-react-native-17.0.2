@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -9,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { LogApi } from "../../api";
 
 import { OtherProfile, theme } from "../../constants";
 import { formatTime } from "../../utils";
@@ -53,12 +53,15 @@ function BaseProfile({
   }, [indexLog]);
 
   const getActivitiesLog = async () => {
-    setLoading(true);
-    const res = await axios(
-      `https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/log?p=1&l=${indexLog}`
-    );
-    setLoading(false);
-    setActivities([...res.data]);
+    try {
+      setLoading(true);
+      const params = { p: 1, l: indexLog };
+      const res: any = await LogApi.getAll(params);
+      setLoading(false);
+      setActivities([...res]);
+    } catch (error) {
+      setActivities([]);
+    }
   };
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);

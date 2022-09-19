@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from ".";
+import { JoinedApi } from "../../api";
 
 interface IState {
   communities: any[];
@@ -16,10 +17,8 @@ export const getJoined: any = createAsyncThunk(
   "user/joined",
   async (_data, { rejectWithValue }) => {
     try {
-      const response = await axios(
-        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/joined"
-      );
-      return response.data;
+      const response: any = await JoinedApi.getAll();
+      return response;
     } catch (error) {
       return rejectWithValue(error);
     }

@@ -26,6 +26,7 @@ const fontSize = theme.fontSize;
 function LoginScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.auth.isLoading);
+  // const isLoading = false;
   function handleLogin(_value: any) {
     dispatch(loginAuth());
   }

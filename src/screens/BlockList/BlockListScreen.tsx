@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
@@ -8,6 +7,7 @@ import {
   FlatList,
   Image,
 } from "react-native";
+import { ApprovalApi } from "../../api";
 import { BaseButton, BaseHeader, VectorBack } from "../../components";
 import { theme } from "../../constants";
 
@@ -20,11 +20,9 @@ function BlockListScreen({ navigation }: { navigation: any }) {
 
   async function getListUser() {
     try {
-      const res = await axios(
-        "https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/approval"
-      );
+      const res: any = await ApprovalApi.getAll();
 
-      setUsers([...res.data]);
+      setUsers([...res]);
       setIsLoading(false);
     } catch (e) {
       setUsers([]);

@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -11,6 +10,7 @@ import {
   View,
 } from "react-native";
 import { useDispatch } from "react-redux";
+import { ApprovalApi } from "../../api";
 import {
   BaseButton,
   BaseHeader,
@@ -36,11 +36,9 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
 
   async function getListUser() {
     try {
-      const res = await axios(
-        "https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/approval"
-      );
+      const res: any = await ApprovalApi.getAll();
 
-      setUsers([...res.data]);
+      setUsers([...res]);
       setIsLoading(false);
     } catch (e) {
       setUsers([]);
@@ -146,13 +144,6 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
   function handleStatusUsers(value: any) {
     console.log("index: ", users.indexOf(value));
     setUsers(users.filter((user) => user.id !== value.id));
-    // axios({
-    //   method: "DELETE",
-    //   url: "https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/approval",
-    //   data: {
-    //     id: user.id,
-    //   },
-    // });
   }
 
   function handlePressNotification(id: string) {

@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -7,7 +6,8 @@ import {
   Text,
   View,
 } from "react-native";
-import { BaseCategory, BaseInput } from "../../components";
+import { CommunitiesApi } from "../../api";
+import { BaseCategory, BaseInput, BasePlaceholder } from "../../components";
 import { theme } from "../../constants";
 import { useDebounce } from "../../hooks";
 import { getFindCommunity } from "./handle";
@@ -31,11 +31,8 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
 
   const getCategories = async () => {
     try {
-      const res = await axios(
-        "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/communities"
-      );
-      console.log("res: ", res.data[0]);
-      setListCategories([...res.data]);
+      const res: any = await CommunitiesApi.getAll();
+      setListCategories([...res]);
       setLoading(false);
     } catch (e) {
       console.log("error: ", e);
@@ -74,7 +71,9 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
         onChangeText={onChangeValue}
       />
       {isLoading ? (
-        <ActivityIndicator />
+        <View style={{ paddingHorizontal: 24 }}>
+          {BasePlaceholder.Community(10)}
+        </View>
       ) : (
         <FlatList
           data={listFilter}

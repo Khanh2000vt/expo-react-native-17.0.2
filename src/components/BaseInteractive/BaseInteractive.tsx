@@ -11,7 +11,12 @@ enum Type {
 
 function BaseInteractive({ user, type }: BaseInteractiveProps) {
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        type === Type.REPLY && { backgroundColor: theme.colors.Neutral1 },
+      ]}
+    >
       <View style={styles.flex}>
         <Image source={{ uri: user.avatar }} style={styles.avatar} />
         <Text style={styles.textName}>{user.name}</Text>

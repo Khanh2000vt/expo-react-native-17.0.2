@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -7,33 +6,52 @@ import {
   Text,
   View,
 } from "react-native";
-import { BaseHeader, BasePost, Pencil, VectorBack } from "../../components";
+import { ForumApi } from "../../api";
+import {
+  BaseHeader,
+  BasePlaceholder,
+  BasePost,
+  Pencil,
+  VectorBack,
+} from "../../components";
 import { theme } from "../../constants";
 
 function ForumScreen({ navigation }: { navigation: any }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [posts, setPosts] = useState<any[]>([]);
+  const [pageCurrent, setPageCurrent] = useState<number>(1);
+  const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
+    // setIsLoadMore(true);
+    console.log("pageCurrent-test: ", pageCurrent);
     getListPost();
-  }, []);
+  }, [pageCurrent]);
+  console.log("isLoadMore: ", isLoadMore);
 
   async function getListPost() {
     try {
-      const res = await axios(
-        "https://631fe0a5e3bdd81d8eeeacf8.mockapi.io/forum"
-      );
-
-      setPosts([...res.data]);
+      const params = { p: pageCurrent, l: 10 };
+      const res: any = await ForumApi.getAll(params);
       setIsLoading(false);
+      setIsLoadMore(false);
+      setRefreshing(false);
+      console.log(`res-new ${pageCurrent}: `, res);
+      setPosts([...posts.concat(res)]);
     } catch (e) {
-      setPosts([]);
+      // setPosts([]);
     }
   }
 
-  function handlePressPost(post: any) {
-    console.log("post: ", post);
-    setPosts([post].concat(posts));
+  async function handlePressPost(post: any) {
+    // console.log("post: ", post);
+    // setPosts([post].concat(posts));
+    // setPosts([]);
+    // setIsLoading(true);
+    const a = await ForumApi.postNewPost(post);
+    getListPost();
+    // setPageCurrent(1);
   }
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
@@ -50,6 +68,27 @@ function ForumScreen({ navigation }: { navigation: any }) {
       />
     );
   };
+
+  const ListFooterComponent = () => {
+    return isLoadMore ? (
+      <ActivityIndicator style={styles.activityIndicator} />
+    ) : null;
+  };
+
+  const handleEndReached = () => {
+    if (posts.length < 5) {
+      return;
+    }
+    setIsLoadMore(true);
+    setPageCurrent(pageCurrent + 1);
+  };
+
+  const handleRefresh = () => {
+    setRefreshing(true);
+    // setIsLoading(true);
+    setPosts([]);
+    setPageCurrent(1);
+  };
   return (
     <View style={styles.container}>
       <BaseHeader
@@ -65,13 +104,21 @@ function ForumScreen({ navigation }: { navigation: any }) {
         styleHeader={styles.styleHeader}
       />
       {isLoading ? (
-        <ActivityIndicator style={styles.activityIndicator} />
+        <View style={{ marginHorizontal: 24 }}>
+          {BasePlaceholder.Forum(10)}
+        </View>
       ) : (
         <FlatList
           data={posts}
           renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
           keyExtractor={keyExtractor}
           style={styles.flatList}
+          ListFooterComponent={ListFooterComponent}
+          onEndReached={handleEndReached}
+          onEndReachedThreshold={0}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
         />
       )}
     </View>
