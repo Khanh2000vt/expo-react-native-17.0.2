@@ -57,6 +57,7 @@ function AccountScreen({ navigation }: { navigation: any }) {
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.contentContainer}
+        bounces={false}
       >
         <Text style={styles.textTitle}>Account</Text>
 

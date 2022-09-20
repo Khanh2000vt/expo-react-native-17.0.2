@@ -14,11 +14,7 @@ interface PropsBaseInput extends TextInputProps {
     | FormikErrors<any>
     | FormikErrors<any>[]
     | undefined;
-  onPressFilter?: (value: {
-    minAge: string;
-    maxAge: string;
-    gender: string;
-  }) => void;
+  onPressFilter?: () => void;
 }
 
 export type { PropsBaseInput };

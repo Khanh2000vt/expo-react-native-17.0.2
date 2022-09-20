@@ -94,6 +94,7 @@ function HomeScreen({ navigation }: { navigation: any }) {
     <View style={styles.container}>
       <FlatList
         data={[]}
+        bounces={false}
         renderItem={() => <></>}
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={

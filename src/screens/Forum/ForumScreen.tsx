@@ -24,34 +24,29 @@ function ForumScreen({ navigation }: { navigation: any }) {
   const [refreshing, setRefreshing] = useState<boolean>(false);
 
   useEffect(() => {
-    // setIsLoadMore(true);
-    console.log("pageCurrent-test: ", pageCurrent);
     getListPost();
-  }, [pageCurrent]);
-  console.log("isLoadMore: ", isLoadMore);
+  }, []);
 
   async function getListPost() {
     try {
+      setIsLoadMore(true);
+      setRefreshing(true);
+
       const params = { p: pageCurrent, l: 10 };
       const res: any = await ForumApi.getAll(params);
       setIsLoading(false);
       setIsLoadMore(false);
       setRefreshing(false);
-      console.log(`res-new ${pageCurrent}: `, res);
       setPosts([...posts.concat(res)]);
+      setPageCurrent(pageCurrent + 1);
     } catch (e) {
       // setPosts([]);
     }
   }
 
   async function handlePressPost(post: any) {
-    // console.log("post: ", post);
-    // setPosts([post].concat(posts));
-    // setPosts([]);
-    // setIsLoading(true);
     const a = await ForumApi.postNewPost(post);
-    getListPost();
-    // setPageCurrent(1);
+    // getListPost();
   }
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
@@ -75,19 +70,11 @@ function ForumScreen({ navigation }: { navigation: any }) {
     ) : null;
   };
 
-  const handleEndReached = () => {
-    if (posts.length < 5) {
-      return;
-    }
-    setIsLoadMore(true);
-    setPageCurrent(pageCurrent + 1);
-  };
-
   const handleRefresh = () => {
-    setRefreshing(true);
     // setIsLoading(true);
     setPosts([]);
     setPageCurrent(1);
+    getListPost();
   };
   return (
     <View style={styles.container}>
@@ -115,7 +102,7 @@ function ForumScreen({ navigation }: { navigation: any }) {
           keyExtractor={keyExtractor}
           style={styles.flatList}
           ListFooterComponent={ListFooterComponent}
-          onEndReached={handleEndReached}
+          onEndReached={getListPost}
           onEndReachedThreshold={0}
           refreshing={refreshing}
           onRefresh={handleRefresh}

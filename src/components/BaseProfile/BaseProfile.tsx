@@ -281,6 +281,7 @@ function BaseProfile({
       <FlatList
         data={[]}
         renderItem={() => <></>}
+        bounces={false}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
         ListFooterComponent={ListFooterComponent}

@@ -28,7 +28,11 @@ function BasePost({ post, onPress }: BasePostProps) {
             {post.title}
           </Text>
           <Text style={styles.textBody}>{post.body}</Text>
-          <Image source={{ uri: post.image }} style={styles.image} />
+          <Image
+            source={{ uri: post.image }}
+            style={styles.image}
+            resizeMode="cover"
+          />
         </View>
         <View style={styles.flex}>
           <View style={[styles.flex, { marginRight: 28 }]}>
@@ -87,9 +91,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   image: {
-    // flex: 1,
-    width: 302,
+    flex: 1,
     height: 185,
+    resizeMode: "cover",
     borderRadius: 8,
     marginBottom: 19,
   },
