@@ -17,13 +17,17 @@ import {
   UserCircle,
   Warnings,
 } from "../../components";
+
 import BaseAlert from "../../components/BaseAlert/BaseAlert";
 import { theme } from "../../constants";
 import { logoutAuth, RootState } from "../../redux";
+
 function AccountScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+
   const [isVisible, setVisible] = useState<boolean>(false);
+
   const accountMenu = [
     {
       id: 1,

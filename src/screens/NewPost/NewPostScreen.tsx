@@ -1,6 +1,6 @@
-import * as ImagePicker from "expo-image-picker";
 import React, { useCallback, useState } from "react";
 import {
+  Alert,
   FlatList,
   Image,
   StyleSheet,
@@ -9,34 +9,29 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
-import { ForumApi } from "../../api";
-import { BaseHeader, ImageSVG, SvgX, VectorBack } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  BaseHeader,
+  BaseMediaPicker,
+  ImageSVG,
+  SvgX,
+  VectorBack,
+} from "../../components";
 import { theme } from "../../constants";
-import { RootState } from "../../redux";
+import { createPost, resetPost, RootState } from "../../redux";
 function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
+  const dispatch = useDispatch();
+
   const { onPressPost } = route.params;
+
   const user = useSelector((state: RootState) => state.auth.user);
-  const [textTitle, onChangeTextTitle] = useState<string>();
-  const [textBody, onChangeTextBody] = useState<string>();
-  const [images, setImages] = useState<string[]>([]);
+  const postNote = useSelector((state: RootState) => state.post);
 
-  const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      //   allowsEditing: true,
-      //   aspect: [4, 3],
-      //   allowsMultipleSelection: true,
-      quality: 1,
-    });
+  const [textTitle, onChangeTextTitle] = useState<string>(postNote.title);
+  const [textBody, onChangeTextBody] = useState<string>(postNote.body);
+  const [images, setImages] = useState<any[]>(postNote.images);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImages([result.uri].concat(images));
-    }
-  };
   async function handlePressPost() {
     if (
       (!textTitle || textTitle.trim().length === 0) &&
@@ -58,14 +53,49 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
     };
     // const a = await ForumApi.postNewPost(newPost);
     onPressPost(newPost);
+    dispatch(resetPost());
     navigation.goBack();
   }
+
+  const handlePickComplete = (result: any) => {
+    setImages([result].concat(images));
+  };
+
+  const handleBack = () => {
+    Alert.alert("Warning", "Save to draft ?", [
+      {
+        text: "Yes",
+        onPress: () => {
+          const params = {
+            title: textTitle,
+            body: textBody,
+            images: images,
+          };
+          dispatch(createPost(params));
+          navigation.goBack();
+        },
+      },
+      {
+        text: "No",
+        onPress: () => {
+          dispatch(resetPost());
+          navigation.goBack();
+        },
+        style: "destructive",
+      },
+      {
+        text: "Cancel",
+        onPress: () => {},
+        style: "cancel",
+      },
+    ]);
+  };
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
   const renderItem = ({ item }: { item: any }) => {
     return (
       <View style={styles.containerImagePost}>
-        <Image source={{ uri: item }} style={styles.imagePost} />
+        <Image source={{ uri: item.uri }} style={styles.imagePost} />
         <TouchableOpacity
           style={styles.buttonImagePost}
           activeOpacity={0.8}
@@ -81,7 +111,7 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
       <BaseHeader
         title="New post"
         IconLeft={<VectorBack />}
-        onPressLeft={() => navigation.goBack()}
+        onPressLeft={handleBack}
         IconRight={
           <View style={styles.iconRight}>
             <Text style={styles.textIconRight}>Post</Text>
@@ -120,12 +150,17 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
           <TouchableOpacity
             style={styles.touchableOpacity}
             activeOpacity={0.8}
-            onPress={pickImage}
+            onPress={() => setIsVisible(true)}
           >
             <ImageSVG />
           </TouchableOpacity>
         </View>
       </View>
+      <BaseMediaPicker
+        isVisible={isVisible}
+        setIsVisible={setIsVisible}
+        onPickComplete={handlePickComplete}
+      />
     </View>
   );
 }
@@ -189,6 +224,7 @@ const styles = StyleSheet.create({
   bodyPost: {
     flex: 1,
     alignItems: "flex-start",
+    marginLeft: 16,
   },
   touchableOpacity: {
     backgroundColor: theme.colors.Neutral1,

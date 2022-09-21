@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
 import { RootState } from ".";
 import { LoginApi } from "../../api";
 interface IState {
@@ -21,9 +20,6 @@ export const loginAuth: any = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await LoginApi.getAll();
-      // const response = await axios(
-      //   "https://6316f6fdcb0d40bc4148114b.mockapi.io/khanhmacro/api/login/1"
-      // );
       return response;
     } catch (error) {
       return rejectWithValue(error);
@@ -40,22 +36,16 @@ const authSlice = createSlice({
     },
     addCoins: (state: IState, action: PayloadAction<any>) => {
       let coin = state.user.coin + action.payload;
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          coin: coin,
-        },
-      };
+      state.user.coin = coin;
     },
     spendCoins: (state: IState, action: PayloadAction<any>) => {
       let coin = state.user.coin - action.payload;
-      return {
-        ...state,
-        user: {
-          ...state.user,
-          coin: coin,
-        },
+      state.user.coin = coin;
+    },
+    updateUser: (state: IState, action: PayloadAction<any>) => {
+      state.user = {
+        ...state.user,
+        ...action.payload,
       };
     },
   },
@@ -82,7 +72,8 @@ const authSlice = createSlice({
   },
 });
 
-export const { logoutAuth, addCoins, spendCoins } = authSlice.actions;
+export const { logoutAuth, addCoins, spendCoins, updateUser } =
+  authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 

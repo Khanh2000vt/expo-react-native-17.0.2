@@ -16,3 +16,4 @@ export * from "./BasePopupRequest";
 export * from "./BasePost";
 export * from "./BaseInteractive";
 export * from "./BasePlaceholder";
+export * from "./BaseMediaPicker";

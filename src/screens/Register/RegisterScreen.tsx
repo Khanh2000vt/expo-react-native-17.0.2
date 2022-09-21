@@ -8,7 +8,6 @@ import {
   BaseButton,
   BaseInput,
   BaseModal,
-  EyeSlash,
   Tick,
   VectorBack,
 } from "../../components";

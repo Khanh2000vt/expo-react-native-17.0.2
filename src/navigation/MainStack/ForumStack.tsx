@@ -11,7 +11,11 @@ function ForumStack() {
     >
       <Stack.Screen name="ForumScreen" component={ForumScreen} />
       <Stack.Screen name="ForumDetailScreen" component={ForumDetailScreen} />
-      <Stack.Screen name="NewPostScreen" component={NewPostScreen} />
+      <Stack.Screen
+        name="NewPostScreen"
+        component={NewPostScreen}
+        // options={{ gestureEnabled: false }}
+      />
     </Stack.Navigator>
   );
 }

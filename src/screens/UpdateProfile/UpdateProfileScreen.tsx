@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
@@ -8,33 +8,56 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import * as Yup from "yup";
 import {
   BaseButton,
   BaseHeader,
   BaseInput,
   BaseIntroduction,
+  BaseMediaPicker,
   BaseModal,
   Plus,
   Tick,
   VectorBack,
 } from "../../components";
 import { gender, theme } from "../../constants";
-import { RootState } from "../../redux";
+import { RootState, updateUser } from "../../redux";
 import { ListYear } from "../../utils";
+
 function UpdateProfileScreen({ navigation }: { navigation: any }) {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch();
+  const userRedux = useSelector((state: RootState) => state.auth.user);
+  const [avatarUser, setAvatarUser] = useState<string>(userRedux.avatar);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+
   const formik = useFormik({
     initialValues: {
-      avatar: user.avatar,
-      username: user.username,
-      gender: user.gender ? "male" : "female",
+      username: userRedux.name,
+      gender: userRedux.gender ? "male" : "female",
       birthYear: "2000",
-      introduction: user.introduction,
+      introduction: userRedux.introduction,
     },
-    onSubmit: (values: any) => {},
+    validationSchema: Yup.object({
+      username: Yup.string().required("No username provided."),
+      gender: Yup.string().required("No gender provided."),
+      birthYear: Yup.string().required("No birth year provided."),
+    }),
+    onSubmit: (values: any) => {
+      const params = {
+        ...values,
+        avatar: avatarUser,
+        name: values.username,
+        gender: values.gender === "male",
+      };
+      dispatch(updateUser(params));
+      navigation.goBack();
+    },
   });
+
+  const handlePickComplete = (result: any) => {
+    setAvatarUser(result.uri);
+  };
 
   return (
     <View style={styles.container}>
@@ -47,10 +70,11 @@ function UpdateProfileScreen({ navigation }: { navigation: any }) {
       <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
         <View style={styles.viewProfile}>
           <Text style={styles.textTitle}>Profile picture</Text>
-          <Image source={{ uri: user.avatar }} style={styles.avatar} />
+          <Image source={{ uri: avatarUser }} style={styles.avatar} />
           <TouchableOpacity
             activeOpacity={0.8}
             style={styles.buttonChoosePicture}
+            onPress={() => setIsVisible(true)}
           >
             <Text style={styles.textButtonChoose}>Choose picture</Text>
           </TouchableOpacity>
@@ -132,8 +156,15 @@ function UpdateProfileScreen({ navigation }: { navigation: any }) {
           title="Update"
           IconRight={<Tick height={20} width={20} />}
           style={styles.buttonUpdate}
+          onPress={formik.handleSubmit}
         />
       </ScrollView>
+      <BaseMediaPicker
+        isVisible={isVisible}
+        onPickComplete={handlePickComplete}
+        setIsVisible={setIsVisible}
+        option="Images"
+      />
     </View>
   );
 }
@@ -226,6 +257,30 @@ const styles = StyleSheet.create({
   },
   viewSocial: {
     marginTop: 20,
+  },
+  //component
+  containerComponent: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  camera: {
+    flex: 1,
+  },
+  buttonContainerCamera: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: "transparent",
+    margin: 64,
+  },
+  buttonCamera: {
+    flex: 1,
+    alignSelf: "flex-end",
+    alignItems: "center",
+  },
+  textCamera: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "white",
   },
 });
 
