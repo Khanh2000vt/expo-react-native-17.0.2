@@ -31,7 +31,6 @@ function ForumScreen({ navigation }: { navigation: any }) {
     try {
       setIsLoadMore(true);
       setRefreshing(true);
-
       const params = { p: pageCurrent, l: 10 };
       const res: any = await ForumApi.getAll(params);
       setIsLoading(false);
@@ -100,7 +99,6 @@ function ForumScreen({ navigation }: { navigation: any }) {
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}
           keyExtractor={keyExtractor}
-          style={styles.flatList}
           ListFooterComponent={ListFooterComponent}
           onEndReached={getListPost}
           onEndReachedThreshold={0}
@@ -125,6 +123,5 @@ const styles = StyleSheet.create({
   activityIndicator: {
     marginTop: 40,
   },
-  flatList: {},
 });
 export default ForumScreen;

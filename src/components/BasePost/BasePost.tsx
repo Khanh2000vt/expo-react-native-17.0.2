@@ -8,6 +8,7 @@ import { BasePostProps } from "./BasePostModel";
 function BasePost({ post, onPress }: BasePostProps) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [amountLike, setAmountLike] = useState<number>(post.likes);
+  // const reply = 1;
   return (
     <View style={styles.container}>
       <Image source={{ uri: post.avatar }} style={styles.avatar} />

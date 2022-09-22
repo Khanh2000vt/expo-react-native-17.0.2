@@ -1,5 +1,12 @@
-import React from "react";
-import { Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useEffect } from "react";
+import {
+  Alert,
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Modal from "react-native-modal";
 import { theme } from "../../constants";
@@ -11,8 +18,32 @@ function BaseMediaPicker({
   setIsVisible,
   allowsEditing = false,
 }: BaseMediaPickerProps) {
-  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
+  const [permissionCamera, requestPermissionCamera] =
+    ImagePicker.useCameraPermissions();
+  const [permissionLibrary, requestPermissionLibrary] =
+    ImagePicker.useMediaLibraryPermissions();
+
   const handleCamera = async () => {
+    await requestPermissionCamera().then((permission) => {
+      if (!permission?.granted) {
+        handleAlert("Warning", "You did not allow the camera!");
+      } else {
+        takeCamera();
+      }
+    });
+  };
+
+  const handleLibrary = async () => {
+    await requestPermissionLibrary().then((permission) => {
+      if (!permission?.granted) {
+        handleAlert("Warning", "You did not allow the library!");
+      } else {
+        takeLibrary();
+      }
+    });
+  };
+
+  const takeCamera = async () => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions[option],
       allowsEditing: allowsEditing,
@@ -21,10 +52,10 @@ function BaseMediaPicker({
         ImagePicker.UIImagePickerPresentationStyle.OVER_CURRENT_CONTEXT,
       quality: 1,
     });
-    console.log(result);
     handlePickMedia(result);
   };
-  const handleLibrary = async () => {
+
+  const takeLibrary = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions[option],
       allowsEditing: allowsEditing,
@@ -32,7 +63,6 @@ function BaseMediaPicker({
       // allowsMultipleSelection: true,
       quality: 1,
     });
-    console.log(result);
     handlePickMedia(result);
   };
 
@@ -43,20 +73,16 @@ function BaseMediaPicker({
     }
   };
 
-  if (!permission) {
-    return <Button onPress={() => setIsVisible(false)} title="Cancel" />;
-  }
+  const handleAlert = (title: string, message: string) => {
+    console.log("Alert");
+    Alert.alert(title, message, [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+    ]);
+  };
 
-  if (!permission.granted) {
-    return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: "center" }}>
-          We need your permission to show the camera
-        </Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
-    );
-  }
   return (
     <Modal
       isVisible={isVisible}

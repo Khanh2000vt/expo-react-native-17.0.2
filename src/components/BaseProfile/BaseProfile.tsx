@@ -3,18 +3,22 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import { useDispatch } from "react-redux";
 import { LogApi } from "../../api";
 
 import { OtherProfile, theme } from "../../constants";
+import { spendCoins } from "../../redux";
 import { formatTime } from "../../utils";
 import BaseAlert from "../BaseAlert/BaseAlert";
 import { BaseButton } from "../BaseButton";
 import { BaseHeader } from "../BaseHeader";
+import { BasePopupRequest } from "../BasePopupRequest";
 import {
   Bell,
   CaretRight,
@@ -29,7 +33,6 @@ import { BaseProfileProps } from "./BaseProfileModel";
 function BaseProfile({
   navigation,
   isProfileSelf = false,
-  elementProfileSelf,
   avatar,
   name,
   idAccount,
@@ -39,12 +42,13 @@ function BaseProfile({
   listJoined = [],
   type = OtherProfile.OTHER,
 }: BaseProfileProps) {
-  const [indexLog, setIndexLog] = useState<number>(3);
+  const dispatch = useDispatch();
+  const [isVisibleModal, setIsVisibleModal] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [indexLog, setIndexLog] = useState<number>(3);
   const [activities, setActivities] = useState<any[]>([]);
   const [status, setStatus] = useState<OtherProfile>(OtherProfile.OTHER);
   const [isShowAlert, setIsShowAlert] = useState<boolean>(false);
-
   useEffect(() => {
     setStatus(type);
   }, []);
@@ -125,9 +129,7 @@ function BaseProfile({
         <BaseButton
           title="Send RuiTomo Request"
           style={{ marginVertical: 12 }}
-          onPress={() => {
-            setStatus(OtherProfile.REQUEST_PENDING);
-          }}
+          onPress={() => setIsVisibleModal(true)}
         />
         <BaseButton
           title="Block user"
@@ -166,9 +168,7 @@ function BaseProfile({
           <BaseButton
             title="Accept"
             style={{ marginVertical: 12, flex: 1, marginRight: 8 }}
-            onPress={() => {
-              setStatus(OtherProfile.FRIEND);
-            }}
+            onPress={() => setIsVisibleModal(true)}
           />
           <BaseButton
             title="Reject"
@@ -213,7 +213,7 @@ function BaseProfile({
 
   function renderProfileSelf() {
     return (
-      <View>
+      <>
         <View style={styles.viewActivitiesLog}>
           <Text style={styles.textTitle}>Activities log</Text>
           <FlatList
@@ -273,7 +273,7 @@ function BaseProfile({
             onPress={() => navigation.navigate("FriendRequestScreen")}
           />
         </View>
-      </View>
+      </>
     );
   }
   return (
@@ -334,19 +334,23 @@ function BaseProfile({
 
             {(status === OtherProfile.FRIEND || isProfileSelf) && (
               <View style={styles.viewSocial}>
-                {listSocial.map((item) => {
-                  return (
-                    <BaseButton
-                      title={item.title}
-                      key={item.id}
-                      IconLeft={item.icon}
-                      style={styles.buttonListSocial}
-                      styleText={styles.textButtonSocial}
-                      backgroundColor={theme.colors.colorInput}
-                      color={theme.colors.Neutral10}
-                    />
-                  );
-                })}
+                {useCallback(
+                  () =>
+                    listSocial.map((item) => {
+                      return (
+                        <BaseButton
+                          title={item.title}
+                          key={item.id}
+                          IconLeft={item.icon}
+                          style={styles.buttonListSocial}
+                          styleText={styles.textButtonSocial}
+                          backgroundColor={theme.colors.colorInput}
+                          color={theme.colors.Neutral10}
+                        />
+                      );
+                    }),
+                  []
+                )}
               </View>
             )}
 
@@ -411,6 +415,23 @@ function BaseProfile({
           />
         </View>
       </BaseAlert>
+      <BasePopupRequest
+        isVisible={isVisibleModal}
+        accept={status === OtherProfile.INVITATION}
+        coinRequest={500}
+        onBackButtonPress={() => setIsVisibleModal(false)}
+        onBackdropPress={() => setIsVisibleModal(false)}
+        onPressCancel={() => setIsVisibleModal(false)}
+        onPressOK={() => {
+          dispatch(spendCoins(500));
+          setStatus(
+            status === OtherProfile.INVITATION
+              ? OtherProfile.FRIEND
+              : OtherProfile.REQUEST_PENDING
+          );
+          setIsVisibleModal(false);
+        }}
+      />
     </View>
   );
 }

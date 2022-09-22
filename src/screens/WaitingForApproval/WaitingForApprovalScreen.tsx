@@ -16,10 +16,10 @@ import {
   BaseHeader,
   BaseNotification,
   BasePopupRequest,
+  EventNotification,
   Users,
   VectorBack,
 } from "../../components";
-import { EventNotification } from "../../components/BaseNotification/BaseNotificationModel";
 import { OtherProfile, theme } from "../../constants";
 import { spendCoins } from "../../redux";
 import { handleTimeToNow } from "../../utils";
@@ -41,7 +41,7 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
       setUsers([...res]);
       setIsLoading(false);
     } catch (e) {
-      setUsers([]);
+      // setUsers([]);
     }
   }
 
@@ -142,7 +142,6 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
   }
 
   function handleStatusUsers(value: any) {
-    console.log("index: ", users.indexOf(value));
     setUsers(users.filter((user) => user.id !== value.id));
   }
 
@@ -183,7 +182,7 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
         }}
       />
 
-      <ScrollView style={styles.notifications}>
+      <ScrollView style={styles.notifications} bounces={false}>
         {notifications.map((notification) => (
           <BaseNotification
             key={notification.id}

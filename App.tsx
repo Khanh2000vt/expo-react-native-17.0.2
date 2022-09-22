@@ -82,7 +82,6 @@ export default function App() {
     });
     registerForPushNotificationsAsync()
       .then((token) => {
-        console.log("token: ", token);
         setExpoPushToken(token);
       })
       .catch((error) => console.log("error: ", error));

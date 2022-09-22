@@ -7,6 +7,7 @@ function ForumStack() {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        // gestureEnabled: false,
       }}
     >
       <Stack.Screen name="ForumScreen" component={ForumScreen} />
@@ -15,6 +16,11 @@ function ForumStack() {
         name="NewPostScreen"
         component={NewPostScreen}
         // options={{ gestureEnabled: false }}
+        options={
+          {
+            // gestureEnabled: false,
+          }
+        }
       />
     </Stack.Navigator>
   );
