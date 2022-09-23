@@ -1,3 +1,4 @@
+import { theme } from "@theme";
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +9,6 @@ import {
   SvgInfo,
   VectorBack,
 } from "../../components";
-import { theme } from "../../constant";
 import { addCoins, RootState } from "../../redux";
 
 function PurchaseTomoCoinScreen({ navigation }: { navigation: any }) {

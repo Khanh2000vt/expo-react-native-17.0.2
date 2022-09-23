@@ -2,7 +2,7 @@ import { MainStackParamList } from "@navigation";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
-import { Navigation } from "../../constant";
+import { Navigation } from "@constant/index";
 import AccountStack from "./AccountStack";
 import CommunitiesStack from "./CommunitiesStack";
 import HomeStack from "./HomeStack";

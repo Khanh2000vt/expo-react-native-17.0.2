@@ -11,8 +11,9 @@ import {
   Tick,
   VectorBack,
 } from "../../components";
-import { gender, Navigation, theme } from "../../constant";
+import { gender, Navigation } from "@constant/index";
 import { ListYear } from "../../utils";
+import { theme } from "@theme";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;

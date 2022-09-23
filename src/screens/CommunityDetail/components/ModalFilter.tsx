@@ -1,3 +1,4 @@
+import { theme } from "@theme";
 import React from "react";
 import {
   GestureResponderEvent,
@@ -10,7 +11,6 @@ import {
 } from "react-native";
 import Modal from "react-native-modal";
 import { BaseButton, Tick } from "../../../components";
-import { theme } from "../../../constant";
 import { listCheckBox } from "../constants";
 interface IState {
   isVisible: boolean;

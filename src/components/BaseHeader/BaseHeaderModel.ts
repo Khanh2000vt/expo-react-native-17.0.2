@@ -10,7 +10,7 @@ interface PropsBaseHeader {
   IconLeft?: React.ReactNode;
   IconRight?: React.ReactNode;
   onPressLeft?: () => void | undefined;
-  onPressRight?: () => void | undefined;
+  onPressRight?: ((event: GestureResponderEvent) => void) | undefined;
   styleHeader?: StyleProp<ViewStyle> | undefined;
   styleTitleHeader?: StyleProp<TextStyle> | undefined;
 }

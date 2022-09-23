@@ -1,7 +1,7 @@
+import { theme } from "@theme";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { BaseButton } from "../../../components";
-import { theme } from "../../../constant";
 import { Title } from "../enum";
 
 interface IState {

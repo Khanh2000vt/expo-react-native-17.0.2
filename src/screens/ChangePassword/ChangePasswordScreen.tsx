@@ -1,3 +1,4 @@
+import { theme } from "@theme";
 import { useFormik } from "formik";
 import React from "react";
 import { StyleSheet, View } from "react-native";
@@ -7,7 +8,6 @@ import {
   BaseInput,
   VectorBack,
 } from "../../components";
-import { theme } from "../../constant";
 import { arrayInput, initialValues, validationSchema } from "./constant";
 import { Title } from "./enum";
 

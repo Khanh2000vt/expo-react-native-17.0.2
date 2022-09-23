@@ -12,7 +12,7 @@ interface BaseButtonProps {
   IconLeft?: React.ReactNode | JSX.Element;
   color?: ColorValue | undefined;
   backgroundColor?: ColorValue | undefined;
-  onPress?: () => void | undefined;
+  onPress?: (event: GestureResponderEvent) => void | undefined;
   option?: "fill" | "solid" | "default" | undefined;
   style?: StyleProp<ViewStyle> | undefined;
   styleText?: StyleProp<TextStyle> | undefined;

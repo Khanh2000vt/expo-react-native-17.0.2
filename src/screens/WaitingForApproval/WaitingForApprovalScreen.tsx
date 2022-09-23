@@ -20,9 +20,10 @@ import {
   Users,
   VectorBack,
 } from "../../components";
-import { Navigation, OtherProfile, theme } from "../../constant";
+import { Navigation, OtherProfile } from "@constant/index";
 import { spendCoins } from "../../redux";
 import { handleTimeToNow } from "../../utils";
+import { theme } from "@theme";
 function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState<boolean>(true);

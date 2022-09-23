@@ -7,7 +7,8 @@ import {
   BaseButton,
   BaseInput,
 } from "../../components";
-import { Navigation, theme } from "../../constant/index";
+import { Navigation } from "@constant/index";
+import { theme } from "@theme";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function ForgotPasswordScreen({ navigation }: { navigation: any }) {

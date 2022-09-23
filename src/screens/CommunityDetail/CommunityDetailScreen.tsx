@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, TextInput, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { MembersApi } from "../../api";
 import { BaseHeader, VectorBack } from "../../components";
-import { Navigation, OtherProfile, theme } from "../../constant";
+import { Navigation, OtherProfile } from "@constant/index";
 import { useDebounce } from "../../hooks";
 import {
   ListFooterComponent,
@@ -14,6 +14,7 @@ import {
 import { initialFilter, initialValues } from "./constants";
 import { handleCaseFilter } from "./controller";
 import { IFilter, IGender } from "./model";
+import { theme } from "@theme";
 
 function CommunityDetailScreen({
   route,

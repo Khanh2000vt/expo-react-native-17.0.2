@@ -1,3 +1,4 @@
+import { theme } from "@theme";
 import React, { useState } from "react";
 import {
   GestureResponderEvent,
@@ -15,7 +16,6 @@ import {
   SvgInfo,
   SvgMessages,
 } from "../../../components";
-import { theme } from "../../../constant";
 interface IState {
   community: any;
   onChangeText: (text: string) => void;

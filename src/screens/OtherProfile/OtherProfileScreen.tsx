@@ -1,8 +1,8 @@
+import { theme } from "@theme";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { BaseProfile, Users } from "../../components";
-import { theme } from "../../constant";
 import { RootState } from "../../redux";
 
 function OtherProfileScreen({

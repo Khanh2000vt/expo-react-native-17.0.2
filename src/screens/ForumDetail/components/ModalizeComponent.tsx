@@ -1,9 +1,9 @@
+import { theme } from "@theme";
 import React, { useCallback, useRef } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { useSelector } from "react-redux";
 import { BaseInteractive, HeartFill } from "../../../components";
-import { theme } from "../../../constant";
 import { RootState } from "../../../redux";
 import { findPostById } from "../../../utils";
 

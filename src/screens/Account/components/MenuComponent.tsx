@@ -1,6 +1,6 @@
+import { theme } from "@theme";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { theme } from "../../../constant";
 import { MenuComponentProps } from "../model";
 
 function MenuComponent({ menu }: MenuComponentProps) {

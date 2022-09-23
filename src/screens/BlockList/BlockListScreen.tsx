@@ -1,3 +1,4 @@
+import { theme } from "@theme";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -8,7 +9,6 @@ import {
 } from "react-native";
 import { ApprovalApi } from "../../api";
 import { BaseHeader, VectorBack } from "../../components";
-import { theme } from "../../constant";
 import { RenderItem } from "./components";
 import { handleRemoveById } from "./controller";
 import { Title } from "./enum";

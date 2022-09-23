@@ -17,8 +17,8 @@ interface PropsBaseInput extends TextInputProps {
   messageError?:
     | string
     | string[]
-    | FormikErrors<string>
-    | FormikErrors<string>[]
+    | FormikErrors<any>
+    | FormikErrors<any>[]
     | undefined;
   onPressFilter?: () => void | undefined;
 }

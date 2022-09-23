@@ -8,8 +8,9 @@ import {
 } from "../../components";
 
 import { FlatList, StyleSheet, View } from "react-native";
-import { Navigation, theme } from "../../constant";
+import { Navigation } from "@constant/index";
 import { getAddITem, getDeleteItem } from "./PickPreferHandle";
+import { theme } from "@theme";
 
 const colors = theme.colors;
 

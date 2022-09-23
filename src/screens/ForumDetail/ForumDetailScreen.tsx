@@ -1,3 +1,4 @@
+import { theme } from "@theme";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
@@ -17,7 +18,6 @@ import {
   HeartFill,
   VectorBack,
 } from "../../components";
-import { theme } from "../../constant";
 import { RootState } from "../../redux";
 import { findPostById } from "../../utils";
 import {

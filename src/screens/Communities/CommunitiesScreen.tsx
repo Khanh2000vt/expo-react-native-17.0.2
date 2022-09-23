@@ -2,13 +2,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { CommunitiesApi } from "../../api";
 import { BaseCategory, BaseInput, BasePlaceholder } from "../../components";
-import { Navigation, theme } from "../../constant";
+import { Navigation } from "@constant/index";
 import { useDebounce } from "../../hooks";
 import { getFindCommunity } from "./controller";
+import { theme } from "@theme";
 
 function CommunitiesScreen({ navigation }: { navigation: any }) {
   //input state
-  
+
   const [value, onChangeValue] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [listCategories, setListCategories] = useState<any[]>([]);

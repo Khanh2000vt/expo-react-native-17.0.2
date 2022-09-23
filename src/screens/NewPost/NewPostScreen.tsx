@@ -1,3 +1,4 @@
+import { theme } from "@theme";
 import React, { useCallback, useState } from "react";
 import {
   Alert,
@@ -17,7 +18,6 @@ import {
   SvgX,
   VectorBack,
 } from "../../components";
-import { theme } from "../../constant";
 import { createPost, resetPost, RootState } from "../../redux";
 function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
   const dispatch = useDispatch();

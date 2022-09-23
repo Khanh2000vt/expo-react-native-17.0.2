@@ -21,9 +21,10 @@ import {
   Tick,
   VectorBack,
 } from "../../components";
-import { gender, theme } from "../../constant";
+import { gender } from "@constant/index";
 import { RootState, updateUser } from "../../redux";
 import { ListYear } from "../../utils";
+import { theme } from "@theme";
 
 function UpdateProfileScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();

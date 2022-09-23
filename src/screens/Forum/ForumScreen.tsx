@@ -8,9 +8,10 @@ import {
   Pencil,
   VectorBack,
 } from "../../components";
-import { Navigation, theme } from "../../constant";
+import { Navigation } from "@constant/index";
 import { RootState } from "../../redux";
 import { RenderItem } from "./components/RenderItem";
+import { theme } from "@theme";
 
 function ForumScreen({ navigation }: { navigation: any }) {
   const user = useSelector((state: RootState) => state.auth.user);

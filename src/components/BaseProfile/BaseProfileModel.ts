@@ -1,36 +1,49 @@
-import { ColorValue, GestureResponderEvent } from "react-native";
-import { OtherProfile } from "../../constant";
+import { OtherProfile } from "@constant/index";
+import { ColorValue } from "react-native";
 
-interface List {
+interface IItemBase {
   id: number;
   icon: React.ReactNode;
   onPress: () => void | undefined;
 }
 
-interface AmountProps extends List {
-  amount: string;
-  color: ColorValue;
-}
-
-interface SocialProps extends List {
-  title: string;
-}
-
-interface BaseProfileProps {
-  navigation: any;
-  isProfileSelf?: boolean;
-  elementProfileSelf?: {
-    activitiesLog: any[];
-    notificationFromFollowers?: any[];
-  };
+interface IUserProfile {
   avatar?: string;
   name?: string;
   idAccount?: string;
   introduction?: string;
+}
+
+export interface AmountProps extends IItemBase {
+  amount: string;
+  color: ColorValue;
+}
+
+export interface SocialProps extends IItemBase {
+  title: string;
+}
+
+export interface IProfileSelf {
+  activitiesLog: any[];
+  notificationFromFollowers?: any[];
+}
+
+export interface IList {
   listAmount?: AmountProps[];
   listSocial?: SocialProps[];
   listJoined?: any[];
-  type?: OtherProfile;
-  // activities?: any[]
 }
-export type { BaseProfileProps };
+
+interface BaseProfileProps extends IUserProfile, IList {
+  navigation: any;
+  isProfileSelf?: boolean;
+  elementProfileSelf?: IProfileSelf;
+  type?: OtherProfile;
+}
+
+interface ListHeaderProps extends IList, IUserProfile {
+  isProfileSelf: boolean;
+  status: OtherProfile;
+  navigation: any;
+}
+export type { BaseProfileProps, ListHeaderProps };

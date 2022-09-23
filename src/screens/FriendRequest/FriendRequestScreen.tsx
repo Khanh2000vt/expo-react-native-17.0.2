@@ -10,8 +10,9 @@ import {
 } from "react-native";
 import { ApprovalApi } from "../../api";
 import { BaseHeader, Users, VectorBack } from "../../components";
-import { Navigation, OtherProfile, theme } from "../../constant";
+import { Navigation, OtherProfile } from "@constant/index";
 import { handleTimeToNow } from "../../utils";
+import { theme } from "@theme";
 function FriendRequestScreen({ navigation }: { navigation: any }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<any[]>([]);

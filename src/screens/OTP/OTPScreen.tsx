@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Navigation, theme } from "../../constant/index";
+import { Navigation } from "@constant/index";
 import {
   BaseAreaView,
   BaseButton,
@@ -8,6 +8,7 @@ import {
   Tick,
   VectorBack,
 } from "../../components";
+import { theme } from "@theme";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function OTPScreen({ route, navigation }: { route: any; navigation: any }) {

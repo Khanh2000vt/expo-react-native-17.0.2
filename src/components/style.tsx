@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { theme, Input } from "../constant/index";
+import { theme } from "@theme";
 const colors = theme.colors;
 export default StyleSheet.create({
   container: {

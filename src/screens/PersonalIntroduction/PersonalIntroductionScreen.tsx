@@ -8,7 +8,8 @@ import {
   BaseGettingStarted,
   BaseInput,
 } from "../../components";
-import { gender, theme } from "../../constant";
+import { gender } from "@constant/index";
+import { theme } from "@theme";
 const colors = theme.colors;
 function PersonalIntroductionScreen({ navigation }: { navigation: any }) {
   return (

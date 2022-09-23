@@ -17,8 +17,9 @@ import {
   BaseButton,
   BaseInput,
 } from "../../components";
-import { Container, Navigation, theme } from "../../constant";
+import { Container, Navigation } from "@constant/index";
 import { loginAuth, RootState } from "../../redux";
+import { theme } from "@theme";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;

@@ -9,7 +9,6 @@ import {
   Dimensions,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { theme } from "../../../../constant";
 import { addLikes, addReply, deleteLikes, RootState } from "../../../../redux";
 import {
   getTimeCreate,
@@ -26,6 +25,7 @@ import {
 import { BasePostDetailProps } from "./BasePostDetailModel";
 import ModalizeComponent from "../ModalizeComponent";
 import { Modalize } from "react-native-modalize";
+import { theme } from "@theme";
 interface ISizeImage {
   width: number | string | undefined;
   height: number | string | undefined;

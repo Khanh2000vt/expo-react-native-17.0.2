@@ -8,9 +8,10 @@ import {
   ArrowRight,
   Plus,
 } from "../../components";
-import { Navigation, theme } from "../../constant";
+import { Navigation } from "@constant/index";
 import { propsGettingStated } from "./constants";
 import { Title } from "./enum";
+import { theme } from "@theme";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;

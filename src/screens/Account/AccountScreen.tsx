@@ -19,11 +19,12 @@ import {
 } from "../../components";
 
 import BaseAlert from "../../components/BaseAlert/BaseAlert";
-import { Navigation, theme } from "../../constant";
+import { Navigation } from "@constant/index";
 import { logoutAuth, RootState } from "../../redux";
 import { AlertComponent, MenuComponent } from "./components";
 import { Title } from "./enum";
 import { IMenu } from "./model";
+import { theme } from "@theme";
 
 function AccountScreen({ navigation }: { navigation: any }) {
   //redux
