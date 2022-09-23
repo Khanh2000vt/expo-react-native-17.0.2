@@ -9,7 +9,7 @@ import {
   BaseModal,
   VectorBack,
 } from "../../components";
-import { gender, theme } from "../../constants";
+import { gender, Navigation, theme } from "../../constant";
 import { ListYear } from "../../utils";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
@@ -49,7 +49,7 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
     //   birthYear: Yup.string().required("No birth year provided."),
     // }),
     onSubmit: (_values) => {
-      navigation.navigate("OTPScreen", {
+      navigation.navigate(Navigation.OTP, {
         type: 2,
       });
     },

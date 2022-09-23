@@ -1,8 +1,7 @@
+import { theme } from "@theme";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { PropsBaseHeader } from "./BaseHeaderModel";
-import { theme } from "../../constants/index";
-const colors = theme.colors;
 const fontSize = theme.fontSize;
 function BaseHeader({
   title,

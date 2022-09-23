@@ -8,7 +8,7 @@ import {
   SvgInfo,
   VectorBack,
 } from "../../components";
-import { theme } from "../../constants";
+import { theme } from "../../constant";
 import { addCoins, RootState } from "../../redux";
 
 function PurchaseTomoCoinScreen({ navigation }: { navigation: any }) {

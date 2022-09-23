@@ -1,10 +1,8 @@
+import { ISelect } from "@model";
 import { StyleProp, TextStyle, ViewStyle } from "react-native";
 
 interface PropsBaseDropDown {
-  data: {
-    label: string;
-    value: string;
-  }[];
+  data: ISelect[];
   title?: string;
   value?: string;
   styleView?: StyleProp<ViewStyle> | undefined;

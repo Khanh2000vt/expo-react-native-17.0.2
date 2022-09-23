@@ -1,14 +1,16 @@
+import { theme } from "@theme";
+import { handleTimeCreateAt } from "@utils";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { theme } from "../../constants";
-import { handleTimeCreateAt } from "../../utils";
 import { BaseInteractiveProps } from "./BaseInteractiveModel";
 
 enum Type {
   LIKE = "like",
   REPLY = "reply",
 }
-
+const nameDefault = "Donnie Tromp";
+const avatarDefault =
+  "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/179.jpg";
 function BaseInteractive({ user, type }: BaseInteractiveProps) {
   return (
     <View
@@ -16,7 +18,7 @@ function BaseInteractive({ user, type }: BaseInteractiveProps) {
     >
       <View style={styles.flex}>
         <Image
-          source={{ uri: user.avatar }}
+          source={{ uri: user.avatar || avatarDefault }}
           style={[
             styles.avatar,
             type === Type.REPLY ? styles.avatarReply : styles.avatarLike,
@@ -25,7 +27,7 @@ function BaseInteractive({ user, type }: BaseInteractiveProps) {
         <Text
           style={[styles.textName, type === Type.LIKE && styles.textNameLike]}
         >
-          {user.name}
+          {user.name || nameDefault}
         </Text>
         {type === Type.REPLY && (
           <>

@@ -1,5 +1,5 @@
 import { KeyboardAwareScrollViewProps } from "react-native-keyboard-aware-scroll-view";
-import { PropsBaseHeader } from "../BaseHeader/BaseHeaderModel";
+import { PropsBaseHeader } from "@components";
 
 interface PropsBaseScrollView
   extends KeyboardAwareScrollViewProps,

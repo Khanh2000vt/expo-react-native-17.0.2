@@ -10,4 +10,8 @@ enum TypePassword {
   CONFIRM = "confirm",
 }
 
-export { Password, TypePassword };
+enum Title {
+  CHANGE_PASSWORD = "Change Password",
+}
+
+export { Password, TypePassword, Title };

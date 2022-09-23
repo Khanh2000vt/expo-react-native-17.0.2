@@ -2,7 +2,7 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TabAccount, TabCommunities, TabHome } from "../../../components";
-import { Navigation, theme } from "../../../constants";
+import { Navigation, theme } from "../../../constant";
 
 function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (

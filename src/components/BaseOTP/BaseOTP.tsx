@@ -6,13 +6,13 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import InputOTP from "./components/otpInput";
+import InputOTP from "./components/OtpInput";
 import {
   handleCodeFillFull,
   handleInputText,
   handleRef,
 } from "./otpController";
-import { PropsOTP } from "./otpModel";
+import { PropsOTP } from "./BaseOTPModel";
 
 function BaseOTP({
   pinCount = 4,

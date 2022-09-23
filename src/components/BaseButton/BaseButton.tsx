@@ -1,8 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { BaseButtonProps } from "./BaseButtonModel";
-import { theme, Button } from "../../constants/index";
+import { Button } from "@constant/index";
+import { theme } from "@theme";
 const colors = theme.colors;
+
 enum OptionsEnum {
   SOLID = "solid",
   FILL = "fill",

@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
+import { ArrowDownIcon, Tick } from "@components";
+import { theme } from "@theme";
 import Modal from "react-native-modal";
-import { theme } from "../../constants/index";
-import { ArrowDownIcon, Tick } from "../Icon";
 import { BaseModalProps } from "./BaseModalModel";
+import { ISelect } from "@model";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
@@ -29,7 +31,7 @@ function BaseModal({
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const refFlatList = useRef<FlatList>(null);
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
+  const renderItem = ({ item, index }: { item: ISelect; index: number }) => {
     return (
       <TouchableOpacity
         style={styles.itemRenderContainer}
@@ -42,7 +44,7 @@ function BaseModal({
     );
   };
 
-  function handleSelectedItem(item: any, index: number) {
+  function handleSelectedItem(item: ISelect, _: number) {
     onChangeValue && onChangeValue(item.value);
     setModalVisible(false);
   }

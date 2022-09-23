@@ -8,7 +8,7 @@ import {
   ArrowRight,
   Plus,
 } from "../../components";
-import { Navigation, theme } from "../../constants";
+import { Navigation, theme } from "../../constant";
 import { propsGettingStated } from "./constants";
 import { Title } from "./enum";
 

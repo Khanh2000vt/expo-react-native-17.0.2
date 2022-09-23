@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { CommunitiesApi } from "../../api";
+import { CommunitiesApi } from "@api";
 import {
   BaseButton,
   BaseCategory,
@@ -18,9 +18,10 @@ import {
   TomoCoins,
   ViaFacebook,
   ViaTwitter,
-} from "../../components";
-import { theme } from "../../constants";
-import { getJoined, loginAuth, RootState } from "../../redux";
+} from "@components";
+import { getJoined, loginAuth, RootState } from "@redux";
+import { Navigation } from "@constant/index";
+import { theme } from "@theme";
 
 function HomeScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
@@ -79,7 +80,7 @@ function HomeScreen({ navigation }: { navigation: any }) {
         activeOpacity={0.6}
         style={styles.containerItem}
         onPress={() =>
-          navigation.navigate("CommunityDetailScreen", {
+          navigation.navigate(Navigation.COMMUNITY_DETAIL, {
             community: item,
             joined: true,
           })
@@ -120,7 +121,7 @@ function HomeScreen({ navigation }: { navigation: any }) {
             <View style={styles.viewHeader}>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => navigation.navigate("YourProfileScreen")}
+                onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
               >
                 <Image source={{ uri: user.avatar }} style={styles.imageAvt} />
               </TouchableOpacity>
@@ -130,7 +131,7 @@ function HomeScreen({ navigation }: { navigation: any }) {
                 </Text>
                 <TouchableOpacity
                   activeOpacity={0.8}
-                  onPress={() => navigation.navigate("YourProfileScreen")}
+                  onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
                 >
                   <Text style={styles.textName}>{user.name}</Text>
                 </TouchableOpacity>
@@ -181,7 +182,7 @@ function HomeScreen({ navigation }: { navigation: any }) {
                     item={item}
                     isShowTick={false}
                     onPress={() =>
-                      navigation.navigate("CommunityDetailScreen", {
+                      navigation.navigate(Navigation.COMMUNITY_DETAIL, {
                         community: item,
                       })
                     }
@@ -194,7 +195,9 @@ function HomeScreen({ navigation }: { navigation: any }) {
                     IconRight={<CaretRight />}
                     backgroundColor={theme.colors.Neutral0}
                     color={theme.colors.primary}
-                    onPress={() => navigation.navigate("CommunitiesStack")}
+                    onPress={() =>
+                      navigation.navigate(Navigation.COMMUNITIES_STACK)
+                    }
                   />
                 }
               />
@@ -206,7 +209,9 @@ function HomeScreen({ navigation }: { navigation: any }) {
                 color={theme.colors.Neutral10}
                 IconLeft={<TomoCoins style={{ marginHorizontal: 23 }} />}
                 style={styles.buttonGray}
-                onPress={() => navigation.navigate("PurchaseTomoCoinScreen")}
+                onPress={() =>
+                  navigation.navigate(Navigation.PURCHASE_TOMO_COIN)
+                }
               />
               <BaseButton
                 title="Introduce via Twitter"

@@ -1,19 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { CommunitiesApi } from "../../api";
 import { BaseCategory, BaseInput, BasePlaceholder } from "../../components";
-import { Navigation, theme } from "../../constants";
+import { Navigation, theme } from "../../constant";
 import { useDebounce } from "../../hooks";
 import { getFindCommunity } from "./controller";
 
 function CommunitiesScreen({ navigation }: { navigation: any }) {
   //input state
+  
   const [value, onChangeValue] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(true);
   const [listCategories, setListCategories] = useState<any[]>([]);
@@ -36,8 +31,7 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
       const res: any = await CommunitiesApi.getAll();
       setListCategories([...res]);
     } catch (e) {
-      console.log("error: ", e);
-      // setListCategories([]);
+      console.log(e);
     } finally {
       setLoading(false);
     }
@@ -52,16 +46,6 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
 
   //flatList
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item }: { item: any }) => {
-    return (
-      <BaseCategory
-        item={item}
-        key={item.id}
-        isShowTick={false}
-        onPress={handleOnPressCategories}
-      />
-    );
-  };
 
   return (
     <View style={styles.container}>
@@ -81,10 +65,15 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
       ) : (
         <FlatList
           data={listFilter}
-          renderItem={renderItem}
+          renderItem={({ item }) => (
+            <BaseCategory
+              item={item}
+              isShowTick={false}
+              onPress={handleOnPressCategories}
+            />
+          )}
           keyExtractor={keyExtractor}
           ListEmptyComponent={<Text>No results were found !</Text>}
-          initialNumToRender={8}
           style={styles.flatList}
         />
       )}

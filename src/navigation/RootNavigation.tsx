@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useSelector } from "react-redux";
-import { Navigation } from "../constants";
+import { Navigation } from "../constant";
 import { RootState } from "../redux";
 import {
   BlockListScreen,

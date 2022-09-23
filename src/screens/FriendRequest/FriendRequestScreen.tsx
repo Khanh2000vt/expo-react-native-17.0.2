@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { ApprovalApi } from "../../api";
 import { BaseHeader, Users, VectorBack } from "../../components";
-import { OtherProfile, theme } from "../../constants";
+import { Navigation, OtherProfile, theme } from "../../constant";
 import { handleTimeToNow } from "../../utils";
 function FriendRequestScreen({ navigation }: { navigation: any }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -37,7 +37,7 @@ function FriendRequestScreen({ navigation }: { navigation: any }) {
         style={styles.containerItem}
         activeOpacity={0.8}
         onPress={() =>
-          navigation.navigate("OtherProfileScreen", {
+          navigation.navigate(Navigation.OTHER_PROFILE, {
             userOther: item,
             type: OtherProfile.REQUEST_PENDING,
           })

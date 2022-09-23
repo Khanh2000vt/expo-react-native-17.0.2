@@ -1,7 +1,7 @@
+import { theme } from "@theme";
 import React, { memo } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { BaseGettingStartedProps } from "./BaseGettingStartedModel";
-import { theme } from "../../constants/index";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function BaseGettingStarted({
@@ -20,7 +20,7 @@ function BaseGettingStarted({
     <View>
       {showTitle && (
         <View>
-          <Image source={require("../../../assets/png/LogoBlue.png")} />
+          <Image source={require("@assets/png/LogoBlue.png")} />
           <Text style={styles.textIntro}>Getting started</Text>
           <Text style={[styles.textHeader, { marginTop: 5 }]}>
             {titleScreen}
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: fontSize.font28,
     color: colors.Neutral10,
-    //
   },
   viewSNS: {
     flexDirection: "row",

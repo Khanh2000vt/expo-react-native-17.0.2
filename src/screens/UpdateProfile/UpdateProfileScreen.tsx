@@ -21,7 +21,7 @@ import {
   Tick,
   VectorBack,
 } from "../../components";
-import { gender, theme } from "../../constants";
+import { gender, theme } from "../../constant";
 import { RootState, updateUser } from "../../redux";
 import { ListYear } from "../../utils";
 

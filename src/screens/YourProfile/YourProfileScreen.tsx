@@ -2,7 +2,7 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { BaseProfile, Coin, Crown, Users } from "../../components";
-import { theme } from "../../constants";
+import { theme } from "../../constant";
 import { RootState } from "../../redux";
 
 function YourProfileScreen({ navigation }: { navigation: any }) {

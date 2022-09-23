@@ -11,7 +11,7 @@ import {
   Tick,
   VectorBack,
 } from "../../components";
-import { gender, theme } from "../../constants";
+import { gender, Navigation, theme } from "../../constant";
 import { ListYear } from "../../utils";
 
 const colors = theme.colors;
@@ -44,7 +44,7 @@ function RegisterScreen({ navigation }: { navigation: any }) {
     // }),
     onSubmit: (_values) => {
       console.log("OTPScreen");
-      navigation.navigate("OTPScreen", {
+      navigation.navigate(Navigation.OTP, {
         type: 1,
       });
     },

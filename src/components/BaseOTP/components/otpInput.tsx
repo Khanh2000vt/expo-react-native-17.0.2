@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import { PropsInputOTP } from "../otpModel";
+import { PropsInputOTP } from "../BaseOTPModel";
 enum TypeEnum {
   PASSWORD = "password",
   OTP = "otp",

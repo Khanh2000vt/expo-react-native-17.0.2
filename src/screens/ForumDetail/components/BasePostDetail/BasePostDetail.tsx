@@ -9,34 +9,41 @@ import {
   Dimensions,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { theme } from "../../constants";
-import { addLikes, deleteLikes, RootState } from "../../redux";
+import { theme } from "../../../../constant";
+import { addLikes, addReply, deleteLikes, RootState } from "../../../../redux";
 import {
   getTimeCreate,
   getDateCreate,
   handleAmountRounding,
-} from "../../utils";
-import { BaseButton } from "../BaseButton";
-import { HeartFill, HeartOutline, Annotation } from "../Icon";
+  findPostById,
+} from "../../../../utils";
+import { BaseButton } from "../../../../components/BaseButton";
+import {
+  HeartFill,
+  HeartOutline,
+  Annotation,
+} from "../../../../components/Icon";
 import { BasePostDetailProps } from "./BasePostDetailModel";
+import ModalizeComponent from "../ModalizeComponent";
+import { Modalize } from "react-native-modalize";
 interface ISizeImage {
   width: number | string | undefined;
   height: number | string | undefined;
 }
 function BasePostDetail({
   postFocus,
-  onPressLikeDetail,
   liked,
   initAmountLike,
-  initAmountReply,
+  onPressLikeDetail,
 }: BasePostDetailProps) {
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+  const repliesRedux = useSelector((state: RootState) => state.forum.replies);
 
   const [isLiked, setIsLiked] = useState<boolean>(liked);
   const [comment, onChangeComment] = useState<string>();
   const [amountLike, setAmountLike] = useState<number>(initAmountLike);
-  const [amountReplies, setAmountReplies] = useState<number>(initAmountReply);
+  // const [amountReplies, setAmountReplies] = useState<number>(initAmountReply);
   const [sizeImage, setSizeImage] = useState<ISizeImage>({
     width: 0,
     height: 0,
@@ -44,6 +51,7 @@ function BasePostDetail({
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(true);
 
   const runEffectRef = useRef(false);
+  const amountReplies = findPostById(postFocus, repliesRedux).data.length || 0;
 
   useEffect(() => {
     getImage(postFocus.image);
@@ -106,15 +114,13 @@ function BasePostDetail({
     if (!comment || comment.trim().length === 0) {
       return;
     }
-    const dateCreate = new Date();
-    // const userComment = {
-    //   id: (replies.length + 1).toString(),
-    //   name: user.name,
-    //   avatar: user.avatar,
-    //   createdAt: dateCreate.toISOString(),
-    //   body: comment,
-    // };
-    // setReplies([userComment].concat(replies));
+    const params = {
+      post: postFocus,
+      user: user,
+      comment: comment,
+    };
+    dispatch(addReply(params));
+    onChangeComment("");
   }
   return (
     <View style={styles.containerHeaderComponent}>

@@ -1,74 +1,61 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { theme } from "../../constants";
-import { handleAmountRounding, handleTimeCreateAt } from "../../utils";
-import { Annotation, HeartFill, HeartOutline } from "../Icon";
-import { BasePostProps } from "./BasePostModel";
-import { findIndexPostById, findPostById } from "../../utils/handleCount";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addLikes, deleteLikes, RootState } from "../../redux";
-function BasePost({
-  post,
-  onPress,
-  amountReplies,
-  amountLikes,
-  initStateLike,
-  detail = false,
-}: BasePostProps) {
+import {
+  Annotation,
+  HeartFill,
+  HeartOutline,
+} from "../../../../components/Icon";
+import { theme } from "../../../../constant";
+import { addLikes, deleteLikes, RootState } from "../../../../redux";
+import {
+  countAmount,
+  handleAmountRounding,
+  handleTimeCreateAt,
+} from "../../../../utils";
+import { getActionLike } from "../../controller";
+import { RenderItemProps } from "./RenderITemModel";
+function RenderItem({ post, onPress }: RenderItemProps) {
   //redux
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+  const likeRedux = useSelector((state: RootState) => state.forum.likes);
+  const repliesRedux = useSelector((state: RootState) => state.forum.replies);
   //state
-  const [isLiked, setIsLiked] = useState<boolean>(initStateLike);
-  const [likes, setLikes] = useState<number>(amountLikes);
-  const runEffectRef = useRef(false);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [likes, setLikes] = useState<number>(0);
+
+  const amountReply = countAmount(post, repliesRedux);
+  console.log("likeRedux: ", likeRedux);
 
   useEffect(() => {
-    if (runEffectRef.current) {
-      requestApi();
-    } else {
-      runEffectRef.current = true;
-    }
-  }, [likes]);
+    setIsLiked(getActionLike(likeRedux, user, post));
+    setLikes(countAmount(post, likeRedux));
+  }, [likeRedux]);
 
-  const requestApi = async () => {
+  const handlePressLike = () => {
     try {
       const params = {
         post: post,
         user: user,
       };
-      if (isLiked) {
+      if (!isLiked) {
         dispatch(addLikes(params));
       } else {
         dispatch(deleteLikes(params));
       }
     } catch (e) {
-      runEffectRef.current = false;
-      handleSetLikes();
-      setIsLiked(!isLiked);
+    } finally {
     }
   };
 
-  const handlePressLike = async () => {
-    setIsLiked(!isLiked);
-    handleSetLikes();
-  };
-
-  const handleSetLikes = () => {
-    if (isLiked) {
-      setLikes(likes - 1);
-    } else {
-      setLikes(likes + 1);
-    }
-  };
   return (
     <View style={styles.container}>
       <Image source={{ uri: post.avatar }} style={styles.avatar} />
       <TouchableOpacity
         style={styles.viewPost}
         activeOpacity={0.8}
-        onPress={() => onPress && onPress(post, isLiked)}
+        onPress={() => onPress && onPress(post, isLiked, likes, amountReply)}
       >
         <View style={styles.flex}>
           <Text style={styles.textName}>{post.name}</Text>
@@ -111,7 +98,7 @@ function BasePost({
               <Annotation width={28} height={28} />
             </TouchableOpacity>
             <Text style={styles.textLikes}>
-              {handleAmountRounding(amountReplies)}
+              {handleAmountRounding(amountReply)}
             </Text>
           </View>
         </View>
@@ -196,4 +183,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BasePost;
+export default RenderItem;

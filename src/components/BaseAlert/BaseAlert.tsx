@@ -1,7 +1,7 @@
+import { theme } from "@theme";
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import Modal from "react-native-modal";
-import { theme } from "../../constants";
 import { BaseAlertProps } from "./BaseAlertModel";
 function BaseAlert({
   children,

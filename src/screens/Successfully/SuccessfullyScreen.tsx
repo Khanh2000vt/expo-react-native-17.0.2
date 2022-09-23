@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { BaseButton, CircleComplete } from "../../components";
-import { theme } from "../../constants";
+import { Navigation, theme } from "../../constant";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
@@ -17,7 +17,7 @@ function SuccessfullyScreen({ navigation }: { navigation: any }) {
         title="Back to login"
         option="solid"
         style={styles.button}
-        onPress={() => navigation.navigate("LoginScreen")}
+        onPress={() => navigation.navigate(Navigation.LOGIN)}
       />
     </View>
   );

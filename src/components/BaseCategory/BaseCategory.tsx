@@ -1,7 +1,7 @@
+import { Tick } from "@components";
+import { theme } from "@theme";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { theme } from "../../constants/index";
-import { Tick } from "../Icon";
 import { BaseCategoryProps } from "./BaseCategoryModel";
 const colors = theme.colors;
 const fontSize = theme.fontSize;

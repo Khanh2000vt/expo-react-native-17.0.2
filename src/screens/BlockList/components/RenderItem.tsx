@@ -1,7 +1,8 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import { BaseButton } from "../../../components";
-import { theme } from "../../../constants";
+import { theme } from "../../../constant";
+import { Title } from "../enum";
 
 interface IState {
   item: any;
@@ -16,7 +17,7 @@ function RenderItem({ item, onPress }: IState) {
         <Text style={styles.textNameItem}>{item.name}</Text>
       </View>
       <BaseButton
-        title="Remove block"
+        title={Title.REMOVE_BLOCK}
         option="solid"
         onPress={() => onPress(item)}
       />

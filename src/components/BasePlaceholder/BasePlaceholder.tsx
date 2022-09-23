@@ -1,12 +1,6 @@
+import { theme } from "@theme";
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import {
-  Placeholder,
-  PlaceholderLine,
-  PlaceholderMedia,
-  ShineOverlay,
-} from "rn-placeholder";
-import { theme } from "../../constants";
 
 const BasePlaceholder = {
   CommunityJoined: (amount: number = 3) =>

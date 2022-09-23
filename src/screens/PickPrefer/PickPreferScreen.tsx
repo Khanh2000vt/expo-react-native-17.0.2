@@ -8,7 +8,7 @@ import {
 } from "../../components";
 
 import { FlatList, StyleSheet, View } from "react-native";
-import { theme } from "../../constants/index";
+import { Navigation, theme } from "../../constant";
 import { getAddITem, getDeleteItem } from "./PickPreferHandle";
 
 const colors = theme.colors;
@@ -60,7 +60,7 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
             stroke={countTick === 0 ? colors.Neutral3 : colors.primary}
           />
         }
-        onPress={() => navigation.navigate("PersonalIntroductionScreen")}
+        onPress={() => navigation.navigate(Navigation.PERSONAL_INTRODUCTION)}
         disabled={countTick === 0}
       />
     </BaseAreaView>

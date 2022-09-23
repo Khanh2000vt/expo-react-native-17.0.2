@@ -17,7 +17,7 @@ import {
   BaseButton,
   BaseInput,
 } from "../../components";
-import { Container, theme } from "../../constants/index";
+import { Container, Navigation, theme } from "../../constant";
 import { loginAuth, RootState } from "../../redux";
 
 const colors = theme.colors;
@@ -48,12 +48,12 @@ function LoginScreen({ navigation }: { navigation: any }) {
 
   function handleForgotPassword() {
     console.log("ForgotPasswordScreen");
-    navigation.navigate("ForgotPasswordScreen");
+    navigation.navigate(Navigation.FORGOT_PASSWORD);
   }
 
   function handleRegister() {
     console.log("RegisterScreen");
-    navigation.navigate("RegisterScreen");
+    navigation.navigate(Navigation.REGISTER);
   }
 
   if (isLoading) {

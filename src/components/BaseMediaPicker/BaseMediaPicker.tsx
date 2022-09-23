@@ -9,8 +9,8 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Modal from "react-native-modal";
-import { theme } from "../../constants";
 import { BaseMediaPickerProps } from "./BaseMediaPickerModel";
+import { theme } from "@theme";
 function BaseMediaPicker({
   isVisible,
   option = "All",
@@ -74,7 +74,6 @@ function BaseMediaPicker({
   };
 
   const handleAlert = (title: string, message: string) => {
-    console.log("Alert");
     Alert.alert(title, message, [
       {
         text: "Cancel",
@@ -127,7 +126,6 @@ const styles = StyleSheet.create({
   },
   containerModal: {
     height: "40%",
-    // height: 500,
   },
   lineModal: {
     height: 0,

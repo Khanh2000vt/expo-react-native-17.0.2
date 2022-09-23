@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { BaseButton } from "../../../components";
-import { theme } from "../../../constants";
+import { theme } from "../../../constant";
 import { Title } from "../enum";
 import { AlertComponentProps } from "../model";
 

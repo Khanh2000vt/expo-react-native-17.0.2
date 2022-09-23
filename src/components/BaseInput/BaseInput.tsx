@@ -6,8 +6,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Input, theme } from "../../constants/index";
-import { Eye, EyeSlash, MagnifyingGlass, SlidersHorizontal } from "../Icon";
+import { Eye, EyeSlash, MagnifyingGlass, SlidersHorizontal } from "@components";
+import { Input } from "@constant/index";
+import { theme } from "@theme";
 import { PropsBaseInput } from "./BaseInputModel";
 const colors = theme.colors;
 const fontSize = theme.fontSize;

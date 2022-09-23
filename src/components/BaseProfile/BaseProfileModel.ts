@@ -1,10 +1,10 @@
-import { ColorValue } from "react-native";
-import { OtherProfile } from "../../constants";
+import { ColorValue, GestureResponderEvent } from "react-native";
+import { OtherProfile } from "../../constant";
 
 interface List {
   id: number;
   icon: React.ReactNode;
-  onPress: () => void;
+  onPress: () => void | undefined;
 }
 
 interface AmountProps extends List {

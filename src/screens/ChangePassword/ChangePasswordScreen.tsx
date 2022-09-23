@@ -7,8 +7,9 @@ import {
   BaseInput,
   VectorBack,
 } from "../../components";
-import { theme } from "../../constants";
+import { theme } from "../../constant";
 import { arrayInput, initialValues, validationSchema } from "./constant";
+import { Title } from "./enum";
 
 function ChangePasswordScreen({ navigation }: { navigation: any }) {
   const formik = useFormik({
@@ -22,7 +23,7 @@ function ChangePasswordScreen({ navigation }: { navigation: any }) {
   return (
     <View style={styles.container}>
       <BaseHeader
-        title="Change Password"
+        title={Title.CHANGE_PASSWORD}
         IconLeft={<VectorBack />}
         onPressLeft={() => navigation.goBack()}
         styleHeader={styles.styleHeader}
@@ -42,7 +43,10 @@ function ChangePasswordScreen({ navigation }: { navigation: any }) {
             />
           ))}
         </View>
-        <BaseButton title="Change Password" onPress={formik.handleSubmit} />
+        <BaseButton
+          title={Title.CHANGE_PASSWORD}
+          onPress={formik.handleSubmit}
+        />
       </View>
     </View>
   );

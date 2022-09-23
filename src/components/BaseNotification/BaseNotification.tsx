@@ -1,3 +1,5 @@
+import { CheckCircle, MinusCircle } from "@components";
+import { theme } from "@theme";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, {
@@ -5,8 +7,6 @@ import Animated, {
   LightSpeedInLeft,
   LightSpeedOutRight,
 } from "react-native-reanimated";
-import { theme } from "../../constants";
-import { CheckCircle, MinusCircle } from "../Icon";
 import { BaseNotificationProps } from "./BaseNotificationModel";
 function BaseNotification({ notification, onPress }: BaseNotificationProps) {
   const [visible, setVisible] = useState(true);

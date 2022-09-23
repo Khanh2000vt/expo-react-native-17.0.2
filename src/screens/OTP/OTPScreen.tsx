@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { theme } from "../../constants/index";
+import { Navigation, theme } from "../../constant/index";
 import {
   BaseAreaView,
   BaseButton,
@@ -15,10 +15,10 @@ function OTPScreen({ route, navigation }: { route: any; navigation: any }) {
   function handleCodeFilled(value: string) {
     if (type === 1) {
       console.log("vao day");
-      navigation.navigate("AccountsSNSScreen");
+      navigation.navigate(Navigation.ACCOUNTS_SNS);
     } else if (type === 2) {
       console.log("vao 2");
-      navigation.navigate("SuccessfullyScreen");
+      navigation.navigate(Navigation.SUCCESSFULLY);
     }
   }
   return (
@@ -49,13 +49,12 @@ function OTPScreen({ route, navigation }: { route: any; navigation: any }) {
         IconRight={<Tick height={20} width={20} />}
         style={styles.baseButton}
         onPress={() => {
-          // navigation.navigate("AccountsSNSScreen");
           if (type === 1) {
             console.log("vao day");
-            navigation.navigate("AccountsSNSScreen");
+            navigation.navigate(Navigation.ACCOUNTS_SNS);
           } else if (type === 2) {
             console.log("vao 2");
-            navigation.navigate("SuccessfullyScreen");
+            navigation.navigate(Navigation.SUCCESSFULLY);
           }
         }}
       />

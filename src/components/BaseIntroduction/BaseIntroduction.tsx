@@ -1,8 +1,10 @@
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { BaseIntroductionProps } from "./BaseIntroductionModel";
-import { theme } from "../../constants/index";
-import { ArrowDownIcon } from "../Icon";
+
+import { theme } from "@theme";
+import { ArrowDownIcon } from "@components";
+
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function BaseIntroduction({}: BaseIntroductionProps) {
@@ -12,7 +14,7 @@ function BaseIntroduction({}: BaseIntroductionProps) {
         style={[styles.viewSNS, styles.header]}
         activeOpacity={0.8}
       >
-        <Image source={require("../../../assets/png/instagram.png")} />
+        <Image source={require("@assets/png/instagram.png")} />
         <ArrowDownIcon />
       </TouchableOpacity>
       <View style={[styles.viewSNS, styles.body]}>

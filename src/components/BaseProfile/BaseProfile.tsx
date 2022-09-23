@@ -3,23 +3,19 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import { useDispatch } from "react-redux";
-import { LogApi } from "../../api";
 
-import { OtherProfile, theme } from "../../constants";
-import { spendCoins } from "../../redux";
-import { formatTime } from "../../utils";
-import BaseAlert from "../BaseAlert/BaseAlert";
-import { BaseButton } from "../BaseButton";
-import { BaseHeader } from "../BaseHeader";
-import { BasePopupRequest } from "../BasePopupRequest";
+import { LogApi } from "@api";
 import {
+  BaseAlert,
+  BaseButton,
+  BaseHeader,
+  BasePopupRequest,
   Bell,
   CaretRight,
   PencilLine,
@@ -27,8 +23,14 @@ import {
   VectorBack,
   Warnings,
   WarningsFill,
-} from "../Icon";
+} from "@components";
+import { Navigation, OtherProfile } from "@constant/index";
+import { spendCoins } from "@redux";
+import { theme } from "@theme";
+import { formatTime } from "@utils";
+
 import { BaseProfileProps } from "./BaseProfileModel";
+import { ILogAPI, IRequestAPI } from "@model";
 
 function BaseProfile({
   navigation,
@@ -45,10 +47,12 @@ function BaseProfile({
   const dispatch = useDispatch();
   const [isVisibleModal, setIsVisibleModal] = useState<boolean>(false);
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [indexLog, setIndexLog] = useState<number>(3);
-  const [activities, setActivities] = useState<any[]>([]);
-  const [status, setStatus] = useState<OtherProfile>(OtherProfile.OTHER);
   const [isShowAlert, setIsShowAlert] = useState<boolean>(false);
+
+  const [indexLog, setIndexLog] = useState<number>(3);
+  const [activities, setActivities] = useState<ILogAPI[]>([]);
+  const [status, setStatus] = useState<OtherProfile>(OtherProfile.OTHER);
+
   useEffect(() => {
     setStatus(type);
   }, []);
@@ -262,7 +266,7 @@ function BaseProfile({
             color={theme.colors.Neutral10}
             IconRight={iconRightButton("5")}
             style={styles.buttonProfileSelf}
-            onPress={() => navigation.navigate("WaitingForApprovalScreen")}
+            onPress={() => navigation.navigate(Navigation.WAITING_FOR_APPROVAL)}
           />
           <BaseButton
             title="Friend request sent"
@@ -270,7 +274,7 @@ function BaseProfile({
             color={theme.colors.Neutral10}
             IconRight={iconRightButton("22")}
             style={styles.buttonProfileSelf}
-            onPress={() => navigation.navigate("FriendRequestScreen")}
+            onPress={() => navigation.navigate(Navigation.FRIEND_REQUEST)}
           />
         </View>
       </>
@@ -298,7 +302,8 @@ function BaseProfile({
                 onPressLeft={() => navigation.goBack()}
                 IconRight={isProfileSelf && <PencilLine />}
                 onPressRight={() =>
-                  isProfileSelf && navigation.navigate("UpdateProfileScreen")
+                  isProfileSelf &&
+                  navigation.navigate(Navigation.UPDATE_PROFILE)
                 }
                 styleHeader={styles.styleHeader}
                 styleTitleHeader={styles.styleTitleHeader}

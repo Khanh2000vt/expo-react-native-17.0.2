@@ -1,5 +1,11 @@
 import { FormikErrors, FormikTouched } from "formik";
-import { StyleProp, TextInputProps, TextStyle, ViewStyle } from "react-native";
+import {
+  GestureResponderEvent,
+  StyleProp,
+  TextInputProps,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
 
 interface PropsBaseInput extends TextInputProps {
   title?: string;
@@ -11,10 +17,10 @@ interface PropsBaseInput extends TextInputProps {
   messageError?:
     | string
     | string[]
-    | FormikErrors<any>
-    | FormikErrors<any>[]
+    | FormikErrors<string>
+    | FormikErrors<string>[]
     | undefined;
-  onPressFilter?: () => void;
+  onPressFilter?: () => void | undefined;
 }
 
 export type { PropsBaseInput };

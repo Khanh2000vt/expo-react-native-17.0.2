@@ -5,21 +5,14 @@ import { ForumApi } from "../../api";
 import {
   BaseHeader,
   BasePlaceholder,
-  BasePost,
   Pencil,
   VectorBack,
 } from "../../components";
-import { theme } from "../../constants";
+import { Navigation, theme } from "../../constant";
 import { RootState } from "../../redux";
-import {
-  countAmount,
-  findIndexPostById,
-  findPostById,
-} from "../../utils/handleCount";
+import { RenderItem } from "./components/RenderItem";
 
 function ForumScreen({ navigation }: { navigation: any }) {
-  const likeRedux = useSelector((state: RootState) => state.forum.likes);
-  const repliesRedux = useSelector((state: RootState) => state.forum.replies);
   const user = useSelector((state: RootState) => state.auth.user);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -50,39 +43,9 @@ function ForumScreen({ navigation }: { navigation: any }) {
 
   async function handlePressPost(post: any) {
     const a = await ForumApi.postNewPost(post);
-    // getListPost();
   }
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item }: { item: any }) => {
-    const postIndexById = likeRedux.findIndex(
-      (likeItem) => likeItem.post_id === item.id
-    );
-    let initStateLike = false;
-    if (postIndexById !== -1 && likeRedux[postIndexById].data.length !== 0) {
-      initStateLike = likeRedux[postIndexById].data.some(
-        (like) => like.user_id === user.user_id.toString()
-      );
-    }
-    const amountReply = countAmount(item, repliesRedux);
-    const amountLike = countAmount(item, likeRedux);
-    return (
-      <BasePost
-        post={item}
-        amountReplies={amountReply}
-        amountLikes={amountLike}
-        onPress={(post, liked) =>
-          navigation.navigate("ForumDetailScreen", {
-            postFocus: post,
-            liked: liked,
-            initAmountLike: amountLike,
-            initAmountReply: amountReply,
-          })
-        }
-        initStateLike={initStateLike}
-      />
-    );
-  };
 
   const ListFooterComponent = () => {
     return isLoadMore ? (
@@ -96,6 +59,20 @@ function ForumScreen({ navigation }: { navigation: any }) {
     setPageCurrent(1);
     getListPost();
   };
+
+  const handlePressItem = (
+    post: any,
+    liked: boolean,
+    amountLike: number,
+    amountReply: number
+  ) => {
+    navigation.navigate(Navigation.FORUM_DETAIL, {
+      postFocus: post,
+      liked: liked,
+      initAmountLike: amountLike,
+      initAmountReply: amountReply,
+    });
+  };
   return (
     <View style={styles.container}>
       <BaseHeader
@@ -104,7 +81,7 @@ function ForumScreen({ navigation }: { navigation: any }) {
         onPressLeft={() => navigation.goBack()}
         IconRight={<Pencil />}
         onPressRight={() =>
-          navigation.navigate("NewPostScreen", {
+          navigation.navigate(Navigation.NEW_POST, {
             onPressPost: handlePressPost,
           })
         }
@@ -117,7 +94,9 @@ function ForumScreen({ navigation }: { navigation: any }) {
       ) : (
         <FlatList
           data={posts}
-          renderItem={renderItem}
+          renderItem={({ item }) => (
+            <RenderItem post={item} onPress={handlePressItem} />
+          )}
           showsVerticalScrollIndicator={false}
           keyExtractor={keyExtractor}
           ListFooterComponent={ListFooterComponent}

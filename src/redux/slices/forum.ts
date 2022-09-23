@@ -63,9 +63,34 @@ const forumSlide = createSlice({
         ),
       ];
     },
+    addReply: (state: IState, action: PayloadAction<any>) => {
+      const { post, user, comment } = action.payload;
+      const index = findIndexPostById(post, state.replies);
+      const initReply = {
+        createdAt: new Date().toISOString(),
+        name: user.name,
+        avatar: user.avatar,
+        body: comment,
+        id: "1",
+      };
+      if (index !== -1) {
+        state.replies[index].data = [
+          { ...initReply, id: state.replies[index].data.length.toString() },
+          ...state.replies[index].data,
+        ];
+      } else {
+        state.replies = [
+          ...state.replies,
+          {
+            post_id: post.id,
+            data: [initReply],
+          },
+        ];
+      }
+    },
   },
 });
 
-export const { addLikes, deleteLikes } = forumSlide.actions;
+export const { addLikes, deleteLikes, addReply } = forumSlide.actions;
 export const selectForum = (state: RootState) => state.forum;
 export default forumSlide.reducer;

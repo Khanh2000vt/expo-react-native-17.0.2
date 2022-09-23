@@ -1,9 +1,10 @@
+import { GestureResponderEvent } from "react-native";
 import { Title } from "../enum";
 interface IMenu {
   id: number;
   title: Title;
   icon: React.ReactNode;
-  onPress: () => void;
+  onPress: () => void | undefined;
 }
 
 interface MenuComponentProps {
@@ -11,8 +12,8 @@ interface MenuComponentProps {
 }
 
 interface AlertComponentProps {
-  onPressLogout: () => void;
-  onPressCancel: () => void;
+  onPressLogout: () => void | undefined;
+  onPressCancel: () => void | undefined;
 }
 
 export type { MenuComponentProps, IMenu, AlertComponentProps };

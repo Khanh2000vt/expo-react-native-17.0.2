@@ -1,12 +1,12 @@
-import { StyleProp, ViewStyle } from "react-native";
+import { GestureResponderEvent, StyleProp, ViewStyle } from "react-native";
 
 export interface BasePopupRequestProps {
   isVisible: boolean;
-  onBackButtonPress?: () => void;
-  onBackdropPress?: () => void;
+  onBackButtonPress?: () => void | undefined;
+  onBackdropPress?: () => void | undefined;
   styleContainer?: StyleProp<ViewStyle> | undefined;
-  onPressCancel?: () => void;
-  onPressOK?: () => void;
+  onPressCancel?: () => void | undefined;
+  onPressOK?: () => void | undefined;
   accept?: boolean;
   coinRequest?: number;
 }

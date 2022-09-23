@@ -7,7 +7,7 @@ import {
   BaseButton,
   BaseInput,
 } from "../../components";
-import { theme } from "../../constants/index";
+import { Navigation, theme } from "../../constant/index";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function ForgotPasswordScreen({ navigation }: { navigation: any }) {
@@ -25,7 +25,7 @@ function ForgotPasswordScreen({ navigation }: { navigation: any }) {
         initialValues={{
           email: "",
         }}
-        onSubmit={(_values) => navigation.navigate("RegisterForgotScreen")}
+        onSubmit={(_values) => navigation.navigate(Navigation.REGISTER_FORGOT)}
       >
         {({ handleChange, handleSubmit, values }) => (
           <View>

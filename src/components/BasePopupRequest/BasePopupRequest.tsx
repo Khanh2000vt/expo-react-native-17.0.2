@@ -2,9 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Modal from "react-native-modal";
 import { useSelector } from "react-redux";
-import { theme } from "../../constants";
-import { RootState } from "../../redux";
-import { BaseButton } from "../BaseButton";
+
+import { BaseButton } from "@components";
+import { RootState } from "@redux";
+import { theme } from "@theme";
 import { BasePopupRequestProps } from "./BasePopupRequestModel";
 
 function BasePopupRequest({

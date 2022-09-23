@@ -19,7 +19,7 @@ import {
 } from "../../components";
 
 import BaseAlert from "../../components/BaseAlert/BaseAlert";
-import { Navigation, theme } from "../../constants";
+import { Navigation, theme } from "../../constant";
 import { logoutAuth, RootState } from "../../redux";
 import { AlertComponent, MenuComponent } from "./components";
 import { Title } from "./enum";

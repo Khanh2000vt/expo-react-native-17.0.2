@@ -3,10 +3,10 @@ import { StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import { Container } from "../../constants/index";
+import { Container } from "@constant/index";
 import { PropsBaseScrollView } from "./BaseAreaViewProps";
-import { BaseHeader } from "../BaseHeader";
-import { theme } from "../../constants/index";
+import { theme } from "@theme";
+import { BaseHeader } from "@components";
 const colors = theme.colors;
 function BaseAreaView({
   paddingLeft = Container.PADDING_LEFT,
@@ -25,7 +25,6 @@ function BaseAreaView({
   scroll = false,
   ...props
 }: PropsBaseScrollView) {
-  //SafeAreaView
   return (
     <SafeAreaView style={styles.safeAreaView}>
       {header && (

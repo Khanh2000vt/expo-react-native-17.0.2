@@ -1,16 +1,17 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  StyleSheet,
   ActivityIndicator,
   FlatList,
-  Image,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import { ApprovalApi } from "../../api";
-import { BaseButton, BaseHeader, VectorBack } from "../../components";
-import { theme } from "../../constants";
+import { BaseHeader, VectorBack } from "../../components";
+import { theme } from "../../constant";
 import { RenderItem } from "./components";
+import { handleRemoveById } from "./controller";
+import { Title } from "./enum";
 
 function BlockListScreen({ navigation }: { navigation: any }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -32,17 +33,14 @@ function BlockListScreen({ navigation }: { navigation: any }) {
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
-  const renderItem = ({ item }: { item: any }) => {
-    const handleRemoveBlock = (itemSelected: any) => {
-      setUsers(users.filter((user) => user.id !== itemSelected.id));
-    };
-    return <RenderItem item={item} onPress={handleRemoveBlock} />;
+  const handleRemoveBlock = (itemSelected: any) => {
+    setUsers(handleRemoveById(itemSelected, users));
   };
 
   return (
     <View style={styles.container}>
       <BaseHeader
-        title="Block List"
+        title={Title.BLOCK_LIST}
         IconLeft={<VectorBack />}
         onPressLeft={() => navigation.goBack()}
         styleHeader={styles.styleHeader}
@@ -52,7 +50,9 @@ function BlockListScreen({ navigation }: { navigation: any }) {
       ) : (
         <FlatList
           data={users}
-          renderItem={renderItem}
+          renderItem={({ item }) => (
+            <RenderItem item={item} onPress={handleRemoveBlock} />
+          )}
           keyExtractor={keyExtractor}
           style={styles.flatList}
           ListEmptyComponent={<Text>Block List Empty!</Text>}

@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
+import { ArrowDownIcon } from "@components";
+import { theme } from "@theme";
 import { PropsBaseDropDown } from "./BaseDropDownModel";
-import { StyleSheet, Text, View } from "react-native";
-import { theme } from "../../constants/index";
-import { ArrowDownIcon } from "../Icon";
+import { ISelect } from "@model";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
+
+interface IPops {
+  style: StyleProp<ViewStyle>;
+}
+
+const ArrowDownIconComponent = ({ style }: IPops) => (
+  <ArrowDownIcon style={style} />
+);
+
 function BaseDropDown({
   data,
   title,
@@ -21,7 +31,7 @@ function BaseDropDown({
 }: PropsBaseDropDown) {
   const [open, setOpen] = useState<boolean>(false);
   const [value, setValue] = useState("");
-  const [items, setItems] = useState<{ label: string; value: string }[]>(data);
+  const [items, setItems] = useState<ISelect[]>(data);
   return (
     <View style={[styles.container, styleView]}>
       <Text style={styles.textTitle}>{title}</Text>
@@ -42,9 +52,7 @@ function BaseDropDown({
           itemSeparator
           zIndexInverse={zIndexInverse}
           style={styles.dropDownPicker}
-          ArrowDownIconComponent={({ style }) => (
-            <ArrowDownIcon style={style} />
-          )}
+          ArrowDownIconComponent={ArrowDownIconComponent}
           dropDownContainerStyle={styles.dropDownContainerStyle}
           selectedItemContainerStyle={styles.listItemLabelStyle}
           itemSeparatorStyle={{ backgroundColor: colors.Neutral3 }}

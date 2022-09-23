@@ -1,12 +1,10 @@
+import { SvgUser } from "@components";
+import { theme } from "@theme";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { theme } from "../../constants";
-import { SvgUser } from "../Icon";
-interface IBaseMember {
-  item: any;
-  onPress: (item: any) => void;
-}
-function BaseMember({ item, onPress }: IBaseMember) {
+import { BaseMemberProps } from "./BaseMemberModal";
+
+function BaseMember({ item, onPress }: BaseMemberProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}

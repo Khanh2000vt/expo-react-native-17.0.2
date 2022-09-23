@@ -9,7 +9,36 @@
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
-    "target": "esnext"
+    "target": "esnext",
+    "baseUrl": ".",
+    "paths": {
+      "@*": ["src/*"],
+      "@assets/*": ["assets/*"],
+      "@api/*": ["src/api/*"],
+      "@components/*": ["src/components/*"],
+      "@constant": ["src/constant/*"],
+      "@firebase/*": ["src/firebase/*"],
+      "@helper/*": ["src/helper/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@model/*": ["src/model/*"],
+      "@navigation/*": ["src/navigation/*"],
+      "@redux/*": ["src/redux/*"],
+      "@screens/*": ["src/screens/*"],
+      "@utils/*": ["src/utils/*"],
+      "@theme/*": ["src/theme/*"]
+      // "@i18n/*": [
+      //   "src/i18n/*"
+      // ],
+      // "@routes/*": [
+      //   "src/routes/*"
+      // ],
+      // "@services/*": [
+      //   "src/services/*"
+      // ],
+      // "@env": [
+      //   "src/env.js"
+      // ],
+    }
   },
   "exclude": [
     "node_modules",

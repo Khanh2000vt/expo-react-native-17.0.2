@@ -20,7 +20,7 @@ import {
   Users,
   VectorBack,
 } from "../../components";
-import { OtherProfile, theme } from "../../constants";
+import { Navigation, OtherProfile, theme } from "../../constant";
 import { spendCoins } from "../../redux";
 import { handleTimeToNow } from "../../utils";
 function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
@@ -46,7 +46,7 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
   }
 
   function handlePressItem(item: any) {
-    navigation.navigate("OtherProfileScreen", {
+    navigation.navigate(Navigation.OTHER_PROFILE, {
       userOther: item,
       type: OtherProfile.INVITATION,
     });
