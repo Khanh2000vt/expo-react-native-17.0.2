@@ -1,14 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { theme } from "../../constants";
-import { handleAmountLikes, handleTimeCreateAt } from "../../utils";
+import { handleAmountRounding, handleTimeCreateAt } from "../../utils";
 import { Annotation, HeartFill, HeartOutline } from "../Icon";
 import { BasePostProps } from "./BasePostModel";
-//
-function BasePost({ post, onPress }: BasePostProps) {
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [amountLike, setAmountLike] = useState<number>(post.likes);
-  // const reply = 1;
+import { findIndexPostById, findPostById } from "../../utils/handleCount";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { addLikes, deleteLikes, RootState } from "../../redux";
+function BasePost({
+  post,
+  onPress,
+  amountReplies,
+  amountLikes,
+  initStateLike,
+  detail = false,
+}: BasePostProps) {
+  //redux
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
+  //state
+  const [isLiked, setIsLiked] = useState<boolean>(initStateLike);
+  const [likes, setLikes] = useState<number>(amountLikes);
+  const runEffectRef = useRef(false);
+
+  useEffect(() => {
+    if (runEffectRef.current) {
+      requestApi();
+    } else {
+      runEffectRef.current = true;
+    }
+  }, [likes]);
+
+  const requestApi = async () => {
+    try {
+      const params = {
+        post: post,
+        user: user,
+      };
+      if (isLiked) {
+        dispatch(addLikes(params));
+      } else {
+        dispatch(deleteLikes(params));
+      }
+    } catch (e) {
+      runEffectRef.current = false;
+      handleSetLikes();
+      setIsLiked(!isLiked);
+    }
+  };
+
+  const handlePressLike = async () => {
+    setIsLiked(!isLiked);
+    handleSetLikes();
+  };
+
+  const handleSetLikes = () => {
+    if (isLiked) {
+      setLikes(likes - 1);
+    } else {
+      setLikes(likes + 1);
+    }
+  };
   return (
     <View style={styles.container}>
       <Image source={{ uri: post.avatar }} style={styles.avatar} />
@@ -40,10 +93,7 @@ function BasePost({ post, onPress }: BasePostProps) {
             <TouchableOpacity
               style={styles.touchableOpacity}
               activeOpacity={0.8}
-              onPress={() => {
-                setAmountLike(isLiked ? amountLike - 1 : amountLike + 1);
-                setIsLiked(!isLiked);
-              }}
+              onPress={handlePressLike}
             >
               {isLiked ? (
                 <HeartFill width={28} height={28} />
@@ -51,9 +101,7 @@ function BasePost({ post, onPress }: BasePostProps) {
                 <HeartOutline width={28} height={28} />
               )}
             </TouchableOpacity>
-            <Text style={styles.textLikes}>
-              {handleAmountLikes(amountLike)}
-            </Text>
+            <Text style={styles.textLikes}>{handleAmountRounding(likes)}</Text>
           </View>
           <View style={styles.flex}>
             <TouchableOpacity
@@ -63,7 +111,7 @@ function BasePost({ post, onPress }: BasePostProps) {
               <Annotation width={28} height={28} />
             </TouchableOpacity>
             <Text style={styles.textLikes}>
-              {handleAmountLikes(post.replies)}
+              {handleAmountRounding(amountReplies)}
             </Text>
           </View>
         </View>

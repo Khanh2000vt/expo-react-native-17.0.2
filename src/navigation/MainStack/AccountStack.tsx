@@ -1,13 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {
-  AccountScreen,
-  BlockListScreen,
-  ChangePasswordScreen,
-  FriendRequestScreen,
-  UpdateProfileScreen,
-  WaitingForApprovalScreen,
-  YourProfileScreen,
-} from "../../screens";
+import { Navigation } from "../../constants";
+import { AccountScreen } from "../../screens";
 const Stack = createNativeStackNavigator();
 function AccountStack() {
   return (
@@ -16,7 +9,7 @@ function AccountStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name="AccountScreen" component={AccountScreen} />
+      <Stack.Screen name={Navigation.ACCOUNT} component={AccountScreen} />
     </Stack.Navigator>
   );
 }

@@ -1,11 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 import { ForumApi } from "../../api";
 import {
   BaseHeader,
@@ -15,8 +10,18 @@ import {
   VectorBack,
 } from "../../components";
 import { theme } from "../../constants";
+import { RootState } from "../../redux";
+import {
+  countAmount,
+  findIndexPostById,
+  findPostById,
+} from "../../utils/handleCount";
 
 function ForumScreen({ navigation }: { navigation: any }) {
+  const likeRedux = useSelector((state: RootState) => state.forum.likes);
+  const repliesRedux = useSelector((state: RootState) => state.forum.replies);
+  const user = useSelector((state: RootState) => state.auth.user);
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [posts, setPosts] = useState<any[]>([]);
   const [pageCurrent, setPageCurrent] = useState<number>(1);
@@ -33,13 +38,13 @@ function ForumScreen({ navigation }: { navigation: any }) {
       setRefreshing(true);
       const params = { p: pageCurrent, l: 10 };
       const res: any = await ForumApi.getAll(params);
-      setIsLoading(false);
-      setIsLoadMore(false);
-      setRefreshing(false);
       setPosts([...posts.concat(res)]);
       setPageCurrent(pageCurrent + 1);
     } catch (e) {
-      // setPosts([]);
+    } finally {
+      setIsLoading(false);
+      setIsLoadMore(false);
+      setRefreshing(false);
     }
   }
 
@@ -50,15 +55,31 @@ function ForumScreen({ navigation }: { navigation: any }) {
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
   const renderItem = ({ item }: { item: any }) => {
+    const postIndexById = likeRedux.findIndex(
+      (likeItem) => likeItem.post_id === item.id
+    );
+    let initStateLike = false;
+    if (postIndexById !== -1 && likeRedux[postIndexById].data.length !== 0) {
+      initStateLike = likeRedux[postIndexById].data.some(
+        (like) => like.user_id === user.user_id.toString()
+      );
+    }
+    const amountReply = countAmount(item, repliesRedux);
+    const amountLike = countAmount(item, likeRedux);
     return (
       <BasePost
         post={item}
+        amountReplies={amountReply}
+        amountLikes={amountLike}
         onPress={(post, liked) =>
           navigation.navigate("ForumDetailScreen", {
             postFocus: post,
             liked: liked,
+            initAmountLike: amountLike,
+            initAmountReply: amountReply,
           })
         }
+        initStateLike={initStateLike}
       />
     );
   };

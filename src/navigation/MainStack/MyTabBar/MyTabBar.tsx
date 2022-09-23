@@ -2,7 +2,7 @@ import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { TabAccount, TabCommunities, TabHome } from "../../../components";
-import { theme } from "../../../constants";
+import { Navigation, theme } from "../../../constants";
 
 function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
@@ -13,21 +13,21 @@ function MyTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
         const isFocused = state.index === index;
         let textLabel;
         let IconItem;
-        if (route.name === "HomeStack") {
+        if (route.name === Navigation.HOME_STACK) {
           textLabel = "Home";
           IconItem = (
             <TabHome
               stroke={isFocused ? theme.colors.primary : theme.colors.Neutral3}
             />
           );
-        } else if (route.name === "CommunitiesStack") {
+        } else if (route.name === Navigation.COMMUNITIES_STACK) {
           textLabel = "Communities";
           IconItem = (
             <TabCommunities
               stroke={isFocused ? theme.colors.primary : theme.colors.Neutral3}
             />
           );
-        } else if (route.name === "AccountStack") {
+        } else if (route.name === Navigation.ACCOUNT_STACK) {
           textLabel = "Account";
           IconItem = (
             <TabAccount

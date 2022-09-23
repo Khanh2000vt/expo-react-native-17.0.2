@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useSelector } from "react-redux";
+import { Navigation } from "../constants";
 import { RootState } from "../redux";
 import {
   BlockListScreen,
@@ -12,7 +13,7 @@ import {
   OtherProfileScreen,
   PurchaseTomoCoinScreen,
 } from "../screens";
-import LoginStackScreen from "./AuthStack/LoginStack";
+import LoginStack from "./AuthStack/LoginStack";
 import ForumStack from "./MainStack/ForumStack";
 import MainStack from "./MainStack/MainStack";
 
@@ -26,47 +27,50 @@ function RootStackScreen() {
       }}
     >
       {!!token ? (
-        <RootStack.Screen name="MainStack" component={MainStack} />
+        <RootStack.Screen name={Navigation.MAIN_STACK} component={MainStack} />
       ) : (
         <RootStack.Screen
-          name="LoginStackScreen"
-          component={LoginStackScreen}
+          name={Navigation.LOGIN_STACK}
+          component={LoginStack}
         />
       )}
       <RootStack.Screen
-        name="CommunityDetailScreen"
+        name={Navigation.COMMUNITY_DETAIL}
         component={CommunityDetailScreen}
       />
       <RootStack.Screen
-        name="YourProfileScreen"
+        name={Navigation.YOUR_PROFILE}
         component={YourProfileScreen}
       />
       <RootStack.Screen
-        name="UpdateProfileScreen"
+        name={Navigation.UPDATE_PROFILE}
         component={UpdateProfileScreen}
       />
       <RootStack.Screen
-        name="WaitingForApprovalScreen"
+        name={Navigation.WAITING_FOR_APPROVAL}
         component={WaitingForApprovalScreen}
       />
       <RootStack.Screen
-        name="FriendRequestScreen"
+        name={Navigation.FRIEND_REQUEST}
         component={FriendRequestScreen}
       />
-      <RootStack.Screen name="BlockListScreen" component={BlockListScreen} />
       <RootStack.Screen
-        name="ChangePasswordScreen"
+        name={Navigation.BLOCK_LIST}
+        component={BlockListScreen}
+      />
+      <RootStack.Screen
+        name={Navigation.CHANGE_PASSWORD}
         component={ChangePasswordScreen}
       />
       <RootStack.Screen
-        name="OtherProfileScreen"
+        name={Navigation.OTHER_PROFILE}
         component={OtherProfileScreen}
       />
       <RootStack.Screen
-        name="PurchaseTomoCoinScreen"
+        name={Navigation.PURCHASE_TOMO_COIN}
         component={PurchaseTomoCoinScreen}
       />
-      <RootStack.Screen name="ForumStack" component={ForumStack} />
+      <RootStack.Screen name={Navigation.FORUM_STACK} component={ForumStack} />
     </RootStack.Navigator>
   );
 }

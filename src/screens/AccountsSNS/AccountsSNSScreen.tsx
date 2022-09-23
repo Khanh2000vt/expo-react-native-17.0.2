@@ -8,7 +8,9 @@ import {
   ArrowRight,
   Plus,
 } from "../../components";
-import { theme } from "../../constants/index";
+import { Navigation, theme } from "../../constants";
+import { propsGettingStated } from "./constants";
+import { Title } from "./enum";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
@@ -16,17 +18,12 @@ const fontSize = theme.fontSize;
 function AccountsSNSScreen({ navigation }: { navigation: any }) {
   return (
     <BaseAreaView style={styles.container}>
-      <BaseGettingStarted
-        flexRow
-        titleScreen="Personal Introduction"
-        titleStep="SNS accounts"
-        comment="Up to 5 accounts"
-        step={1}
-      />
+      <BaseGettingStarted {...propsGettingStated} />
       <View style={styles.viewBody}>
         <ScrollView
           contentContainerStyle={styles.scrollView}
           showsVerticalScrollIndicator={false}
+          bounces={false}
         >
           {Array(2)
             .fill(0)
@@ -34,7 +31,7 @@ function AccountsSNSScreen({ navigation }: { navigation: any }) {
               return <BaseIntroduction key={index} />;
             })}
           <BaseButton
-            title="Add New Address"
+            title={Title.ADD_NEW_ADDRESS}
             option="solid"
             color={colors.Neutral4}
             style={styles.buttonAdd}
@@ -45,18 +42,20 @@ function AccountsSNSScreen({ navigation }: { navigation: any }) {
         </ScrollView>
       </View>
       <BaseButton
-        title="Next"
+        title={Title.NEXT}
         option="solid"
         color={colors.primary}
         IconRight={<ArrowRight stroke={colors.primary} />}
-        onPress={() => navigation.navigate("CommunitiesScreen")}
+        onPress={() => navigation.navigate(Navigation.PICK_PREFER)}
       />
     </BaseAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    flex: 1,
+  },
   viewText: {
     flexDirection: "row",
     backgroundColor: "red",

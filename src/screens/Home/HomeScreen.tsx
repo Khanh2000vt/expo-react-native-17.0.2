@@ -33,26 +33,43 @@ function HomeScreen({ navigation }: { navigation: any }) {
   const user = useSelector((state: RootState) => state.auth.user);
   const [listOthers, setListOthers] = useState<any[]>([]);
   const [isLoadingOthers, setIsLoadingOther] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+
   useEffect(() => {
     getJoinedCommunities();
     getListOthers();
     dispatch(loginAuth());
   }, []);
 
+  useEffect(() => {
+    if (refreshing) {
+      getJoinedCommunities();
+      getListOthers();
+      dispatch(loginAuth());
+    }
+  }, [refreshing]);
+
   async function getListOthers() {
     try {
       const params = { p: 1, l: 4 };
       const res: any = await CommunitiesApi.getParams(params);
-      setIsLoadingOther(false);
       setListOthers([...res]);
     } catch (e) {
       setListOthers([]);
+    } finally {
+      setIsLoadingOther(false);
+      setRefreshing(false);
     }
   }
 
   function getJoinedCommunities() {
     dispatch(getJoined());
   }
+
+  const handleRefresh = () => {
+    console.log("handleRefresh");
+    setRefreshing(true);
+  };
 
   // flatList
   const keyExtractor = useCallback((_, index) => index.toString(), []);
@@ -94,9 +111,10 @@ function HomeScreen({ navigation }: { navigation: any }) {
     <View style={styles.container}>
       <FlatList
         data={[]}
-        bounces={false}
         renderItem={() => <></>}
         showsVerticalScrollIndicator={false}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
         ListHeaderComponent={
           <View>
             <View style={styles.viewHeader}>

@@ -10,10 +10,12 @@ import {
 import { ApprovalApi } from "../../api";
 import { BaseButton, BaseHeader, VectorBack } from "../../components";
 import { theme } from "../../constants";
+import { RenderItem } from "./components";
 
 function BlockListScreen({ navigation }: { navigation: any }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [users, setUsers] = useState<any[]>([]);
+
   useEffect(() => {
     getListUser();
   }, []);
@@ -21,7 +23,6 @@ function BlockListScreen({ navigation }: { navigation: any }) {
   async function getListUser() {
     try {
       const res: any = await ApprovalApi.getAll();
-
       setUsers([...res]);
       setIsLoading(false);
     } catch (e) {
@@ -30,25 +31,14 @@ function BlockListScreen({ navigation }: { navigation: any }) {
   }
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
+
   const renderItem = ({ item }: { item: any }) => {
-    return (
-      <View style={styles.containerItem}>
-        <View style={styles.headerItemFlatList}>
-          <Image source={{ uri: item.avatar }} style={styles.imageItem} />
-          <Text style={styles.textNameItem}>{item.name}</Text>
-        </View>
-        <BaseButton
-          title="Remove block"
-          option="solid"
-          onPress={() => handleRemoveBlock(item)}
-        />
-      </View>
-    );
+    const handleRemoveBlock = (itemSelected: any) => {
+      setUsers(users.filter((user) => user.id !== itemSelected.id));
+    };
+    return <RenderItem item={item} onPress={handleRemoveBlock} />;
   };
 
-  function handleRemoveBlock(item: any) {
-    setUsers(users.filter((user) => user.id !== item.id));
-  }
   return (
     <View style={styles.container}>
       <BaseHeader
@@ -87,29 +77,6 @@ const styles = StyleSheet.create({
   },
   activityIndicator: {
     marginTop: 40,
-  },
-  containerItem: {
-    padding: 24,
-    backgroundColor: "#F4F4F4",
-    borderRadius: 8,
-    marginBottom: 20,
-  },
-  headerItemFlatList: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 16,
-  },
-  imageItem: {
-    width: 42,
-    height: 42,
-    borderRadius: 100,
-    marginRight: 16,
-  },
-  textNameItem: {
-    fontSize: theme.fontSize.font16,
-    fontWeight: "600",
-    lineHeight: 21.79,
-    color: theme.colors.darkerPrimary,
   },
 });
 

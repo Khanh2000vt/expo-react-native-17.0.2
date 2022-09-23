@@ -1,4 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { Navigation } from "../../constants";
 import {
   AccountsSNSScreen,
   PickPreferScreen,
@@ -10,43 +11,43 @@ import {
   RegisterScreen,
   SuccessfullyScreen,
 } from "../../screens";
-const LoginStack = createNativeStackNavigator();
-function LoginStackScreen() {
+const Stack = createNativeStackNavigator();
+function LoginStack() {
   return (
-    <LoginStack.Navigator
+    <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}
     >
-      <LoginStack.Screen name="LoginScreen" component={LoginScreen} />
-      <LoginStack.Screen
-        name="ForgotPasswordScreen"
+      <Stack.Screen name={Navigation.LOGIN} component={LoginScreen} />
+      <Stack.Screen
+        name={Navigation.FORGOT_PASSWORD}
         component={ForgotPasswordScreen}
       />
-      <LoginStack.Screen name="RegisterScreen" component={RegisterScreen} />
-      <LoginStack.Screen name="OTPScreen" component={OTPScreen} />
-      <LoginStack.Screen
-        name="AccountsSNSScreen"
+      <Stack.Screen name={Navigation.REGISTER} component={RegisterScreen} />
+      <Stack.Screen name={Navigation.OTP} component={OTPScreen} />
+      <Stack.Screen
+        name={Navigation.ACCOUNTS_SNS}
         component={AccountsSNSScreen}
       />
-      <LoginStack.Screen
-        name="CommunitiesScreen"
+      <Stack.Screen
+        name={Navigation.PICK_PREFER}
         component={PickPreferScreen}
       />
-      <LoginStack.Screen
-        name="PersonalIntroductionScreen"
+      <Stack.Screen
+        name={Navigation.PERSONAL_INTRODUCTION}
         component={PersonalIntroductionScreen}
       />
-      <LoginStack.Screen
-        name="RegisterForgotScreen"
+      <Stack.Screen
+        name={Navigation.REGISTER_FORGOT}
         component={RegisterForgotScreen}
       />
-      <LoginStack.Screen
-        name="SuccessfullyScreen"
+      <Stack.Screen
+        name={Navigation.SUCCESSFULLY}
         component={SuccessfullyScreen}
       />
-    </LoginStack.Navigator>
+    </Stack.Navigator>
   );
 }
 
-export default LoginStackScreen;
+export default LoginStack;

@@ -1,5 +1,4 @@
-import { useFormik } from "formik";
-import React, { memo, useRef, useState } from "react";
+import React, { memo, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,16 +6,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Modal from "react-native-modal";
 import { Input, theme } from "../../constants/index";
-import { BaseButton } from "../BaseButton";
-import {
-  Eye,
-  EyeSlash,
-  MagnifyingGlass,
-  SlidersHorizontal,
-  Tick,
-} from "../Icon";
+import { Eye, EyeSlash, MagnifyingGlass, SlidersHorizontal } from "../Icon";
 import { PropsBaseInput } from "./BaseInputModel";
 const colors = theme.colors;
 const fontSize = theme.fontSize;

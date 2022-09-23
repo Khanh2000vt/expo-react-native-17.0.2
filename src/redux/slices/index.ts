@@ -12,11 +12,15 @@ export * from "./JoinedCommunities";
 import postReducer from "./post";
 export * from "./post";
 
+import forumReducer from "./forum";
+export * from "./forum";
+
 const productReducer = combineReducers({
   auth: authReducer,
   main: mainReducer,
   joined: joinedCommunitiesReducers,
   post: postReducer,
+  forum: forumReducer,
 });
 
 export type RootState = ReturnType<typeof productReducer>;

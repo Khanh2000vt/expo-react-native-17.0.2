@@ -8,17 +8,19 @@ import {
 } from "react-native";
 import { CommunitiesApi } from "../../api";
 import { BaseCategory, BaseInput, BasePlaceholder } from "../../components";
-import { theme } from "../../constants";
+import { Navigation, theme } from "../../constants";
 import { useDebounce } from "../../hooks";
-import { getFindCommunity } from "./handle";
+import { getFindCommunity } from "./controller";
 
 function CommunitiesScreen({ navigation }: { navigation: any }) {
   //input state
   const [value, onChangeValue] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(true);
+  const [listCategories, setListCategories] = useState<any[]>([]);
+  const [listFilter, setListFilter] = useState<any[]>([]);
+
+  //use hook
   const debounce = useDebounce(value);
-  const [listCategories, setListCategories] = useState<{}[]>([]);
-  const [listFilter, setListFilter] = useState<{}[]>([]);
 
   useEffect(() => {
     getCategories();
@@ -33,16 +35,17 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
     try {
       const res: any = await CommunitiesApi.getAll();
       setListCategories([...res]);
-      setLoading(false);
     } catch (e) {
       console.log("error: ", e);
-      setListCategories([]);
+      // setListCategories([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   //function
   function handleOnPressCategories(item: any) {
-    navigation.navigate("CommunityDetailScreen", {
+    navigation.navigate(Navigation.COMMUNITY_DETAIL, {
       community: item,
     });
   }
@@ -59,6 +62,7 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
       />
     );
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.textTitle}>Communities</Text>
@@ -87,8 +91,6 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
     </View>
   );
 }
-
-//CommunityDetail
 
 const styles = StyleSheet.create({
   container: {

@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import * as Yup from "yup";
+import { StyleSheet, View } from "react-native";
 import {
   BaseButton,
   BaseHeader,
@@ -9,57 +8,17 @@ import {
   VectorBack,
 } from "../../components";
 import { theme } from "../../constants";
-
-enum Password {
-  CURRENT = "Current password",
-  NEW = "New password",
-  CONFIRM = "Confirm new password",
-}
-enum TypePassword {
-  CURRENT = "current",
-  NEW = "new",
-  CONFIRM = "confirm",
-}
+import { arrayInput, initialValues, validationSchema } from "./constant";
 
 function ChangePasswordScreen({ navigation }: { navigation: any }) {
   const formik = useFormik({
-    initialValues: {
-      current: "",
-      new: "",
-      confirm: "",
+    initialValues: initialValues,
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      navigation.goBack();
     },
-    validationSchema: Yup.object({
-      current: Yup.string().required("Required"),
-      new: Yup.string()
-        .required("No new password provided.")
-        .min(6, "Password is too short - should be 8 chars minimum.")
-        .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
-      confirm: Yup.string()
-        .required("No password confirm provided.")
-        .test("match", "Password do not match", function (passwordConfirm) {
-          return passwordConfirm === this.parent.new;
-        }),
-    }),
-    onSubmit: (values) => {},
   });
 
-  const arrayInput = [
-    {
-      id: 1,
-      title: Password.CURRENT,
-      type: TypePassword.CURRENT,
-    },
-    {
-      id: 2,
-      title: Password.NEW,
-      type: TypePassword.NEW,
-    },
-    {
-      id: 3,
-      title: Password.CONFIRM,
-      type: TypePassword.CONFIRM,
-    },
-  ];
   return (
     <View style={styles.container}>
       <BaseHeader
@@ -72,9 +31,9 @@ function ChangePasswordScreen({ navigation }: { navigation: any }) {
         <View>
           {arrayInput.map((input) => (
             <BaseInput
+              key={input.id}
               option="password"
               title={input.title}
-              key={input.id}
               value={formik.values[input.type]}
               styleContainer={styles.inputContainer}
               onChangeText={formik.handleChange(input.type)}

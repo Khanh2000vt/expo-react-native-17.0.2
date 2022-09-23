@@ -19,42 +19,52 @@ import {
 } from "../../components";
 
 import BaseAlert from "../../components/BaseAlert/BaseAlert";
-import { theme } from "../../constants";
+import { Navigation, theme } from "../../constants";
 import { logoutAuth, RootState } from "../../redux";
+import { AlertComponent, MenuComponent } from "./components";
+import { Title } from "./enum";
+import { IMenu } from "./model";
 
 function AccountScreen({ navigation }: { navigation: any }) {
+  //redux
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
-
+  const userRedux = useSelector((state: RootState) => state.auth.user);
+  //state
   const [isVisible, setVisible] = useState<boolean>(false);
 
-  const accountMenu = [
+  const accountMenu: IMenu[] = [
     {
       id: 1,
-      title: "Your profile",
+      title: Title.YOUR_PROFILE,
       icon: <UserCircle />,
-      onPress: () => navigation.navigate("YourProfileScreen"),
+      onPress: () => navigation.navigate(Navigation.YOUR_PROFILE),
     },
     {
       id: 2,
-      title: "Block List",
+      title: Title.BLOCK_LIST,
       icon: <Prohibit />,
-      onPress: () => navigation.navigate("BlockListScreen"),
+      onPress: () => navigation.navigate(Navigation.BLOCK_LIST),
     },
     {
       id: 3,
-      title: "Change password",
+      title: Title.CHANGE_PASSWORD,
       icon: <LockKeyOpen />,
-      onPress: () => navigation.navigate("ChangePasswordScreen"),
+      onPress: () => navigation.navigate(Navigation.CHANGE_PASSWORD),
     },
     {
       id: 4,
-      title: "Log out",
+      title: Title.LOG_OUT,
       icon: <SignOut />,
       onPress: () => setVisible(!isVisible),
-      // onPress: () => dispatch(logoutAuth()), // test
     },
   ];
+
+  const handleLogOut = () => {
+    setVisible(false);
+    setTimeout(() => {
+      dispatch(logoutAuth());
+    }, 500);
+  };
 
   return (
     <View style={styles.container}>
@@ -68,19 +78,22 @@ function AccountScreen({ navigation }: { navigation: any }) {
         <View style={styles.accountView}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => navigation.navigate("YourProfileScreen")}
+            onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
           >
-            <Image source={{ uri: user.avatar }} style={styles.imageAccount} />
+            <Image
+              source={{ uri: userRedux.avatar }}
+              style={styles.imageAccount}
+            />
           </TouchableOpacity>
           <View style={styles.accountViewBody}>
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => navigation.navigate("YourProfileScreen")}
+              onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
             >
-              <Text style={styles.textNameAccount}>{user.name}</Text>
+              <Text style={styles.textNameAccount}>{userRedux.name}</Text>
             </TouchableOpacity>
             <View style={styles.accountViewID}>
-              <Text style={styles.textID}>ID: {user.id_account}</Text>
+              <Text style={styles.textID}>ID: {userRedux.user_id}</Text>
               <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
                 <SvgCopy />
               </TouchableOpacity>
@@ -88,24 +101,14 @@ function AccountScreen({ navigation }: { navigation: any }) {
           </View>
         </View>
 
-        <View>
+        <>
           {accountMenu.map((itemMenu) => {
-            return (
-              <TouchableOpacity
-                key={itemMenu.id}
-                onPress={itemMenu.onPress}
-                style={styles.itemMenu}
-                activeOpacity={0.8}
-              >
-                {itemMenu.icon}
-                <Text style={styles.itemMenuTitle}>{itemMenu.title}</Text>
-              </TouchableOpacity>
-            );
+            return <MenuComponent menu={itemMenu} key={itemMenu.id} />;
           })}
-        </View>
+        </>
 
         <BaseButton
-          title="Cancel account"
+          title={Title.CANCEL_ACCOUNT}
           option="solid"
           IconRight={<Warnings />}
           style={styles.button}
@@ -114,27 +117,10 @@ function AccountScreen({ navigation }: { navigation: any }) {
         />
       </ScrollView>
       <BaseAlert isVisible={isVisible}>
-        <View style={styles.bodyAlert}>
-          <Text style={styles.textTitleAlert}>Do you want to Log out?</Text>
-        </View>
-        <View style={[styles.viewButtonAlert]}>
-          <BaseButton
-            title="Log out"
-            style={[styles.buttonAlert, { marginLeft: 0 }]}
-            onPress={() => {
-              setVisible(false);
-              setTimeout(() => {
-                dispatch(logoutAuth());
-              }, 500);
-            }}
-          />
-          <BaseButton
-            title="Cancel"
-            option="solid"
-            style={[styles.buttonAlert, { marginRight: 0 }]}
-            onPress={() => setVisible(false)}
-          />
-        </View>
+        <AlertComponent
+          onPressLogout={handleLogOut}
+          onPressCancel={() => setVisible(false)}
+        />
       </BaseAlert>
     </View>
   );
@@ -187,19 +173,7 @@ const styles = StyleSheet.create({
     color: theme.colors.Neutral6,
     marginRight: 20,
   },
-  itemMenu: {
-    flexDirection: "row",
-    paddingVertical: 22,
-    borderBottomWidth: 1,
-    borderColor: theme.colors.Neutral3,
-    alignItems: "center",
-  },
-  itemMenuTitle: {
-    color: theme.colors.Neutral10,
-    fontWeight: "500",
-    fontSize: theme.fontSize.font18,
-    marginLeft: 20,
-  },
+
   button: {
     borderColor: theme.colors.Semantic4,
     marginBottom: 55,
@@ -208,22 +182,6 @@ const styles = StyleSheet.create({
   buttonText: {
     fontWeight: "600",
     fontSize: theme.fontSize.font16,
-  },
-  bodyAlert: {
-    marginBottom: 64,
-  },
-  viewButtonAlert: {
-    flexDirection: "row",
-  },
-  textTitleAlert: {
-    textAlign: "center",
-    fontSize: theme.fontSize.font18,
-    color: theme.colors.Neutral8,
-    fontWeight: "500",
-  },
-  buttonAlert: {
-    flex: 1,
-    marginHorizontal: 15,
   },
 });
 

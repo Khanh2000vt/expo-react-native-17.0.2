@@ -28,24 +28,8 @@ import { OtherProfile, theme } from "../../constants";
 import { useDebounce } from "../../hooks";
 import Modal from "react-native-modal";
 import { useFormik } from "formik";
-
-const listCheckBox = [
-  {
-    id: 1,
-    label: "Female",
-    value: "female",
-  },
-  {
-    id: 2,
-    label: "Male",
-    value: "male",
-  },
-  {
-    id: 3,
-    label: "Others",
-    value: "others",
-  },
-];
+import { initialFilter, initialValues, listCheckBox } from "./constants";
+import { IFilter, IGender } from "./model";
 
 function CommunityDetailScreen({
   route,
@@ -59,18 +43,14 @@ function CommunityDetailScreen({
 
   //use formik
   const formik = useFormik({
-    initialValues: {
-      search: "",
-      minAge: "",
-      maxAge: "",
-      gender: "",
-    },
+    initialValues: initialValues,
     onSubmit: (values: any) => {
-      onChangeFilter({
+      let newFilter: IFilter = {
         minAge: values.minAge,
         maxAge: values.maxAge,
         gender: values.gender,
-      });
+      };
+      onChangeFilter(newFilter);
       setModalVisible(false);
     },
   });
@@ -81,11 +61,7 @@ function CommunityDetailScreen({
   const [members, setMembers] = useState<any[]>([]);
   const [filterMembers, setFilterMembers] = useState<any[]>([]);
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
-  const [filter, onChangeFilter] = useState<{
-    minAge: string;
-    maxAge: string;
-    gender: string;
-  }>({ minAge: "", maxAge: "", gender: "" });
+  const [filter, onChangeFilter] = useState<IFilter>(initialFilter);
 
   //use hook
   const debounce = useDebounce(formik.values.search);
@@ -99,36 +75,45 @@ function CommunityDetailScreen({
   }, []);
 
   useEffect(() => {
-    let listMembers = members;
-    if (members.length > 0) {
-      if (debounce) {
-        listMembers = listMembers.filter((member) => {
-          return (
-            member.name.toLowerCase().indexOf(debounce.toLowerCase()) !== -1
+    try {
+      if (debounce || !!filter?.minAge || !!filter?.maxAge || filter?.gender) {
+        if (debounce) {
+          setFilterMembers(
+            members.filter((member) => {
+              return (
+                member.name.toLowerCase().indexOf(debounce.toLowerCase()) !== -1
+              );
+            })
           );
-        });
+        }
+        if (!!filter?.minAge) {
+          setFilterMembers(
+            members.filter((member) => {
+              return member.age >= filter?.minAge;
+            })
+          );
+        }
+        if (!!filter?.maxAge) {
+          setFilterMembers(
+            members.filter((member) => {
+              return member.age <= filter?.maxAge;
+            })
+          );
+        }
+        if (filter?.gender) {
+          let isMale = filter?.gender === "male";
+          setFilterMembers(
+            members.filter((member) => {
+              return member.gender === isMale;
+            })
+          );
+        }
+      } else {
+        setFilterMembers([...members]);
       }
-      if (!!filter?.minAge) {
-        listMembers = listMembers.filter((member) => {
-          return member.age >= filter?.minAge;
-        });
-      }
-      if (!!filter?.maxAge) {
-        listMembers = listMembers.filter((member) => {
-          return member.age <= filter?.maxAge;
-        });
-      }
-      if (filter?.gender) {
-        let isMale = filter?.gender === "male";
-        listMembers = listMembers.filter((member) => {
-          return member.gender === isMale;
-        });
-      }
+    } catch {
+      setFilterMembers([]);
     }
-    setFilterMembers([...listMembers]);
-    return () => {
-      listMembers = [];
-    };
   }, [debounce, filter]);
 
   const getMembers = async () => {
@@ -136,37 +121,29 @@ function CommunityDetailScreen({
       const res: any = await MembersApi.getAll();
       setMembers([...res]);
       setFilterMembers([...res]);
+    } catch (e) {
+    } finally {
       setIsLoading(false);
-    } catch (e) {}
+    }
   };
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item }: { item: any }) => (
-    <BaseMember
-      item={item}
-      onPress={(userOther: any) => {
-        navigation.navigate("OtherProfileScreen", {
-          userOther: userOther,
-          type: OtherProfile.OTHER,
-        });
-      }}
-    />
-  );
+  const renderItem = ({ item }: { item: any }) => {
+    const handlePress = (userOther: any) => {
+      navigation.navigate("OtherProfileScreen", {
+        userOther: userOther,
+        type: OtherProfile.OTHER,
+      });
+    };
+    return <BaseMember item={item} onPress={handlePress} />;
+  };
 
-  const handlePressGender = (item: {
-    id: number;
-    label: string;
-    value: string;
-  }) => {
+  const handlePressGender = (item: IGender) => {
     formik.setFieldValue("gender", item.value);
   };
 
   const handleClearModal = () => {
     if (filter.minAge !== "" || filter.maxAge !== "" || filter.gender !== "") {
-      onChangeFilter({
-        minAge: "",
-        maxAge: "",
-        gender: "",
-      });
+      onChangeFilter(initialFilter);
     }
     handleDefaultModal();
     refInputModal.current?.blur();
