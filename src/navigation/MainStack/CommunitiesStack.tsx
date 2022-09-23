@@ -1,8 +1,9 @@
+import { CommunitiesStackParamList } from "@navigation";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Navigation } from "../../constant";
-import { CommunitiesScreen } from "../../screens";
+import { Navigation } from "@constant/index";
+import { CommunitiesScreen } from "@screens";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<CommunitiesStackParamList>();
 function CommunitiesStack() {
   return (
     <Stack.Navigator

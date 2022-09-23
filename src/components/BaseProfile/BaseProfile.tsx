@@ -28,9 +28,8 @@ import { Navigation, OtherProfile } from "@constant/index";
 import { spendCoins } from "@redux";
 import { theme } from "@theme";
 import { formatTime } from "@utils";
-
+import { ILogAPI } from "@model";
 import { BaseProfileProps } from "./BaseProfileModel";
-import { ILogAPI, IRequestAPI } from "@model";
 
 function BaseProfile({
   navigation,

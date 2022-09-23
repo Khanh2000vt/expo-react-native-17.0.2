@@ -1,11 +1,12 @@
+import { BaseProfile, Coin, Crown, Users } from "@components";
+import { YourProfileNavigation } from "@navigation";
+import { RootState } from "@redux";
+import { theme } from "@theme";
 import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
-import { BaseProfile, Coin, Crown, Users } from "../../components";
-import { theme } from "../../constant";
-import { RootState } from "../../redux";
 
-function YourProfileScreen({ navigation }: { navigation: any }) {
+function YourProfileScreen({ navigation }: YourProfileNavigation) {
   const joined = useSelector((state: RootState) => state.joined.communities);
   const user = useSelector((state: RootState) => state.auth.user);
   const listAmount = [

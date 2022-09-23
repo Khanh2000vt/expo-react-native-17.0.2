@@ -1,3 +1,4 @@
+import { MainStackParamList } from "@navigation";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 
@@ -7,7 +8,7 @@ import CommunitiesStack from "./CommunitiesStack";
 import HomeStack from "./HomeStack";
 import MyTabBar from "./MyTabBar/MyTabBar";
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<MainStackParamList>();
 function MainStack() {
   return (
     <Tab.Navigator

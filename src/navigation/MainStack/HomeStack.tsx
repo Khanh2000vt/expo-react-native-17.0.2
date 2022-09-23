@@ -1,8 +1,9 @@
+import { HomeStackParamList } from "@navigation/type";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Navigation } from "../../constant";
-import { HomeScreen } from "../../screens";
+import { Navigation } from "@constant/index";
+import { HomeScreen } from "@screens";
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<HomeStackParamList>();
 function HomeStack() {
   return (
     <Stack.Navigator

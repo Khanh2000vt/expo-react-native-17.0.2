@@ -1,7 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Navigation } from "../../constant";
-import { ForumDetailScreen, ForumScreen, NewPostScreen } from "../../screens";
-const Stack = createNativeStackNavigator();
+import { Navigation } from "@constant/index";
+import { ForumDetailScreen, ForumScreen, NewPostScreen } from "@screens";
+import { ForumStackParamList } from "@navigation/type";
+const Stack = createNativeStackNavigator<ForumStackParamList>();
 
 function ForumStack() {
   return (

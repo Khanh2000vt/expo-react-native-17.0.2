@@ -1,16 +1,19 @@
-import React, { useEffect } from "react";
-import {
-  Alert,
-  Button,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { theme } from "@theme";
 import * as ImagePicker from "expo-image-picker";
+import React from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import { BaseMediaPickerProps } from "./BaseMediaPickerModel";
-import { theme } from "@theme";
+
+const handleAlert = (title: string, message: string) => {
+  Alert.alert(title, message, [
+    {
+      text: "Cancel",
+      style: "cancel",
+    },
+  ]);
+};
+
 function BaseMediaPicker({
   isVisible,
   option = "All",
@@ -18,9 +21,9 @@ function BaseMediaPicker({
   setIsVisible,
   allowsEditing = false,
 }: BaseMediaPickerProps) {
-  const [permissionCamera, requestPermissionCamera] =
+  const [_permissionCamera, requestPermissionCamera] =
     ImagePicker.useCameraPermissions();
-  const [permissionLibrary, requestPermissionLibrary] =
+  const [_permissionLibrary, requestPermissionLibrary] =
     ImagePicker.useMediaLibraryPermissions();
 
   const handleCamera = async () => {
@@ -60,7 +63,6 @@ function BaseMediaPicker({
       mediaTypes: ImagePicker.MediaTypeOptions[option],
       allowsEditing: allowsEditing,
       aspect: [1, 1],
-      // allowsMultipleSelection: true,
       quality: 1,
     });
     handlePickMedia(result);
@@ -71,15 +73,6 @@ function BaseMediaPicker({
       onPickComplete(result);
       setIsVisible(false);
     }
-  };
-
-  const handleAlert = (title: string, message: string) => {
-    Alert.alert(title, message, [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-    ]);
   };
 
   return (

@@ -7,14 +7,24 @@ import {
   View,
 } from "react-native";
 
-import { ArrowDownIcon, Tick } from "@components";
+import { ArrowDownIcon } from "@components";
+import { ISelect } from "@model";
 import { theme } from "@theme";
 import Modal from "react-native-modal";
 import { BaseModalProps } from "./BaseModalModel";
-import { ISelect } from "@model";
+import RenderItem from "./components/RenderItem";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
+
+const getItemLayout = (
+  _: Array<ISelect> | null | undefined,
+  index: number
+) => ({
+  length: 58,
+  offset: 58 * index,
+  index,
+});
 
 function BaseModal({
   title,
@@ -31,20 +41,8 @@ function BaseModal({
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const refFlatList = useRef<FlatList>(null);
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item, index }: { item: ISelect; index: number }) => {
-    return (
-      <TouchableOpacity
-        style={styles.itemRenderContainer}
-        activeOpacity={0.5}
-        onPress={() => handleSelectedItem(item, index)}
-      >
-        <Text>{item.label}</Text>
-        {item.value === value && <Tick stroke={colors.primary} />}
-      </TouchableOpacity>
-    );
-  };
 
-  function handleSelectedItem(item: ISelect, _: number) {
+  function handleSelectedItem(item: ISelect) {
     onChangeValue && onChangeValue(item.value);
     setModalVisible(false);
   }
@@ -102,16 +100,18 @@ function BaseModal({
           <View style={styles.bodyModal}>
             <FlatList
               data={data}
-              renderItem={renderItem}
+              renderItem={(props) => (
+                <RenderItem
+                  onPress={handleSelectedItem}
+                  props={props}
+                  value={value}
+                />
+              )}
               keyExtractor={keyExtractor}
               ref={refFlatList}
               showsVerticalScrollIndicator={false}
               decelerationRate="fast"
-              getItemLayout={(_, index) => ({
-                length: 58,
-                offset: 58 * index,
-                index,
-              })}
+              getItemLayout={getItemLayout}
             />
           </View>
         </View>

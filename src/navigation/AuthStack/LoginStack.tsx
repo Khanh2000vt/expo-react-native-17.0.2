@@ -1,5 +1,6 @@
+import { LoginStackParamList } from "@navigation/type";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Navigation } from "../../constant";
+import { Navigation } from "@constant/index";
 import {
   AccountsSNSScreen,
   PickPreferScreen,
@@ -10,8 +11,8 @@ import {
   RegisterForgotScreen,
   RegisterScreen,
   SuccessfullyScreen,
-} from "../../screens";
-const Stack = createNativeStackNavigator();
+} from "@screens";
+const Stack = createNativeStackNavigator<LoginStackParamList>();
 function LoginStack() {
   return (
     <Stack.Navigator

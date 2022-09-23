@@ -16,8 +16,9 @@ import {
 import LoginStack from "./AuthStack/LoginStack";
 import ForumStack from "./MainStack/ForumStack";
 import MainStack from "./MainStack/MainStack";
+import { RootStackParamList } from "./type";
 
-const RootStack = createNativeStackNavigator();
+const RootStack = createNativeStackNavigator<RootStackParamList>();
 function RootStackScreen() {
   const token = useSelector((state: RootState) => state.auth.token);
   return (
