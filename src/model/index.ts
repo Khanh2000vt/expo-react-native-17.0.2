@@ -32,4 +32,11 @@ interface ILogAPI {
   seen: boolean;
 }
 
-export type { IUser, ISelect, IRequestAPI, ILogAPI };
+interface ICommunityAPI {
+  title: string;
+  image_url: string;
+  members: number;
+  id: string;
+}
+
+export type { IUser, ISelect, IRequestAPI, ILogAPI, ICommunityAPI };

@@ -1,10 +1,31 @@
-import { BaseButton, PencilLine, SvgCopy, VectorBack } from "@components";
-import { BaseHeader } from "@components/BaseHeader";
+import {
+  BaseButton,
+  PencilLine,
+  SvgCopy,
+  VectorBack,
+  BaseHeader,
+} from "@components";
 import { Navigation, OtherProfile } from "@constant/index";
+import { ICommunityAPI } from "@model";
 import { theme } from "@theme";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { ListHeaderProps } from "../BaseProfileModel";
+
+interface IItem {
+  itemJoined: ICommunityAPI;
+}
+const ItemJoined = ({ itemJoined }: IItem) => {
+  return (
+    <TouchableOpacity style={styles.viewJoinedCommunity}>
+      <Image
+        source={{ uri: itemJoined.image_url }}
+        style={styles.imageJoined}
+      />
+      <Text style={styles.textJoinedCommunity}>{itemJoined.title}</Text>
+    </TouchableOpacity>
+  );
+};
 
 function ListHeaderComponent({
   isProfileSelf,
@@ -39,9 +60,9 @@ function ListHeaderComponent({
         <Image source={{ uri: avatar }} style={styles.profileImageAvt} />
       </View>
 
-      <View style={styles.accountViewBody}>
+      <View style={styles.containerUser}>
         <Text style={styles.textNameAccount}>{name}</Text>
-        <View style={styles.accountViewID}>
+        <View style={styles.viewUserID}>
           <Text style={styles.textID}>ID: {idAccount}</Text>
           <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
             <SvgCopy />
@@ -49,7 +70,7 @@ function ListHeaderComponent({
         </View>
       </View>
 
-      <View style={styles.amountView}>
+      <View style={styles.containerAmount}>
         {listAmount.map((item) => {
           return (
             <BaseButton
@@ -66,7 +87,7 @@ function ListHeaderComponent({
       </View>
 
       {(status === OtherProfile.FRIEND || isProfileSelf) && (
-        <View style={styles.viewSocial}>
+        <View style={styles.containerSocial}>
           {listSocial.map((item) => {
             return (
               <BaseButton
@@ -83,27 +104,17 @@ function ListHeaderComponent({
         </View>
       )}
 
-      <View style={styles.viewIntroduction}>
+      <View style={styles.containerIntroduction}>
         <Text style={styles.textTitle}>Introduction</Text>
         <Text style={styles.textBodyIntroduction}>{introduction}</Text>
       </View>
 
-      <View style={styles.viewJoinedCommunities}>
+      <View style={styles.containerJoinedCommunities}>
         <Text style={styles.textTitle}>Joined communities</Text>
         <View style={styles.bodyJoinedCommunities}>
-          {listJoined.map((joinedCommunity, index) => {
-            return (
-              <TouchableOpacity style={styles.viewJoinedCommunity} key={index}>
-                <Image
-                  source={{ uri: joinedCommunity.image_url }}
-                  style={styles.imageJoined}
-                />
-                <Text style={styles.textJoinedCommunity}>
-                  {joinedCommunity.title}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+          {listJoined.map((itemJoined, index) => (
+            <ItemJoined itemJoined={itemJoined} key={index} />
+          ))}
         </View>
       </View>
     </>
@@ -133,7 +144,7 @@ const styles = StyleSheet.create({
   styleTitleHeader: {
     color: theme.colors.Neutral0,
   },
-  accountViewBody: {
+  containerUser: {
     flex: 1,
     // marginLeft: 20,
     alignItems: "center",
@@ -145,7 +156,7 @@ const styles = StyleSheet.create({
     fontSize: theme.fontSize.font24,
     marginBottom: 4,
   },
-  accountViewID: {
+  viewUserID: {
     flexDirection: "row",
   },
   textID: {
@@ -163,7 +174,7 @@ const styles = StyleSheet.create({
   textButtonSocial: {
     paddingHorizontal: 16,
   },
-  viewIntroduction: {
+  containerIntroduction: {
     marginTop: 42,
     paddingHorizontal: 24,
   },
@@ -175,12 +186,12 @@ const styles = StyleSheet.create({
     lineHeight: 26,
     marginTop: 20,
   },
-  amountView: {
+  containerAmount: {
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 25,
   },
-  viewSocial: {
+  containerSocial: {
     marginTop: 30,
     paddingHorizontal: 24,
   },
@@ -202,7 +213,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 0,
     marginLeft: 12,
   },
-  viewJoinedCommunities: {
+  containerJoinedCommunities: {
     marginTop: 48,
     paddingHorizontal: 24,
   },

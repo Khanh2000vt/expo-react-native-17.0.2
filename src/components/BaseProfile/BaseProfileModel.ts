@@ -1,4 +1,5 @@
 import { OtherProfile } from "@constant/index";
+import { ICommunityAPI } from "@model";
 import { ColorValue } from "react-native";
 
 interface IItemBase {
@@ -31,7 +32,7 @@ export interface IProfileSelf {
 export interface IList {
   listAmount?: AmountProps[];
   listSocial?: SocialProps[];
-  listJoined?: any[];
+  listJoined?: ICommunityAPI[];
 }
 
 interface BaseProfileProps extends IUserProfile, IList {
@@ -46,4 +47,16 @@ interface ListHeaderProps extends IList, IUserProfile {
   status: OtherProfile;
   navigation: any;
 }
-export type { BaseProfileProps, ListHeaderProps };
+
+export interface UseStateProps {
+  setIsShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsVisibleModal?: React.Dispatch<React.SetStateAction<boolean>>;
+  setStatus?: React.Dispatch<React.SetStateAction<OtherProfile>>;
+}
+
+interface ListFooterProps extends UseStateProps {
+  isProfileSelf: boolean;
+  status: OtherProfile;
+  navigation: any;
+}
+export type { BaseProfileProps, ListHeaderProps, ListFooterProps };
