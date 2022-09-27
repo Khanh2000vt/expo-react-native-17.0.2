@@ -2,12 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Annotation, HeartFill, HeartOutline } from "@components";
-import { addLikes, deleteLikes, RootState } from "../../../../redux";
-import {
-  countAmount,
-  handleAmountRounding,
-  handleTimeCreateAt,
-} from "../../../../utils";
+import { addLikes, deleteLikes, RootState } from "@redux";
+import { countAmount, handleAmountRounding, handleTimeCreateAt } from "@utils";
 import { getActionLike } from "../../controller";
 import { RenderItemProps } from "./RenderITemModel";
 import { theme } from "@theme";

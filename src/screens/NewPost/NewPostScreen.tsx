@@ -1,7 +1,7 @@
-import { theme } from "@theme";
 import React, { useCallback, useState } from "react";
+
+import { createPost, resetPost, RootState } from "@redux";
 import {
-  Alert,
   FlatList,
   Image,
   StyleSheet,
@@ -17,8 +17,11 @@ import {
   ImageSVG,
   SvgX,
   VectorBack,
-} from "../../components";
-import { createPost, resetPost, RootState } from "../../redux";
+} from "@components";
+import { theme } from "@theme";
+import { GoBackAlert, ItemImage } from "./components";
+import { getNewArrayImage, getNewPost } from "./controller";
+import { IImage } from "@model";
 function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
   const dispatch = useDispatch();
 
@@ -29,89 +32,52 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
 
   const [textTitle, onChangeTextTitle] = useState<string>(postNote.title);
   const [textBody, onChangeTextBody] = useState<string>(postNote.body);
-  const [images, setImages] = useState<any[]>(postNote.images);
+  const [images, setImages] = useState<IImage[]>(postNote.images);
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   async function handlePressPost() {
-    if (
-      (!textTitle || textTitle.trim().length === 0) &&
-      (!textBody || textBody.trim().length === 0) &&
-      images.length === 0
-    ) {
-      return;
+    const newPost = getNewPost(textTitle, textBody, images, user);
+    if (newPost !== undefined) {
+      onPressPost(newPost);
+      dispatch(resetPost());
+      navigation.goBack();
     }
-    const dateCreate = new Date();
-    const newPost = {
-      name: user.name,
-      avatar: user.avatar,
-      createdAt: dateCreate.toISOString(),
-      title: textTitle,
-      body: textBody,
-      likes: 0,
-      replies: 0,
-      image: images[0],
-    };
-    // const a = await ForumApi.postNewPost(newPost);
-    onPressPost(newPost);
-    dispatch(resetPost());
-    navigation.goBack();
   }
 
-  const handlePickComplete = (result: any) => {
+  const handlePickComplete = (result: IImage) => {
     setImages([result].concat(images));
   };
 
-  const handleBack = () => {
-    Alert.alert("Warning", "Save to draft ?", [
-      {
-        text: "Yes",
-        onPress: () => {
-          const params = {
-            title: textTitle,
-            body: textBody,
-            images: images,
-          };
-          dispatch(createPost(params));
-          navigation.goBack();
-        },
-      },
-      {
-        text: "No",
-        onPress: () => {
-          dispatch(resetPost());
-          navigation.goBack();
-        },
-        style: "destructive",
-      },
-      {
-        text: "Cancel",
-        onPress: () => {},
-        style: "cancel",
-      },
-    ]);
+  const handleAgreeSavePost = () => {
+    const params = {
+      title: textTitle,
+      body: textBody,
+      images: images,
+    };
+    dispatch(createPost(params));
+    navigation.goBack();
+  };
+
+  const handleCancelSavePost = () => {
+    dispatch(resetPost());
+    navigation.goBack();
+  };
+
+  const handleDeleteImage = (item: IImage) => {
+    const newArrayImage = getNewArrayImage(images, item);
+    setImages([...newArrayImage]);
   };
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item }: { item: any }) => {
-    return (
-      <View style={styles.containerImagePost}>
-        <Image source={{ uri: item.uri }} style={styles.imagePost} />
-        <TouchableOpacity
-          style={styles.buttonImagePost}
-          activeOpacity={0.8}
-          onPress={() => setImages(images.filter((image) => image !== item))}
-        >
-          <SvgX />
-        </TouchableOpacity>
-      </View>
-    );
-  };
+
   return (
     <View style={styles.container}>
       <BaseHeader
         title="New post"
         IconLeft={<VectorBack />}
-        onPressLeft={handleBack}
+        onPressLeft={() =>
+          GoBackAlert(handleAgreeSavePost, handleCancelSavePost)
+        }
         IconRight={
           <View style={styles.iconRight}>
             <Text style={styles.textIconRight}>Post</Text>
@@ -142,7 +108,9 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
             <FlatList
               data={images}
               keyExtractor={keyExtractor}
-              renderItem={renderItem}
+              renderItem={({ item }) => (
+                <ItemImage item={item} onPress={handleDeleteImage} />
+              )}
               horizontal
               showsHorizontalScrollIndicator={false}
             />
@@ -232,22 +200,6 @@ const styles = StyleSheet.create({
     padding: 12.5,
     borderRadius: 8,
     marginTop: 16,
-  },
-  containerImagePost: {
-    marginRight: 10,
-  },
-  imagePost: {
-    width: 146,
-    height: 183,
-    borderRadius: 8,
-  },
-  buttonImagePost: {
-    position: "absolute",
-    padding: 9,
-    backgroundColor: "rgba(0, 0, 0, 0.63)",
-    borderRadius: 100,
-    top: 10,
-    left: 10,
   },
 });
 

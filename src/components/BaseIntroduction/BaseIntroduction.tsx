@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { BaseIntroductionProps } from "./BaseIntroductionModel";
 
 import { theme } from "@theme";
-import { ArrowDownIcon } from "@components";
+import { ArrowDownIcon } from "@components/Icon";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;

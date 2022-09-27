@@ -1,3 +1,4 @@
+import { IApprovalAPI } from "@model";
 import { theme } from "@theme";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -7,29 +8,18 @@ import {
   Text,
   View,
 } from "react-native";
-import { ApprovalApi } from "../../api";
 import { BaseHeader, VectorBack } from "../../components";
 import { RenderItem } from "./components";
-import { handleRemoveById } from "./controller";
+import { getListUser, handleRemoveById } from "./controller";
 import { Title } from "./enum";
 
 function BlockListScreen({ navigation }: { navigation: any }) {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<IApprovalAPI[]>([]);
 
   useEffect(() => {
-    getListUser();
+    getListUser(setUsers, setIsLoading);
   }, []);
-
-  async function getListUser() {
-    try {
-      const res: any = await ApprovalApi.getAll();
-      setUsers([...res]);
-      setIsLoading(false);
-    } catch (e) {
-      setUsers([]);
-    }
-  }
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 

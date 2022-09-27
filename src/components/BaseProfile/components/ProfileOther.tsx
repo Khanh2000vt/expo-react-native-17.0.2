@@ -1,7 +1,9 @@
-import { BaseButton, UseStateProps, Warnings } from "@components";
+import { BaseButton } from "@components/BaseButton";
+import { Warnings } from "@components/Icon";
 import { theme } from "@theme";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { UseStateProps } from "../BaseProfileModel";
 
 function ProfileOther({ setIsVisibleModal, setIsShowAlert }: UseStateProps) {
   return (

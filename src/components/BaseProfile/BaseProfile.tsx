@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
 
-import { BaseAlert, BasePopupRequest } from "@components";
 import { OtherProfile } from "@constant/index";
 import { spendCoins } from "@redux";
 import { theme } from "@theme";
@@ -12,6 +11,8 @@ import {
   ListFooterComponent,
   ListHeaderComponent,
 } from "./components";
+import { BaseAlert } from "@components/BaseAlert";
+import { BasePopupRequest } from "@components/BasePopupRequest";
 
 function BaseProfile({
   navigation,

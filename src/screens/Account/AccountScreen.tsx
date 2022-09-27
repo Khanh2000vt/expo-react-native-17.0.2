@@ -8,23 +8,15 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  BaseButton,
-  LockKeyOpen,
-  Prohibit,
-  SignOut,
-  SvgCopy,
-  UserCircle,
-  Warnings,
-} from "../../components";
+import { BaseButton, SvgCopy, Warnings } from "../../components";
 
-import BaseAlert from "../../components/BaseAlert/BaseAlert";
 import { Navigation } from "@constant/index";
+import { theme } from "@theme";
+import BaseAlert from "../../components/BaseAlert/BaseAlert";
 import { logoutAuth, RootState } from "../../redux";
 import { AlertComponent, MenuComponent } from "./components";
 import { Title } from "./enum";
-import { IMenu } from "./model";
-import { theme } from "@theme";
+import ListMenu from "./components/ListMenu";
 
 function AccountScreen({ navigation }: { navigation: any }) {
   //redux
@@ -32,33 +24,6 @@ function AccountScreen({ navigation }: { navigation: any }) {
   const userRedux = useSelector((state: RootState) => state.auth.user);
   //state
   const [isVisible, setVisible] = useState<boolean>(false);
-
-  const accountMenu: IMenu[] = [
-    {
-      id: 1,
-      title: Title.YOUR_PROFILE,
-      icon: <UserCircle />,
-      onPress: () => navigation.navigate(Navigation.YOUR_PROFILE),
-    },
-    {
-      id: 2,
-      title: Title.BLOCK_LIST,
-      icon: <Prohibit />,
-      onPress: () => navigation.navigate(Navigation.BLOCK_LIST),
-    },
-    {
-      id: 3,
-      title: Title.CHANGE_PASSWORD,
-      icon: <LockKeyOpen />,
-      onPress: () => navigation.navigate(Navigation.CHANGE_PASSWORD),
-    },
-    {
-      id: 4,
-      title: Title.LOG_OUT,
-      icon: <SignOut />,
-      onPress: () => setVisible(!isVisible),
-    },
-  ];
 
   const handleLogOut = () => {
     setVisible(false);
@@ -103,7 +68,7 @@ function AccountScreen({ navigation }: { navigation: any }) {
         </View>
 
         <>
-          {accountMenu.map((itemMenu) => {
+          {ListMenu(navigation, setVisible).map((itemMenu) => {
             return <MenuComponent menu={itemMenu} key={itemMenu.id} />;
           })}
         </>

@@ -1,4 +1,4 @@
-import { Tick } from "@components";
+import { Tick } from "@components/Icon";
 import { ISelect } from "@model";
 import { theme } from "@theme";
 import React from "react";

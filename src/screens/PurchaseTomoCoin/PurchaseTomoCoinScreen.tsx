@@ -8,8 +8,8 @@ import {
   CurrencyJpy,
   SvgInfo,
   VectorBack,
-} from "../../components";
-import { addCoins, RootState } from "../../redux";
+} from "@components";
+import { addCoins, RootState } from "@redux";
 
 function PurchaseTomoCoinScreen({ navigation }: { navigation: any }) {
   const user = useSelector((state: RootState) => state.auth.user);

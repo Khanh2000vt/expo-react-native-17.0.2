@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Modal from "react-native-modal";
 import { useSelector } from "react-redux";
 
-import { BaseButton } from "@components";
+import { BaseButton } from "@components/BaseButton";
 import { RootState } from "@redux";
 import { theme } from "@theme";
 import { BasePopupRequestProps } from "./BasePopupRequestModel";

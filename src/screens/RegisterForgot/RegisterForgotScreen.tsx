@@ -8,9 +8,9 @@ import {
   BaseInput,
   BaseModal,
   VectorBack,
-} from "../../components";
+} from "@components";
 import { gender, Navigation } from "@constant/index";
-import { ListYear } from "../../utils";
+import { ListYear } from "@utils";
 import { theme } from "@theme";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
@@ -21,21 +21,47 @@ enum Social {
   FACEBOOK = "facebook",
   WHATSAPP = "whatsapp",
 }
+
+const arraySocialInput = [
+  {
+    title: "Email",
+    type: Social.YOUTUBE,
+  },
+  {
+    title: "Instagram",
+    type: Social.INSTAGRAM,
+  },
+  {
+    title: "Twitter",
+    type: Social.TWITTER,
+  },
+  {
+    title: "Facebook",
+    type: Social.FACEBOOK,
+  },
+  {
+    title: "Whatsapp",
+    type: Social.WHATSAPP,
+  },
+];
+
+const initialValues = {
+  youtube: "",
+  instagram: "",
+  twitter: "",
+  facebook: "",
+  whatsapp: "",
+  email: "",
+  password: "",
+  username: "",
+  gender: "",
+  birthYear: "",
+  introductionCode: "",
+};
+
 function RegisterForgotScreen({ navigation }: { navigation: any }) {
   const formik = useFormik({
-    initialValues: {
-      youtube: "",
-      instagram: "",
-      twitter: "",
-      facebook: "",
-      whatsapp: "",
-      email: "",
-      password: "",
-      username: "",
-      gender: "",
-      birthYear: "",
-      introductionCode: "",
-    },
+    initialValues: initialValues,
     // validationSchema: Yup.object({
     //   email: Yup.string().email("Invalid email address").required("Required"),
     //   password: Yup.string()
@@ -56,29 +82,6 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
     },
   });
 
-  const arraySocialInput = [
-    {
-      title: "Email",
-      type: Social.YOUTUBE,
-    },
-    {
-      title: "Instagram",
-      type: Social.INSTAGRAM,
-    },
-    {
-      title: "Twitter",
-      type: Social.TWITTER,
-    },
-    {
-      title: "Facebook",
-      type: Social.FACEBOOK,
-    },
-    {
-      title: "Whatsapp",
-      type: Social.WHATSAPP,
-    },
-  ];
-
   return (
     <BaseAreaView
       style={styles.container}
@@ -87,8 +90,6 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
       IconLeft={<VectorBack />}
       onPressLeft={() => navigation.goBack()}
       styleHeader={styles.styleHeader}
-      // paddingLeft={0}
-      // paddingRight={0}
       scroll
     >
       <Text style={styles.textTitle}>Your SNS account </Text>
@@ -187,14 +188,11 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
 
 const styles = StyleSheet.create({
   container: {
-    // padding: 0,
     paddingTop: 37,
   },
   styleHeader: {
     height: 50,
     paddingHorizontal: 33,
-    // paddingTop: 80,
-    // marginTop: 80,
   },
   inputContainer: {
     marginBottom: 16,

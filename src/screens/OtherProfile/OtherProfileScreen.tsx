@@ -1,9 +1,10 @@
-import { theme } from "@theme";
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
-import { BaseProfile, Users } from "../../components";
-import { RootState } from "../../redux";
+import { StyleSheet, View } from "react-native";
+import { BaseProfile } from "@components";
+import { RootState } from "@redux";
+import { theme } from "@theme";
+import { ListAmount, ListSocial } from "./controller";
 
 function OtherProfileScreen({
   route,
@@ -14,73 +15,17 @@ function OtherProfileScreen({
 }) {
   const { userOther, type } = route.params;
   const joined = useSelector((state: RootState) => state.joined.communities);
-  const listAmount = [
-    {
-      id: 1,
-      icon: <Users />,
-      amount: userOther.friend,
-      color: theme.colors.Semantic5,
-      onPress: () => {},
-    },
-  ];
 
-  const listSocial = [
-    {
-      id: 1,
-      title: "Matsuura Yuki official",
-      icon: (
-        <Image
-          source={require("../../../assets/png/logo_youtube.png")}
-          style={styles.iconSocial}
-        />
-      ),
-      onPress: () => {},
-    },
-    {
-      id: 2,
-      title: "@Yuki.Matsuura",
-      icon: (
-        <Image
-          source={require("../../../assets/png/logo_instagram.png")}
-          style={styles.iconSocial}
-        />
-      ),
-      onPress: () => {},
-    },
-    {
-      id: 3,
-      title: "@YukiMatsuura23",
-      icon: (
-        <Image
-          source={require("../../../assets/png/logo_twitter.png")}
-          style={styles.iconSocial}
-        />
-      ),
-      onPress: () => {},
-    },
-    {
-      id: 4,
-      title: "Matsuura Yuki",
-      icon: (
-        <Image
-          source={require("../../../assets/png/logo_facebook.png")}
-          style={styles.iconSocial}
-          resizeMode="cover"
-        />
-      ),
-      onPress: () => {},
-    },
-  ];
   return (
-    <View>
+    <View style={styles.container}>
       <BaseProfile
         avatar={userOther.avatar}
         name={userOther.name}
         idAccount={userOther.id_account}
         introduction={userOther.introduction}
         navigation={navigation}
-        listAmount={listAmount}
-        listSocial={listSocial}
+        listAmount={ListAmount(userOther.friend)}
+        listSocial={ListSocial()}
         type={type}
         listJoined={joined}
       />
@@ -92,9 +37,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.Neutral0,
-  },
-  iconSocial: {
-    width: 24,
   },
 });
 

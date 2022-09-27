@@ -9,7 +9,8 @@ import { persistor, store } from "./src/redux";
 import { StatusBar, Platform, Alert } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-const Stack = createNativeStackNavigator();
+import { AppStack, RootStackParamList } from "@navigation";
+const Stack = createNativeStackNavigator<AppStack>();
 //link: https://expo.dev/notifications
 //android: ExponentPushToken[auPLDKK-6KhHtvV6I2Wagm]
 //ios: ExponentPushToken[Q-1DX9IjVzMtE25xpUY2d3]
@@ -114,10 +115,7 @@ export default function App() {
                 headerShown: false,
               }}
             >
-              <Stack.Screen
-                name="RootStackScreen"
-                component={RootStackScreen}
-              />
+              <Stack.Screen name="RootStack" component={RootStackScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaProvider>

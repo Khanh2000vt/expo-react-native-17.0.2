@@ -1,4 +1,4 @@
-import { Tick } from "@components";
+import { Tick } from "@components/Icon";
 import { theme } from "@theme";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    // height: 94,
     paddingVertical: 10,
     borderRadius: 8,
   },

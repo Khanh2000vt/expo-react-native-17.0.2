@@ -5,7 +5,7 @@ import {
   BaseCategory,
   BaseGettingStarted,
   ArrowRight,
-} from "../../components";
+} from "@components";
 
 import { FlatList, StyleSheet, View } from "react-native";
 import { Navigation } from "@constant/index";
@@ -86,43 +86,43 @@ const dataTest = [
   },
   {
     id: 5,
-    title: "2",
+    title: "Gaming",
   },
   {
     id: 6,
-    title: "2",
+    title: "Gaming",
   },
   {
     id: 7,
-    title: "2",
+    title: "Gaming",
   },
   {
     id: 8,
-    title: "1",
+    title: "Gaming",
   },
   {
     id: 9,
-    title: "2",
+    title: "Gaming",
   },
   {
     id: 10,
-    title: "2",
+    title: "Gaming",
   },
   {
     id: 11,
-    title: "2",
+    title: "Gaming",
   },
   {
     id: 12,
-    title: "2",
+    title: "Gaming",
   },
   {
     id: 13,
-    title: "2",
+    title: "Gaming",
   },
   {
     id: 14,
-    title: "2",
+    title: "Gaming",
   },
 ];
 

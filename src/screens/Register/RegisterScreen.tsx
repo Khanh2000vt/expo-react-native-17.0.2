@@ -10,26 +10,28 @@ import {
   BaseModal,
   Tick,
   VectorBack,
-} from "../../components";
+} from "@components";
 import { gender, Navigation } from "@constant/index";
-import { ListYear } from "../../utils";
+import { ListYear } from "@utils";
 import { theme } from "@theme";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
+const initialValues = {
+  email: "",
+  password: "",
+  username: "",
+  gender: "",
+  birthYear: "",
+  introductionCode: "",
+};
+
 function RegisterScreen({ navigation }: { navigation: any }) {
   const [agree, setAgree] = useState<boolean>(false);
 
   const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      username: "",
-      gender: "",
-      birthYear: "",
-      introductionCode: "",
-    },
+    initialValues: initialValues,
     // validationSchema: Yup.object({
     //   email: Yup.string().email("Invalid email address").required("Required"),
     //   password: Yup.string()

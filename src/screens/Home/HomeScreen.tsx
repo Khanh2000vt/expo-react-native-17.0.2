@@ -1,45 +1,19 @@
-import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import { CommunitiesApi } from "@api";
-import {
-  BaseButton,
-  BaseCategory,
-  BasePlaceholder,
-  CaretRight,
-  TomoCoins,
-  ViaFacebook,
-  ViaTwitter,
-} from "@components";
-import { getJoined, loginAuth, RootState } from "@redux";
-import { Navigation } from "@constant/index";
-import { theme } from "@theme";
+import { ICommunityAPI } from "@model";
+import { getJoined, loginAuth } from "@redux";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { useDispatch } from "react-redux";
+import { ListFooterComponent, ListHeaderComponent } from "./components";
 
 function HomeScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
-  const joinedCommunities = useSelector(
-    (state: RootState) => state.joined.communities
-  );
-  const isLoadingJoined = useSelector(
-    (state: RootState) => state.joined.isLoading
-  );
-  const user = useSelector((state: RootState) => state.auth.user);
-  const [listOthers, setListOthers] = useState<any[]>([]);
-  const [isLoadingOthers, setIsLoadingOther] = useState<boolean>(true);
   const [refreshing, setRefreshing] = useState<boolean>(false);
-
+  const [listOthers, setListOthers] = useState<ICommunityAPI[]>([]);
+  const [isLoadingOthers, setIsLoadingOther] = useState<boolean>(true);
   useEffect(() => {
     getJoinedCommunities();
     getListOthers();
-    dispatch(loginAuth());
   }, []);
 
   useEffect(() => {
@@ -68,167 +42,23 @@ function HomeScreen({ navigation }: { navigation: any }) {
   }
 
   const handleRefresh = () => {
-    console.log("handleRefresh");
     setRefreshing(true);
-  };
-
-  // flatList
-  const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderJoinedCommunity = ({ item }: { item: any }) => {
-    return (
-      <TouchableOpacity
-        activeOpacity={0.6}
-        style={styles.containerItem}
-        onPress={() =>
-          navigation.navigate(Navigation.COMMUNITY_DETAIL, {
-            community: item,
-            joined: true,
-          })
-        }
-      >
-        <Image
-          source={{ uri: item.image_url }}
-          style={styles.imageJoinedCommunity}
-        />
-        <LinearGradient
-          colors={["rgba(20, 13, 41, 0)", "rgba(20, 13, 40, 0.91)"]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 0, y: 1 }}
-          locations={[0.457, 1]}
-          style={[
-            {
-              position: "absolute",
-              borderRadius: 16,
-              height: 129,
-              width: 210,
-            },
-          ]}
-        />
-        <Text style={styles.textItem}>{item.title}</Text>
-      </TouchableOpacity>
-    );
   };
   return (
     <View style={styles.container}>
       <FlatList
         data={[]}
-        renderItem={() => <></>}
+        renderItem={null}
         showsVerticalScrollIndicator={false}
         refreshing={refreshing}
         onRefresh={handleRefresh}
-        ListHeaderComponent={
-          <View>
-            <View style={styles.viewHeader}>
-              <TouchableOpacity
-                activeOpacity={0.8}
-                onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
-              >
-                <Image source={{ uri: user.avatar }} style={styles.imageAvt} />
-              </TouchableOpacity>
-              <View>
-                <Text style={styles.textHello} numberOfLines={2}>
-                  Hello
-                </Text>
-                <TouchableOpacity
-                  activeOpacity={0.8}
-                  onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
-                >
-                  <Text style={styles.textName}>{user.name}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-            <View style={styles.viewNotification}>
-              <Image source={require("../../../assets/png/notifi.png")} />
-              <View style={styles.containerText}>
-                <Text style={styles.titleNotification}>News for you</Text>
-                <Text style={styles.bodyNotification}>
-                  You don’t have enough{" "}
-                  <Text style={{ fontWeight: "600" }}>TomoCoins!</Text>
-                </Text>
-                <Text style={styles.bodyNotification}>
-                  Please purchase some in the store.
-                </Text>
-              </View>
-            </View>
-            <View>
-              <Text style={styles.textName}>Joined communities</Text>
-              {isLoadingJoined ? (
-                <View style={[{ flexDirection: "row" }, styles.flatList]}>
-                  {BasePlaceholder.CommunityJoined(3)}
-                </View>
-              ) : (
-                <FlatList
-                  data={joinedCommunities}
-                  keyExtractor={keyExtractor}
-                  renderItem={renderJoinedCommunity}
-                  horizontal
-                  style={styles.flatList}
-                  showsHorizontalScrollIndicator={false}
-                />
-              )}
-            </View>
-          </View>
-        }
+        ListHeaderComponent={<ListHeaderComponent navigation={navigation} />}
         ListFooterComponent={
-          <View>
-            <Text style={styles.textName}>Others</Text>
-            {isLoadingOthers ? (
-              <View>{BasePlaceholder.Community(4)}</View>
-            ) : (
-              <FlatList
-                data={listOthers}
-                renderItem={({ item }) => (
-                  <BaseCategory
-                    item={item}
-                    isShowTick={false}
-                    onPress={() =>
-                      navigation.navigate(Navigation.COMMUNITY_DETAIL, {
-                        community: item,
-                      })
-                    }
-                  />
-                )}
-                keyExtractor={keyExtractor}
-                ListFooterComponent={
-                  <BaseButton
-                    title="See all"
-                    IconRight={<CaretRight />}
-                    backgroundColor={theme.colors.Neutral0}
-                    color={theme.colors.primary}
-                    onPress={() =>
-                      navigation.navigate(Navigation.COMMUNITIES_STACK)
-                    }
-                  />
-                }
-              />
-            )}
-            <View style={styles.viewButton}>
-              <BaseButton
-                title="Purchase TomoCoins"
-                backgroundColor={theme.colors.Neutral1}
-                color={theme.colors.Neutral10}
-                IconLeft={<TomoCoins style={{ marginHorizontal: 23 }} />}
-                style={styles.buttonGray}
-                onPress={() =>
-                  navigation.navigate(Navigation.PURCHASE_TOMO_COIN)
-                }
-              />
-              <BaseButton
-                title="Introduce via Twitter"
-                backgroundColor={theme.colors.Neutral1}
-                color={theme.colors.Neutral10}
-                IconLeft={<ViaTwitter style={{ marginHorizontal: 23 }} />}
-                style={styles.buttonGray}
-              />
-              <BaseButton
-                title="Introduce via Facebook"
-                backgroundColor={theme.colors.Neutral1}
-                color={theme.colors.Neutral10}
-                IconLeft={<ViaFacebook style={{ marginHorizontal: 23 }} />}
-                style={styles.buttonGray}
-              />
-            </View>
-          </View>
+          <ListFooterComponent
+            navigation={navigation}
+            isLoading={isLoadingOthers}
+            listOthers={listOthers}
+          />
         }
       />
     </View>
@@ -255,81 +85,6 @@ const styles = StyleSheet.create({
   itemFooter: {
     height: 2,
     flex: 1,
-  },
-  viewButton: {
-    marginBottom: 84,
-  },
-  buttonGray: {
-    height: 68,
-    marginTop: 12,
-    justifyContent: "flex-start",
-  },
-  viewHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  textHello: {
-    fontWeight: "400",
-    fontSize: theme.fontSize.font18,
-    color: theme.colors.Neutral6,
-  },
-  textName: {
-    fontWeight: "600",
-    fontSize: theme.fontSize.font24,
-    color: theme.colors.Neutral10,
-  },
-  viewNotification: {
-    height: 141,
-    backgroundColor: theme.colors.colorInput,
-    marginVertical: 36,
-    paddingHorizontal: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    borderRadius: 16,
-  },
-  titleNotification: {
-    fontWeight: "600",
-    fontSize: theme.fontSize.font18,
-    color: theme.colors.primary,
-    marginBottom: 8,
-  },
-  bodyNotification: {
-    fontWeight: "400",
-    fontSize: theme.fontSize.font14,
-    color: theme.colors.Neutral6,
-  },
-  containerText: {
-    marginLeft: 19,
-    flex: 1,
-  },
-  flatList: {
-    paddingVertical: 20,
-  },
-  imageAvt: {
-    height: 60,
-    width: 60,
-    borderRadius: 30,
-    marginRight: 20,
-  },
-
-  //item
-  containerItem: {
-    marginHorizontal: 6,
-    height: 129,
-    width: 210,
-  },
-  textItem: {
-    position: "absolute",
-    left: 20,
-    bottom: 20,
-    color: theme.colors.Neutral0,
-    fontSize: theme.fontSize.font16,
-    fontWeight: "600",
-  },
-  imageJoinedCommunity: {
-    height: 129,
-    width: 210,
-    borderRadius: 16,
   },
 });
 

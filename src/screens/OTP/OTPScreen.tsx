@@ -1,26 +1,21 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Navigation } from "@constant/index";
 import {
   BaseAreaView,
   BaseButton,
   BaseOTP,
   Tick,
   VectorBack,
-} from "../../components";
+} from "@components";
 import { theme } from "@theme";
+import { getNameNextNavigation } from "./controller";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 function OTPScreen({ route, navigation }: { route: any; navigation: any }) {
   const { type } = route.params;
-  function handleCodeFilled(value: string) {
-    if (type === 1) {
-      console.log("vao day");
-      navigation.navigate(Navigation.ACCOUNTS_SNS);
-    } else if (type === 2) {
-      console.log("vao 2");
-      navigation.navigate(Navigation.SUCCESSFULLY);
-    }
+  const nextNavigation = getNameNextNavigation(type);
+  function handleCodeFilled(_value: string) {
+    navigation.navigate(nextNavigation);
   }
   return (
     <BaseAreaView
@@ -49,15 +44,7 @@ function OTPScreen({ route, navigation }: { route: any; navigation: any }) {
         title={"Verify"}
         IconRight={<Tick height={20} width={20} />}
         style={styles.baseButton}
-        onPress={() => {
-          if (type === 1) {
-            console.log("vao day");
-            navigation.navigate(Navigation.ACCOUNTS_SNS);
-          } else if (type === 2) {
-            console.log("vao 2");
-            navigation.navigate(Navigation.SUCCESSFULLY);
-          }
-        }}
+        onPress={() => navigation.navigate(nextNavigation)}
       />
       <View style={styles.viewReceiveOTP}>
         <Text style={styles.textReceiveOTP}>Didn’t receive OTP code?</Text>

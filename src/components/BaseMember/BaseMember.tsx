@@ -1,4 +1,4 @@
-import { SvgUser } from "@components";
+import { SvgUser } from "@components/Icon";
 import { theme } from "@theme";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";

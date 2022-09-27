@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 
-import { ArrowDownIcon } from "@components";
+import { ArrowDownIcon } from "@components/Icon";
 import { ISelect } from "@model";
 import { theme } from "@theme";
 import Modal from "react-native-modal";
@@ -63,7 +63,9 @@ function BaseModal({
         </Text>
         <ArrowDownIcon />
       </TouchableOpacity>
-      {error && <Text style={styles.textError}>{messageError}</Text>}
+      {error && !!messageError && (
+        <Text style={styles.textError}>{messageError}</Text>
+      )}
       <Modal
         isVisible={isModalVisible}
         onSwipeComplete={() => setModalVisible(false)}

@@ -6,7 +6,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import { Container } from "@constant/index";
 import { PropsBaseScrollView } from "./BaseAreaViewProps";
 import { theme } from "@theme";
-import { BaseHeader } from "@components";
+import { BaseHeader } from "@components/BaseHeader";
 const colors = theme.colors;
 function BaseAreaView({
   paddingLeft = Container.PADDING_LEFT,

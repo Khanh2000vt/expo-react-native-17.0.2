@@ -1,4 +1,4 @@
-import { IUser } from "@model";
+import { IUserAPI } from "@model";
 
 export interface BaseInteractiveProps {
   user: any;

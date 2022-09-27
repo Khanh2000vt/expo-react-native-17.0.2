@@ -1,17 +1,9 @@
 import { theme } from "@theme";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  Animated,
-  FlatList,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import React, { useCallback, useRef, useState } from "react";
+import { Animated, FlatList, StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Modalize } from "react-native-modalize";
 import { useSelector } from "react-redux";
-import { RepliesApi } from "../../api";
 import {
   BaseHeader,
   BaseInteractive,
@@ -20,11 +12,7 @@ import {
 } from "../../components";
 import { RootState } from "../../redux";
 import { findPostById } from "../../utils";
-import {
-  BasePostDetail,
-  ListFooterComponent,
-  ModalizeComponent,
-} from "./components";
+import { BasePostDetail, ListFooterComponent } from "./components";
 
 function ForumDetailScreen({
   route,
@@ -35,8 +23,6 @@ function ForumDetailScreen({
 }) {
   const { postFocus, liked, initAmountLike } = route.params;
   const likeRedux = useSelector((state: RootState) => state.forum.likes);
-  const userRedux = useSelector((state: RootState) => state.auth.user);
-  const [likes, setLikes] = useState<any[]>([]);
   const modalizeRef = useRef<Modalize>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
 

@@ -1,7 +1,6 @@
 import { theme } from "@theme";
-import React from "react";
+import React, { forwardRef } from "react";
 import {
-  GestureResponderEvent,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,7 +14,6 @@ import { listCheckBox } from "../constants";
 interface IState {
   isVisible: boolean;
   onPressCancelModal: () => void | undefined;
-  ref: React.RefObject<TextInput>;
   onChangeMinAge: (text: string) => void;
   onChangeMaxAge: (text: string) => void;
   onPressClearModal: () => void | undefined;
@@ -25,19 +23,21 @@ interface IState {
   onPressApply: (item: any) => void;
   genderSelected: string;
 }
-function ModalFilter({
-  isVisible,
-  onPressCancelModal,
-  ref,
-  onChangeMinAge,
-  onChangeMaxAge,
-  onPressClearModal,
-  onPressGender,
-  valueMinAge,
-  valueMaxAge,
-  onPressApply,
-  genderSelected,
-}: IState) {
+function ModalFilter(
+  {
+    isVisible,
+    onPressCancelModal,
+    onChangeMinAge,
+    onChangeMaxAge,
+    onPressClearModal,
+    onPressGender,
+    valueMinAge,
+    valueMaxAge,
+    onPressApply,
+    genderSelected,
+  }: IState,
+  ref: React.ForwardedRef<TextInput>
+) {
   return (
     <Modal
       isVisible={isVisible}
@@ -123,6 +123,8 @@ function ModalFilter({
   );
 }
 
+export default forwardRef<TextInput, IState>(ModalFilter);
+
 const styles = StyleSheet.create({
   modalContainer: {
     backgroundColor: theme.colors.Neutral8,
@@ -189,4 +191,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalFilter;
+// export default ModalFilter;

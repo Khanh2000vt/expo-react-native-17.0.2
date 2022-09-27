@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 
-import { ArrowDownIcon } from "@components";
+import { ArrowDownIcon } from "@components/Icon";
 import { theme } from "@theme";
 import { PropsBaseDropDown } from "./BaseDropDownModel";
 import { ISelect } from "@model";

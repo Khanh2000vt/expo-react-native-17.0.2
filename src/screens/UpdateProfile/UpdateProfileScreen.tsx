@@ -20,10 +20,10 @@ import {
   Plus,
   Tick,
   VectorBack,
-} from "../../components";
+} from "@components";
 import { gender } from "@constant/index";
-import { RootState, updateUser } from "../../redux";
-import { ListYear } from "../../utils";
+import { RootState, updateUser } from "@redux";
+import { ListYear } from "@utils";
 import { theme } from "@theme";
 
 function UpdateProfileScreen({ navigation }: { navigation: any }) {

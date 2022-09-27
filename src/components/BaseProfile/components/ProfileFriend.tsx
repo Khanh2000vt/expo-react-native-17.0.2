@@ -1,7 +1,9 @@
-import { BaseButton, UseStateProps, Warnings } from "@components";
+import { BaseButton } from "@components/BaseButton";
+import { Warnings } from "@components/Icon";
 import { theme } from "@theme";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { UseStateProps } from "../BaseProfileModel";
 
 function ProfileFriend({ setIsShowAlert }: UseStateProps) {
   return (

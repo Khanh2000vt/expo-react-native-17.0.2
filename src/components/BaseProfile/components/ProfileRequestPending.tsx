@@ -1,8 +1,9 @@
-import { BaseButton, UseStateProps } from "@components";
+import React from "react";
 import { Warnings } from "@components/Icon";
 import { theme } from "@theme";
-import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { BaseButton } from "@components/BaseButton";
+import { UseStateProps } from "../BaseProfileModel";
 
 function ProfileRequestPending({ setIsShowAlert }: UseStateProps) {
   return (

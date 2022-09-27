@@ -1,7 +1,7 @@
-import * as ImagePicker from "expo-image-picker";
+import { IImage } from "@model";
 export interface BaseMediaPickerProps {
   isVisible: boolean;
-  onPickComplete: (result: ImagePicker.ImagePickerResult) => void;
+  onPickComplete: (result: IImage) => void;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
   option?: "All" | "Images" | "Videos";
   allowsEditing?: boolean;

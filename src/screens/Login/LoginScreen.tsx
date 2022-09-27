@@ -11,14 +11,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import {
-  ArrowRight,
-  BaseAreaView,
-  BaseButton,
-  BaseInput,
-} from "../../components";
+import { ArrowRight, BaseAreaView, BaseButton, BaseInput } from "@components";
 import { Container, Navigation } from "@constant/index";
-import { loginAuth, RootState } from "../../redux";
+import { loginAuth, RootState } from "@redux";
 import { theme } from "@theme";
 
 const colors = theme.colors;

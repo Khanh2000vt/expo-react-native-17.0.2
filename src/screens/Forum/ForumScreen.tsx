@@ -1,23 +1,19 @@
+import { BaseHeader, BasePlaceholder, Pencil, VectorBack } from "@components";
+import { Navigation } from "@constant/index";
+import { IForumAPI } from "@model";
+import { RootState } from "@redux";
+import { theme } from "@theme";
 import React, { useCallback, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { ForumApi } from "../../api";
-import {
-  BaseHeader,
-  BasePlaceholder,
-  Pencil,
-  VectorBack,
-} from "../../components";
-import { Navigation } from "@constant/index";
-import { RootState } from "../../redux";
-import { RenderItem } from "./components/RenderItem";
-import { theme } from "@theme";
+import { RenderItem } from "./components";
 
 function ForumScreen({ navigation }: { navigation: any }) {
-  const user = useSelector((state: RootState) => state.auth.user);
+  // const user = useSelector((state: RootState) => state.auth.user);
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<IForumAPI[]>([]);
   const [pageCurrent, setPageCurrent] = useState<number>(1);
   const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState<boolean>(false);

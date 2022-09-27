@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { BaseButton, CircleComplete } from "../../components";
+import { BaseButton, CircleComplete } from "@components";
 import { Navigation } from "@constant/index";
 import { theme } from "@theme";
 

@@ -17,3 +17,4 @@ export * from "./BaseInteractive";
 export * from "./BasePlaceholder";
 export * from "./BaseMediaPicker";
 export * from "./BaseAlert";
+export * from "./BaseVirtualizedView";

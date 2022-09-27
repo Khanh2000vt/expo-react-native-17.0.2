@@ -1,4 +1,9 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+
+export type AppStack = {
+  RootStack: undefined;
+};
 
 export type RootStackParamList = {
   MainStack: undefined;
@@ -14,6 +19,7 @@ export type RootStackParamList = {
   PurchaseTomoCoinScreen: undefined;
   ForumStack: undefined;
 };
+export type MainStack = BottomTabScreenProps<RootStackParamList, "MainStack">;
 
 export type CommunityDetailNavigation = NativeStackScreenProps<
   RootStackParamList,
@@ -122,6 +128,11 @@ export type MainStackParamList = {
   CommunitiesStack: undefined;
   AccountStack: undefined;
 };
+//////
+export type HomeStackNavigation = BottomTabScreenProps<
+  MainStackParamList,
+  "HomeStack"
+>;
 
 export type HomeStackParamList = {
   HomeScreen: undefined;

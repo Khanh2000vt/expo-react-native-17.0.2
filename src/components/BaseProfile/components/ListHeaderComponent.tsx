@@ -1,10 +1,6 @@
-import {
-  BaseButton,
-  PencilLine,
-  SvgCopy,
-  VectorBack,
-  BaseHeader,
-} from "@components";
+import { BaseButton } from "@components/BaseButton";
+import { BaseHeader } from "@components/BaseHeader";
+import { PencilLine, SvgCopy, VectorBack } from "@components/Icon";
 import { Navigation, OtherProfile } from "@constant/index";
 import { ICommunityAPI } from "@model";
 import { theme } from "@theme";

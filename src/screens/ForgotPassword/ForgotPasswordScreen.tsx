@@ -1,12 +1,7 @@
 import { Formik } from "formik";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import {
-  ArrowRight,
-  BaseAreaView,
-  BaseButton,
-  BaseInput,
-} from "../../components";
+import { ArrowRight, BaseAreaView, BaseButton, BaseInput } from "@components";
 import { Navigation } from "@constant/index";
 import { theme } from "@theme";
 const colors = theme.colors;
@@ -29,10 +24,9 @@ function ForgotPasswordScreen({ navigation }: { navigation: any }) {
         onSubmit={(_values) => navigation.navigate(Navigation.REGISTER_FORGOT)}
       >
         {({ handleChange, handleSubmit, values }) => (
-          <View>
+          <>
             <BaseInput
               title="Email"
-              //   style={styles.input}
               value={values.email}
               onChangeText={handleChange("email")}
               placeholder="Your email"
@@ -53,7 +47,7 @@ function ForgotPasswordScreen({ navigation }: { navigation: any }) {
               onPress={handleBackToLogin}
               option="solid"
             />
-          </View>
+          </>
         )}
       </Formik>
     </BaseAreaView>

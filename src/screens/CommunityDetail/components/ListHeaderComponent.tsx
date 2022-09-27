@@ -1,38 +1,20 @@
-import { theme } from "@theme";
 import React, { useState } from "react";
-import {
-  GestureResponderEvent,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   BaseButton,
-  BaseInput,
   CaretRight,
   SingOut19,
   SvgInfo,
   SvgMessages,
-} from "../../../components";
+} from "@components";
+import { theme } from "@theme";
 interface IState {
   community: any;
-  onChangeText: (text: string) => void;
-  value: string;
-  onPressFilter: () => void | undefined;
   onPressJoin: () => void | undefined;
   joined: boolean;
 }
 
-function ListHeaderComponent({
-  community,
-  onChangeText,
-  value,
-  onPressFilter,
-  onPressJoin,
-  joined,
-}: IState) {
+function ListHeaderComponent({ community, onPressJoin, joined }: IState) {
   const [isJoined, setIsJoined] = useState<boolean>(joined);
 
   return (
@@ -87,18 +69,6 @@ function ListHeaderComponent({
             </Text>
           </View>
         )}
-      </View>
-
-      <View>
-        <Text style={styles.textTitleMembers}>Members</Text>
-        <BaseInput
-          option="search-filter"
-          placeholder="Search by Name"
-          styleContainer={styles.inputSearch}
-          onPressFilter={onPressFilter}
-          onChangeText={onChangeText}
-          value={value}
-        />
       </View>
     </>
   );
@@ -190,15 +160,6 @@ const styles = StyleSheet.create({
     color: theme.colors.primary,
     flex: 1,
     marginLeft: 13,
-  },
-  textTitleMembers: {
-    fontWeight: "600",
-    fontSize: theme.fontSize.font24,
-    color: theme.colors.Neutral10,
-  },
-  inputSearch: {
-    marginVertical: 24,
-    marginBottom: 16,
   },
 });
 
