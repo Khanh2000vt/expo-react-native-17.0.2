@@ -1,17 +1,18 @@
+import {
+  BaseHeader,
+  BaseInteractive,
+  BaseVirtualizedView,
+  HeartFill,
+  VectorBack,
+} from "@components";
+import { getLikeRedux } from "@redux";
 import { theme } from "@theme";
-import React, { useCallback, useRef, useState } from "react";
+import { getAmountLikeInForum, getElementLikeOfPost } from "@utils";
+import React, { useCallback, useRef } from "react";
 import { Animated, FlatList, StyleSheet, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Modalize } from "react-native-modalize";
 import { useSelector } from "react-redux";
-import {
-  BaseHeader,
-  BaseInteractive,
-  HeartFill,
-  VectorBack,
-} from "../../components";
-import { RootState } from "../../redux";
-import { findPostById } from "../../utils";
 import { BasePostDetail, ListFooterComponent } from "./components";
 
 function ForumDetailScreen({
@@ -21,12 +22,15 @@ function ForumDetailScreen({
   route: any;
   navigation: any;
 }) {
-  const { postFocus, liked, initAmountLike } = route.params;
-  const likeRedux = useSelector((state: RootState) => state.forum.likes);
+  const { postFocus } = route.params;
+  //redux
+  const likeRedux = useSelector(getLikeRedux);
+  //handle
+  const amountLike = getAmountLikeInForum(postFocus, likeRedux);
+  const likes = getElementLikeOfPost(postFocus, likeRedux);
+
   const modalizeRef = useRef<Modalize>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
-
-  const data = findPostById(postFocus, likeRedux).data || [];
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
   function headerComponent() {
@@ -34,7 +38,7 @@ function ForumDetailScreen({
       <View style={[styles.flex, styles.headerModal]}>
         <HeartFill width={32} height={32} />
         <Text style={[styles.textLikes, styles.textLikesModal]}>
-          {data.length} likes
+          {amountLike} likes
         </Text>
       </View>
     );
@@ -47,23 +51,15 @@ function ForumDetailScreen({
         onPressLeft={() => navigation.goBack()}
         styleHeader={styles.styleHeader}
       />
-      <FlatList
-        data={[]}
-        renderItem={() => <></>}
-        keyExtractor={keyExtractor}
-        ListHeaderComponent={
-          <BasePostDetail
-            postFocus={postFocus}
-            liked={liked}
-            initAmountLike={initAmountLike}
-            onPressLikeDetail={() => {
-              modalizeRef.current?.open();
-            }}
-          />
-        }
-        ListFooterComponent={<ListFooterComponent post={postFocus} />}
-      />
-      {/* <ModalizeComponent ref={modalizeRef} post={postFocus} /> */}
+      <BaseVirtualizedView>
+        <BasePostDetail
+          postFocus={postFocus}
+          onPressLikeDetail={() => {
+            modalizeRef.current?.open();
+          }}
+        />
+        <ListFooterComponent post={postFocus} />
+      </BaseVirtualizedView>
       <Modalize
         ref={modalizeRef}
         HeaderComponent={headerComponent}
@@ -73,8 +69,10 @@ function ForumDetailScreen({
         childrenStyle={styles.flatListModal}
         closeOnOverlayTap
         flatListProps={{
-          data: data,
-          renderItem: ({ item }) => <BaseInteractive user={item} type="like" />,
+          data: likes?.data,
+          renderItem: ({ item }) => (
+            <BaseInteractive userID={item} post={postFocus} type="like" />
+          ),
           keyExtractor: keyExtractor,
           showsVerticalScrollIndicator: false,
           onScroll: Animated.event(

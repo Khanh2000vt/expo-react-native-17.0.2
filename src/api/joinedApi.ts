@@ -2,7 +2,11 @@ import axiosClient from "./axiosClient";
 
 const JoinedApi = {
   getAll: () => {
-    const url = "/joined";
+    const url = "/login";
+    return axiosClient.get(url);
+  },
+  getById: (id: string) => {
+    const url = "/login/" + id;
     return axiosClient.get(url);
   },
 };

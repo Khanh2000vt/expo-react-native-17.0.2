@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   BaseButton,
   CaretRight,
@@ -7,28 +5,55 @@ import {
   SvgInfo,
   SvgMessages,
 } from "@components";
+import { ICommunityAPI } from "@model";
+import { exitCommunity, getUserRedux, joinCommunity } from "@redux";
 import { theme } from "@theme";
+import { isUserJoinedCommunity } from "@utils";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 interface IState {
-  community: any;
+  community: ICommunityAPI;
   onPressJoin: () => void | undefined;
-  joined: boolean;
 }
 
-function ListHeaderComponent({ community, onPressJoin, joined }: IState) {
-  const [isJoined, setIsJoined] = useState<boolean>(joined);
+function ListHeaderComponent({ community, onPressJoin }: IState) {
+  const dispatch = useDispatch();
+  const userRedux = useSelector(getUserRedux);
+  const [isJoined, setIsJoined] = useState<boolean>(false);
+
+  useEffect(() => {
+    let joined = isUserJoinedCommunity(userRedux.id, community);
+    setIsJoined(joined);
+  }, [community]);
+
+  const handlePressJoined = () => {
+    const params = {
+      idCommunity: community.id,
+      user: userRedux,
+    };
+
+    if (isJoined) {
+      dispatch(exitCommunity(params));
+    } else {
+      dispatch(joinCommunity(params));
+    }
+  };
 
   return (
     <>
       <View style={styles.poster}>
         <Image
-          source={{ uri: community.image_url }}
+          source={{ uri: community.avatar }}
           style={styles.imageBackground}
-          resizeMode="stretch"
+          resizeMode="cover"
         />
         <View style={styles.backgroundAbsolute} />
         <View>
-          <Text style={styles.textTitle}>{community.title}</Text>
-          <Text style={styles.textMembers}>{community.members} members</Text>
+          <Text style={styles.textTitle}>{community.name}</Text>
+          <Text style={styles.textMembers}>
+            {community.members.length} members
+          </Text>
         </View>
         <BaseButton
           title={isJoined ? "Leaving" : "Participate"}
@@ -37,7 +62,7 @@ function ListHeaderComponent({ community, onPressJoin, joined }: IState) {
           backgroundColor={
             isJoined ? theme.colors.Semantic4 : theme.colors.primary
           }
-          onPress={() => setIsJoined(!isJoined)}
+          onPress={handlePressJoined}
         />
       </View>
 

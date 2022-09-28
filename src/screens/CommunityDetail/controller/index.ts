@@ -1,11 +1,12 @@
+import { IMemberAPI } from "@model";
 import { IFilter } from "../model";
 
 const handleCaseFilter = (
   debounce: string,
-  members: any[],
+  members: IMemberAPI[],
   filter: IFilter
 ): any[] => {
-  let result: any[] = members;
+  let result: IMemberAPI[] = members;
   try {
     if (
       debounce !== "" ||
@@ -24,13 +25,13 @@ const handleCaseFilter = (
       if (!!filter.minAge) {
         console.log("Di vao 2");
         result = result.filter((member) => {
-          return member.age >= filter?.minAge;
+          return member.birth_year >= parseInt(filter?.minAge);
         });
       }
       if (!!filter.maxAge) {
         console.log("Di vao 3");
         result = result.filter((member) => {
-          return member.age <= filter?.maxAge;
+          return member.birth_year <= parseInt(filter?.maxAge);
         });
       }
       if (filter.gender) {

@@ -1,5 +1,5 @@
-import React, { forwardRef } from "react";
-import { FlatList, StyleProp, ViewStyle } from "react-native";
+import React from "react";
+import { StyleProp, ViewStyle } from "react-native";
 import { KeyboardAwareFlatList } from "react-native-keyboard-aware-scroll-view";
 
 interface BaseVirtualizedViewProps {
@@ -7,37 +7,25 @@ interface BaseVirtualizedViewProps {
   style?: StyleProp<ViewStyle> | undefined;
 }
 
-function BaseVirtualizedView(
-  { children = <></>, style }: BaseVirtualizedViewProps,
-  ref?: React.ForwardedRef<FlatList>
-) {
+function BaseVirtualizedView({
+  children = <></>,
+  style,
+}: BaseVirtualizedViewProps) {
   return (
-    <FlatList
-      ref={ref}
+    <KeyboardAwareFlatList
+      style={[{ flex: 1 }, style]}
       data={[]}
-      style={style}
-      renderItem={() => <></>}
-      bounces={false}
-      showsVerticalScrollIndicator={false}
+      renderItem={null}
+      // innerRef={ref}
       keyExtractor={() => "BaseVirtualizedView"}
       ListHeaderComponent={<>{children}</>}
+      showsVerticalScrollIndicator={false}
+      enableOnAndroid
+      bounces={false}
+      extraScrollHeight={200}
+      extraHeight={0}
     />
-    // <KeyboardAwareFlatList
-    //   style={{ flex: 1 }}
-    //   data={[]}
-    //   renderItem={null}
-    //   // innerRef={ref}
-    //   keyExtractor={() => "BaseVirtualizedView"}
-    //   ListHeaderComponent={<>{children}</>}
-    //   showsVerticalScrollIndicator={false}
-    //   enableOnAndroid
-    //   bounces={false}
-    //   extraScrollHeight={200}
-    //   extraHeight={0}
-    // />
   );
 }
 
-export default forwardRef<FlatList, BaseVirtualizedViewProps>(
-  BaseVirtualizedView
-);
+export default BaseVirtualizedView;

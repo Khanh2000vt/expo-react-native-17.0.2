@@ -21,7 +21,7 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
   //flat list
   const keyExtractor = useCallback((_, index) => index.toString(), []);
   const renderItem = ({ item }: { item: any }) => {
-    return <BaseCategory item={item} onPress={handlePressBaseCategory} />;
+    return <BaseCategory community={item} onPress={handlePressBaseCategory} />;
   };
 
   //function

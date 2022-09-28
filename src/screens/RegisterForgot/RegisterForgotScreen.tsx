@@ -12,52 +12,13 @@ import {
 import { gender, Navigation } from "@constant/index";
 import { ListYear } from "@utils";
 import { theme } from "@theme";
+import {
+  arrayAccountInput,
+  arraySocialInput,
+  initialValues,
+} from "./constants";
 const colors = theme.colors;
 const fontSize = theme.fontSize;
-enum Social {
-  YOUTUBE = "youtube",
-  INSTAGRAM = "instagram",
-  TWITTER = "twitter",
-  FACEBOOK = "facebook",
-  WHATSAPP = "whatsapp",
-}
-
-const arraySocialInput = [
-  {
-    title: "Email",
-    type: Social.YOUTUBE,
-  },
-  {
-    title: "Instagram",
-    type: Social.INSTAGRAM,
-  },
-  {
-    title: "Twitter",
-    type: Social.TWITTER,
-  },
-  {
-    title: "Facebook",
-    type: Social.FACEBOOK,
-  },
-  {
-    title: "Whatsapp",
-    type: Social.WHATSAPP,
-  },
-];
-
-const initialValues = {
-  youtube: "",
-  instagram: "",
-  twitter: "",
-  facebook: "",
-  whatsapp: "",
-  email: "",
-  password: "",
-  username: "",
-  gender: "",
-  birthYear: "",
-  introductionCode: "",
-};
 
 function RegisterForgotScreen({ navigation }: { navigation: any }) {
   const formik = useFormik({
@@ -96,7 +57,7 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
       <Text style={styles.textBody}>
         Add the accounts you want to increase followers
       </Text>
-      <View>
+      <View style={styles.viewInput}>
         {arraySocialInput.map((item, index) => {
           return (
             <BaseInput
@@ -112,40 +73,20 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
         })}
       </View>
       <Text style={styles.textTitle}>Follower account</Text>
-      <View>
-        <BaseInput
-          title="Email"
-          value={formik.values.email}
-          styleContainer={styles.inputContainer}
-          onChangeText={formik.handleChange("email")}
-          placeholder="Your email"
-          placeholderTextColor={colors.Neutral3}
-          autoComplete="email"
-          keyboardType="email-address"
-          error={formik.touched.email}
-          messageError={formik.errors.email}
-        />
-        <BaseInput
-          title="Password"
-          option="password"
-          value={formik.values.password}
-          styleContainer={styles.inputContainer}
-          onChangeText={formik.handleChange("password")}
-          placeholder="Your password"
-          placeholderTextColor={colors.Neutral3}
-          error={formik.touched.password}
-          messageError={formik.errors.password}
-        />
-        <BaseInput
-          title="Username"
-          value={formik.values.username}
-          styleContainer={styles.inputContainer}
-          onChangeText={formik.handleChange("username")}
-          placeholder="Your username"
-          placeholderTextColor={colors.Neutral3}
-          error={formik.touched.username}
-          messageError={formik.errors.username}
-        />
+      <View style={styles.viewInput}>
+        {arrayAccountInput.map((item, index) => {
+          return (
+            <BaseInput
+              title={item.title}
+              value={formik.values[item.type]}
+              styleContainer={styles.inputContainer}
+              onChangeText={formik.handleChange(item.type)}
+              error={formik.touched[item.type]}
+              messageError={formik.errors[item.type]}
+              key={index}
+            />
+          );
+        })}
         <View style={styles.viewPicker}>
           <BaseModal
             data={gender}
@@ -194,17 +135,19 @@ const styles = StyleSheet.create({
     height: 50,
     paddingHorizontal: 33,
   },
+  viewInput: {
+    marginTop: 24,
+    marginBottom: 34,
+  },
   inputContainer: {
     marginBottom: 16,
   },
   baseButton: {
-    marginTop: 33,
-    marginBottom: 24,
+    marginBottom: 106,
   },
   viewPicker: {
     flexDirection: "row",
     marginBottom: 16,
-    zIndex: 100,
   },
   textTitle: {
     fontWeight: "500",

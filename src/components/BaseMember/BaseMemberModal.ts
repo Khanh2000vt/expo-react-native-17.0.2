@@ -1,6 +1,8 @@
+import { IMemberAPI, IUserAPI } from "@model";
+
 interface BaseMemberProps {
-  item: any;
-  onPress: (item: any) => void;
+  member: IMemberAPI;
+  onPress: (item: IMemberAPI) => void;
 }
 
 export type { BaseMemberProps };

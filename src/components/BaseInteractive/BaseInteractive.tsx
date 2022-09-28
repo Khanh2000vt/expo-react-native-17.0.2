@@ -1,7 +1,9 @@
+import { getMemberRedux, getUserRedux } from "@redux";
 import { theme } from "@theme";
-import { handleTimeCreateAt } from "@utils";
+import { getPersonByID, handleTimeCreateAt } from "@utils";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
 import { BaseInteractiveProps } from "./BaseInteractiveModel";
 
 enum Type {
@@ -9,16 +11,26 @@ enum Type {
   REPLY = "reply",
 }
 const nameDefault = "Donnie Tromp";
-const avatarDefault =
-  "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/179.jpg";
-function BaseInteractive({ user, type }: BaseInteractiveProps) {
+function BaseInteractive({
+  userID,
+  post,
+  type,
+  userCommentID,
+}: BaseInteractiveProps) {
+  const memberRedux = useSelector(getMemberRedux);
+  const userRedux = useSelector(getUserRedux);
+  const user = type === Type.LIKE ? userID : userCommentID;
+  console.log("userID: ", userID);
+  console.log("userCommentID: ", userCommentID);
+
+  const userPost = getPersonByID(memberRedux, user, userRedux);
   return (
     <View
       style={type === Type.REPLY ? styles.containerReply : styles.containerLike}
     >
       <View style={styles.flex}>
         <Image
-          source={{ uri: user.avatar || avatarDefault }}
+          source={{ uri: userPost?.avatar }}
           style={[
             styles.avatar,
             type === Type.REPLY ? styles.avatarReply : styles.avatarLike,
@@ -27,13 +39,13 @@ function BaseInteractive({ user, type }: BaseInteractiveProps) {
         <Text
           style={[styles.textName, type === Type.LIKE && styles.textNameLike]}
         >
-          {user.name || nameDefault}
+          {userPost?.name || nameDefault}
         </Text>
         {type === Type.REPLY && (
           <>
             <View style={styles.ellipse} />
             <Text style={styles.textTime}>
-              {handleTimeCreateAt(user.createdAt)}
+              {handleTimeCreateAt(userCommentID?.createdAt)}
             </Text>
           </>
         )}
@@ -42,7 +54,7 @@ function BaseInteractive({ user, type }: BaseInteractiveProps) {
         <View style={styles.flex}>
           <View style={styles.offset} />
           <TouchableOpacity style={{ flex: 1 }} activeOpacity={0.8}>
-            <Text style={styles.textBody}>{user.body}</Text>
+            <Text style={styles.textBody}>{userCommentID?.comment}</Text>
           </TouchableOpacity>
         </View>
       )}

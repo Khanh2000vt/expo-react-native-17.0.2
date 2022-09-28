@@ -1,43 +1,60 @@
-import { MembersApi } from "@api";
 import { BaseMember } from "@components";
+import { ICommunityAPI, IMemberAPI } from "@model";
+import { getMemberRedux, getUserRedux } from "@redux";
+import { getMembersInCommunity } from "@utils";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
+import { useSelector } from "react-redux";
 import FindComponent from "./FindComponent";
 
 interface IState {
-  onPress: (item: any) => void;
-  onFocus: (y: number) => void;
+  onPress: (item: IMemberAPI) => void;
+  community: ICommunityAPI;
 }
 
-function ListFooterComponent({ onPress, onFocus }: IState) {
-  const [members, setMembers] = useState<any[]>([]);
-  const [filterMembers, setFilterMembers] = useState<any[]>([]);
+function ListFooterComponent({ onPress, community }: IState) {
+  const userRedux = useSelector(getUserRedux);
+  const membersRedux = useSelector(getMemberRedux);
+  const [members, setMembers] = useState<IMemberAPI[]>([]);
+  const [filterMembers, setFilterMembers] = useState<IMemberAPI[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [layoutY, setLayoutY] = useState<number>(0);
-
   useEffect(() => {
     getMembers();
-  }, []);
+  }, [community]);
 
   const getMembers = async () => {
     try {
-      const res: any = await MembersApi.getAll();
-      setMembers([...res]);
-      setFilterMembers([...res]);
+      setIsLoading(true);
+      let membersAPI = await getMembersInCommunity(
+        community.members,
+        membersRedux,
+        userRedux
+      );
+      setMembers([...membersAPI]);
+      setFilterMembers([...membersAPI]);
     } catch (e) {
+      console.log("error: ", e);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <View onLayout={(event) => setLayoutY(event.nativeEvent.layout.y)}>
-      <FindComponent
-        members={members}
-        onFocus={() => onFocus(layoutY)}
-        setFilterMembers={setFilterMembers}
-      />
-      {isLoading ? (
+    <View>
+      <FindComponent members={members} setFilterMembers={setFilterMembers} />
+      {community.members.length === 0 ? (
+        <View style={{ paddingBottom: 40 }}>
+          <Text style={styles.text}>
+            This community has no members. Join now !!!
+          </Text>
+        </View>
+      ) : isLoading ? (
         <View style={{ paddingBottom: 40 }}>
           <ActivityIndicator />
         </View>
@@ -45,15 +62,27 @@ function ListFooterComponent({ onPress, onFocus }: IState) {
         <FlatList
           data={filterMembers}
           renderItem={({ item }) => (
-            <BaseMember item={item} onPress={() => onPress(item)} />
+            <BaseMember member={item} onPress={() => onPress(item)} />
           )}
           keyExtractor={(_, index) => index.toString()}
-          ListEmptyComponent={<Text>No matching results were found!</Text>}
+          ListEmptyComponent={
+            <Text style={styles.text}>No matching results were found!</Text>
+          }
           extraData={filterMembers}
+          style={styles.flatList}
         />
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  text: {
+    alignSelf: "center",
+  },
+  flatList: {
+    paddingBottom: 57,
+  },
+});
 
 export default ListFooterComponent;

@@ -4,15 +4,14 @@ import { LoginApi } from "../../api";
 interface IState {
   isLoading: boolean;
   errorMessage: string;
+
   token: string | null;
-  user: any;
 }
 
 const initialState: IState = {
   isLoading: false,
   errorMessage: "",
   token: null,
-  user: {},
 };
 
 export const loginAuth: any = createAsyncThunk(
@@ -34,20 +33,6 @@ const authSlice = createSlice({
     logoutAuth: () => {
       return initialState;
     },
-    addCoins: (state: IState, action: PayloadAction<any>) => {
-      let coin = state.user.coin + action.payload;
-      state.user.coin = coin;
-    },
-    spendCoins: (state: IState, action: PayloadAction<any>) => {
-      let coin = state.user.coin - action.payload;
-      state.user.coin = coin;
-    },
-    updateUser: (state: IState, action: PayloadAction<any>) => {
-      state.user = {
-        ...state.user,
-        ...action.payload,
-      };
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -59,7 +44,7 @@ const authSlice = createSlice({
         (state: IState, action: PayloadAction<any>) => {
           state.isLoading = false;
           state.token = action.payload.token;
-          state.user = action.payload;
+          // state.user = action.payload;
         }
       )
       .addCase(
@@ -72,8 +57,10 @@ const authSlice = createSlice({
   },
 });
 
-export const { logoutAuth, addCoins, spendCoins, updateUser } =
-  authSlice.actions;
+export const {
+  logoutAuth,
+  //  addCoins, spendCoins, updateUser
+} = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 

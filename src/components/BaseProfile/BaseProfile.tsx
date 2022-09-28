@@ -1,9 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
-
 import { OtherProfile } from "@constant/index";
-import { spendCoins } from "@redux";
 import { theme } from "@theme";
 import { BaseProfileProps } from "./BaseProfileModel";
 import {
@@ -13,23 +11,23 @@ import {
 } from "./components";
 import { BaseAlert } from "@components/BaseAlert";
 import { BasePopupRequest } from "@components/BasePopupRequest";
+import { spendCoins } from "@redux";
 
 function BaseProfile({
   navigation,
   isProfileSelf = false,
-  avatar,
-  name,
-  idAccount,
-  introduction,
   listAmount = [],
   listSocial = [],
   listJoined = [],
   type = OtherProfile.OTHER,
+  user,
+  member,
 }: BaseProfileProps) {
   const dispatch = useDispatch();
   const [isVisibleModal, setIsVisibleModal] = useState<boolean>(false);
   const [isShowAlert, setIsShowAlert] = useState<boolean>(false);
   const [status, setStatus] = useState<OtherProfile>(OtherProfile.OTHER);
+  const userFocus = isProfileSelf ? user : member;
 
   useEffect(() => {
     setStatus(type);
@@ -60,6 +58,17 @@ function BaseProfile({
         bounces={false}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
+        ListHeaderComponent={
+          <ListHeaderComponent
+            isProfileSelf={isProfileSelf}
+            status={status}
+            listAmount={listAmount}
+            listSocial={listSocial}
+            listJoined={listJoined}
+            navigation={navigation}
+            user={userFocus}
+          />
+        }
         ListFooterComponent={
           <ListFooterComponent
             isProfileSelf={isProfileSelf}
@@ -68,20 +77,6 @@ function BaseProfile({
             setIsShowAlert={setIsShowAlert}
             setIsVisibleModal={setIsVisibleModal}
             setStatus={setStatus}
-          />
-        }
-        ListHeaderComponent={
-          <ListHeaderComponent
-            isProfileSelf={isProfileSelf}
-            status={status}
-            listAmount={listAmount}
-            listSocial={listSocial}
-            listJoined={listJoined}
-            avatar={avatar}
-            name={name}
-            idAccount={idAccount}
-            introduction={introduction}
-            navigation={navigation}
           />
         }
       />

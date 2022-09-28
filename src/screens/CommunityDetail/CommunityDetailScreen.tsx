@@ -1,8 +1,12 @@
 import { BaseHeader, BaseVirtualizedView, VectorBack } from "@components";
 import { Navigation, OtherProfile } from "@constant/index";
+import { IMemberAPI } from "@model";
+import { getCommunitiesRedux } from "@redux";
 import { theme } from "@theme";
+import { getCommunityByID } from "@utils";
 import React, { useRef } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 import { ListFooterComponent, ListHeaderComponent } from "./components";
 
 function CommunityDetailScreen({
@@ -12,42 +16,45 @@ function CommunityDetailScreen({
   route: any;
   navigation: any;
 }) {
-  const { community, joined } = route.params;
-  // const keyboardHeight = useKeyboard();
-  const scrollRef = useRef<FlatList>(null);
+  const communityRoute = route.params.community;
+  const communitiesRedux = useSelector(getCommunitiesRedux);
+  const community = getCommunityByID(communitiesRedux, communityRoute);
 
-  const handlePressMember = (userOther: any) => {
-    navigation.navigate(Navigation.OTHER_PROFILE, {
-      userOther: userOther,
-      type: OtherProfile.OTHER,
-    });
+  const handlePressMember = (userOther: IMemberAPI) => {
+    if (userOther.id === "1") {
+      navigation.navigate(Navigation.YOUR_PROFILE);
+    } else {
+      navigation.navigate(Navigation.OTHER_PROFILE, {
+        userOther: userOther,
+        type: OtherProfile.OTHER,
+      });
+    }
   };
 
   const handlePressJoin = () => navigation.navigate(Navigation.FORUM_STACK);
 
-  const handleFocus = (y: number) => {
-    scrollRef.current?.scrollToOffset({
-      animated: true,
-      offset: y,
-    });
-  };
-
+  if (community === undefined) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <Text>Error</Text>
+      </SafeAreaView>
+    );
+  }
   return (
-    <View style={[styles.container]}>
+    <View style={styles.container}>
       <BaseHeader
         IconLeft={<VectorBack />}
         onPressLeft={() => navigation.goBack()}
         styleHeader={styles.styleHeader}
       />
-      <BaseVirtualizedView ref={scrollRef}>
+      <BaseVirtualizedView>
         <ListHeaderComponent
           community={community}
           onPressJoin={handlePressJoin}
-          joined={joined}
         />
         <ListFooterComponent
           onPress={handlePressMember}
-          onFocus={handleFocus}
+          community={community}
         />
       </BaseVirtualizedView>
     </View>
@@ -59,7 +66,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 24,
     backgroundColor: theme.colors.Neutral0,
-    // paddingBottom: 57,
+    //
   },
   styleHeader: {
     marginTop: 81,

@@ -9,94 +9,67 @@ import {
   Dimensions,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { addLikes, addReply, deleteLikes, RootState } from "../../../../redux";
-import {
-  getTimeCreate,
-  getDateCreate,
-  handleAmountRounding,
-  findPostById,
-} from "../../../../utils";
-import { BaseButton } from "../../../../components/BaseButton";
-import {
-  HeartFill,
-  HeartOutline,
-  Annotation,
-} from "../../../../components/Icon";
-import { BasePostDetailProps } from "./BasePostDetailModel";
-import ModalizeComponent from "../ModalizeComponent";
-import { Modalize } from "react-native-modalize";
 import { theme } from "@theme";
+import { BasePostDetailProps } from "./BasePostDetailModel";
+import {
+  addLike,
+  addReply,
+  getLikeRedux,
+  getMemberRedux,
+  getReplyRedux,
+  getUserRedux,
+  removeLike,
+} from "@redux";
+import {
+  findMemberPostInForum,
+  getAmountLikeInForum,
+  getAmountReplyInForum,
+  getDateCreate,
+  getTimeCreate,
+  handleAmountRounding,
+  isLikedPost,
+} from "@utils";
+import { Annotation, BaseButton, HeartFill, HeartOutline } from "@components";
 interface ISizeImage {
   width: number | string | undefined;
   height: number | string | undefined;
 }
-function BasePostDetail({
-  postFocus,
-  liked,
-  initAmountLike,
-  onPressLikeDetail,
-}: BasePostDetailProps) {
+function BasePostDetail({ postFocus, onPressLikeDetail }: BasePostDetailProps) {
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
-  const repliesRedux = useSelector((state: RootState) => state.forum.replies);
+  const userRedux = useSelector(getUserRedux);
+  const likeRedux = useSelector(getLikeRedux);
+  const memberRedux = useSelector(getMemberRedux);
+  const repliesRedux = useSelector(getReplyRedux);
 
-  const [isLiked, setIsLiked] = useState<boolean>(liked);
+  const amountReply = getAmountReplyInForum(postFocus, repliesRedux);
+  const amountLike = getAmountLikeInForum(postFocus, likeRedux);
+  const userPost = findMemberPostInForum(postFocus, memberRedux, userRedux);
+
+  const [isLiked, setIsLiked] = useState<boolean>(false);
   const [comment, onChangeComment] = useState<string>();
-  const [amountLike, setAmountLike] = useState<number>(initAmountLike);
-  // const [amountReplies, setAmountReplies] = useState<number>(initAmountReply);
+  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(true);
   const [sizeImage, setSizeImage] = useState<ISizeImage>({
     width: 0,
     height: 0,
   });
-  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(true);
-
-  const runEffectRef = useRef(false);
-  const amountReplies = findPostById(postFocus, repliesRedux).data.length || 0;
+  useEffect(() => {
+    setIsLiked(isLikedPost(userRedux, likeRedux, postFocus));
+  }, [likeRedux]);
 
   useEffect(() => {
     getImage(postFocus.image);
   }, []);
 
-  useEffect(() => {
-    if (runEffectRef.current) {
-      requestApi();
-    } else {
-      runEffectRef.current = true;
-    }
-  }, [amountLike]);
-
-  const requestApi = async () => {
-    try {
-      const params = {
-        post: postFocus,
-        user: user,
-      };
-      if (isLiked) {
-        console.log("test: Di vao 1");
-        dispatch(addLikes(params));
-      } else {
-        console.log("test: Di vao 2");
-        dispatch(deleteLikes(params));
-      }
-    } catch (e) {
-      console.log("error-detail: ", e);
-      runEffectRef.current = false;
-      handleSetLikes();
-      setIsLiked(!isLiked);
-    }
-  };
-
-  const handleSetLikes = () => {
+  const handlePressLike = () => {
+    const params = {
+      post: postFocus,
+      user: userRedux,
+    };
     if (isLiked) {
-      setAmountLike(amountLike - 1);
+      dispatch(removeLike(params));
     } else {
-      setAmountLike(amountLike + 1);
+      dispatch(addLike(params));
     }
-  };
-
-  const handlePressLike = async () => {
-    setIsLiked(!isLiked);
-    handleSetLikes();
   };
 
   function getImage(imageUrl: string) {
@@ -116,7 +89,7 @@ function BasePostDetail({
     }
     const params = {
       post: postFocus,
-      user: user,
+      user: userRedux,
       comment: comment,
     };
     dispatch(addReply(params));
@@ -127,11 +100,11 @@ function BasePostDetail({
       <View style={{ paddingHorizontal: 24 }}>
         <View style={styles.flex}>
           <Image
-            source={{ uri: postFocus.avatar }}
+            source={{ uri: userPost?.avatar }}
             style={styles.avatarUserPost}
           />
           <View style={styles.header}>
-            <Text style={styles.textName}>{postFocus.name}</Text>
+            <Text style={styles.textName}>{userPost?.name}</Text>
             <View style={styles.flex}>
               <Text style={styles.textTime}>
                 {getTimeCreate(postFocus.createdAt)}
@@ -191,13 +164,13 @@ function BasePostDetail({
               <Annotation width={32} height={32} />
             </TouchableOpacity>
             <Text style={styles.textLikes}>
-              {handleAmountRounding(amountReplies)} replies
+              {handleAmountRounding(amountReply)} replies
             </Text>
           </View>
         </View>
       </View>
       <View style={[styles.flex, styles.viewReply]}>
-        <Image source={{ uri: user.avatar }} style={styles.avatarUser} />
+        <Image source={{ uri: userRedux.avatar }} style={styles.avatarUser} />
         <TextInput
           style={[styles.textBody, styles.inputContainer]}
           placeholder="Your reply"

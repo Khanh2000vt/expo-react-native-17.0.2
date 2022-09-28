@@ -1,5 +1,5 @@
 import { OtherProfile } from "@constant/index";
-import { ICommunityAPI } from "@model";
+import { ICommunityAPI, IMemberAPI, IUserAPI } from "@model";
 import { ColorValue } from "react-native";
 
 interface IItemBase {
@@ -8,15 +8,8 @@ interface IItemBase {
   onPress: () => void | undefined;
 }
 
-interface IUserProfile {
-  avatar?: string;
-  name?: string;
-  idAccount?: string;
-  introduction?: string;
-}
-
 export interface AmountProps extends IItemBase {
-  amount: string;
+  amount: number;
   color: ColorValue;
 }
 
@@ -35,17 +28,19 @@ export interface IList {
   listJoined?: ICommunityAPI[];
 }
 
-interface BaseProfileProps extends IUserProfile, IList {
+interface BaseProfileProps extends IList {
   navigation: any;
   isProfileSelf?: boolean;
-  elementProfileSelf?: IProfileSelf;
   type?: OtherProfile;
+  user?: IUserAPI;
+  member?: IMemberAPI;
 }
 
-interface ListHeaderProps extends IList, IUserProfile {
+interface ListHeaderProps extends IList {
   isProfileSelf: boolean;
   status: OtherProfile;
   navigation: any;
+  user: IMemberAPI | IUserAPI | undefined;
 }
 
 export interface UseStateProps {

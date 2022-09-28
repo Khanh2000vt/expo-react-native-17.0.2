@@ -14,11 +14,8 @@ interface IItem {
 const ItemJoined = ({ itemJoined }: IItem) => {
   return (
     <TouchableOpacity style={styles.viewJoinedCommunity}>
-      <Image
-        source={{ uri: itemJoined.image_url }}
-        style={styles.imageJoined}
-      />
-      <Text style={styles.textJoinedCommunity}>{itemJoined.title}</Text>
+      <Image source={{ uri: itemJoined.avatar }} style={styles.imageJoined} />
+      <Text style={styles.textJoinedCommunity}>{itemJoined.name}</Text>
     </TouchableOpacity>
   );
 };
@@ -29,19 +26,24 @@ function ListHeaderComponent({
   listAmount = [],
   listSocial = [],
   listJoined = [],
-  avatar,
-  name,
-  idAccount,
-  introduction,
   navigation,
+  user,
 }: ListHeaderProps) {
   return (
     <>
       <View style={styles.profileContainer}>
-        <Image
-          source={require("../../../../assets/png/coverImage.png")}
-          style={styles.profileImageCover}
-        />
+        <View
+          style={[
+            styles.profileImageCover,
+            styles.placeholderView,
+            { width: "100%" },
+          ]}
+        >
+          <Image
+            source={require("../../../../assets/png/coverImage.png")}
+            style={styles.profileImageCover}
+          />
+        </View>
         <BaseHeader
           title={isProfileSelf ? "Your profile" : undefined}
           IconLeft={<VectorBack stroke={theme.colors.Neutral0} />}
@@ -53,13 +55,23 @@ function ListHeaderComponent({
           styleHeader={styles.styleHeader}
           styleTitleHeader={styles.styleTitleHeader}
         />
-        <Image source={{ uri: avatar }} style={styles.profileImageAvt} />
+        <View
+          style={[
+            styles.profileImageAvt,
+            { backgroundColor: theme.colors.Neutral1 },
+          ]}
+        >
+          <Image
+            source={{ uri: user?.avatar }}
+            style={styles.profileImageAvt}
+          />
+        </View>
       </View>
 
       <View style={styles.containerUser}>
-        <Text style={styles.textNameAccount}>{name}</Text>
+        <Text style={styles.textNameAccount}>{user?.name}</Text>
         <View style={styles.viewUserID}>
-          <Text style={styles.textID}>ID: {idAccount}</Text>
+          <Text style={styles.textID}>ID: {user?.id_account}</Text>
           <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
             <SvgCopy />
           </TouchableOpacity>
@@ -70,13 +82,13 @@ function ListHeaderComponent({
         {listAmount.map((item) => {
           return (
             <BaseButton
+              key={item.id}
               title={item.amount}
               IconLeft={item.icon}
               color={item.color}
               backgroundColor={theme.colors.colorInput}
               style={styles.buttonListAmount}
               styleText={styles.textButtonListAmount}
-              key={item.id}
             />
           );
         })}
@@ -87,8 +99,8 @@ function ListHeaderComponent({
           {listSocial.map((item) => {
             return (
               <BaseButton
-                title={item.title}
                 key={item.id}
+                title={item.title}
                 IconLeft={item.icon}
                 style={styles.buttonListSocial}
                 styleText={styles.textButtonSocial}
@@ -102,7 +114,7 @@ function ListHeaderComponent({
 
       <View style={styles.containerIntroduction}>
         <Text style={styles.textTitle}>Introduction</Text>
-        <Text style={styles.textBodyIntroduction}>{introduction}</Text>
+        <Text style={styles.textBodyIntroduction}>{user?.introduction}</Text>
       </View>
 
       <View style={styles.containerJoinedCommunities}>
@@ -238,6 +250,9 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 12,
+  },
+  placeholderView: {
+    backgroundColor: theme.colors.Neutral3,
   },
 });
 

@@ -2,7 +2,7 @@ import { AmountProps, Users } from "@components";
 import { theme } from "@theme";
 import React from "react";
 
-const ListAmount = (amount: string): AmountProps[] => [
+const ListAmount = (amount: number): AmountProps[] => [
   {
     id: 1,
     icon: <Users />,

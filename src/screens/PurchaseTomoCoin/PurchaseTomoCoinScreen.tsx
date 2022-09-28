@@ -1,18 +1,18 @@
-import { theme } from "@theme";
-import React from "react";
-import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import {
   BaseButton,
   BaseHeader,
   CurrencyJpy,
   SvgInfo,
-  VectorBack,
+  VectorBack
 } from "@components";
-import { addCoins, RootState } from "@redux";
+import { addCoins, getUserRedux } from "@redux";
+import { theme } from "@theme";
+import React from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 function PurchaseTomoCoinScreen({ navigation }: { navigation: any }) {
-  const user = useSelector((state: RootState) => state.auth.user);
+  const userRedux = useSelector(getUserRedux);
   const dispatch = useDispatch();
   const arrayButton = [
     {
@@ -99,7 +99,7 @@ function PurchaseTomoCoinScreen({ navigation }: { navigation: any }) {
           <Text style={styles.textTitle}>Your TomoCoin</Text>
           <Text style={styles.textBody}>Current count (tc)</Text>
           <View style={styles.viewCoinCurrent}>
-            <Text style={styles.textCoinCurrent}>{user.coin}</Text>
+            <Text style={styles.textCoinCurrent}>{userRedux.coin}</Text>
           </View>
         </View>
 

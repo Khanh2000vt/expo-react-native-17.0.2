@@ -1,40 +1,76 @@
 import * as ImagePicker from "expo-image-picker";
 export type IImage = ImagePicker.ImageInfo;
-interface IUserAPI {
-  token: string;
+
+export interface IUserID {
+  id_user: string;
+}
+
+export interface ICommunityID {
+  id_community: string;
+}
+
+export interface IUserComment {
+  id_user: string;
+  comment: string;
+  createdAt: string;
+}
+
+interface IApproval {
+  createdAt: string;
+  id_user: string;
+}
+
+interface IPerson {
+  id: string;
   name: string;
-  user_id: number;
-  friend: number;
+  avatar: string;
+  introduction: string;
+  short_introduction: string;
   crown: number;
   coin: number;
-  introduction: string;
-  avatar: string;
-  username: string;
-  birthYear: number;
   gender: boolean;
-  id: string;
-  createdAt?: string;
-}
-
-interface IMemberAPI {
-  id: string;
-  name: string;
-  gender: boolean;
-  friend: number;
-  introduce: string;
-  age: number;
-  user_id: number;
-  introduction: string;
-}
-
-interface IApprovalAPI {
-  createdAt: string;
-  name: string;
-  avatar: string;
-  friend: number;
-  introduction: string;
+  birth_year: number;
   id_account: number;
+  block: IUserID[];
+  request: IUserID[];
+  approval: IApproval[];
+  token: string;
+}
+
+interface IUserAPI extends IPerson {
+  friend: IUserID[];
+}
+
+interface IMemberAPI extends IPerson {
+  friend: number;
+}
+
+interface ICommunityAPI {
   id: string;
+  name: string;
+  avatar: string;
+  members: IUserID[];
+}
+
+interface IForumAPI {
+  id: string;
+  id_user: string;
+  createdAt: string;
+  title: string;
+  body: string;
+  image: string;
+}
+
+interface ILikeAPI {
+  id: string;
+  id_post: string;
+  data: IUserID[];
+}
+
+interface IReplyAPI {
+  id: string;
+  id_post: string;
+  data: IUserComment[];
 }
 
 interface ISelect {
@@ -46,6 +82,7 @@ interface IRequestAPI {
   l: string | number;
   p: string | number;
 }
+
 interface ILogAPI {
   id: string;
   createdAt: string;
@@ -55,32 +92,14 @@ interface ILogAPI {
   seen: boolean;
 }
 
-interface ICommunityAPI {
-  title: string;
-  image_url: string;
-  members: number;
-  id: string;
-}
-
-interface IForumAPI {
-  createdAt: string;
-  name: string;
-  avatar: string;
-  title: string;
-  body: string;
-  likes: number;
-  replies: number;
-  image: string;
-  id: string;
-}
-
 export type {
   IUserAPI,
   ISelect,
   IRequestAPI,
   ILogAPI,
   ICommunityAPI,
-  IMemberAPI,
-  IApprovalAPI,
   IForumAPI,
+  ILikeAPI,
+  IReplyAPI,
+  IMemberAPI,
 };

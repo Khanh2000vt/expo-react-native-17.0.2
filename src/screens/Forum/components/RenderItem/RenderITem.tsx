@@ -2,55 +2,65 @@ import React, { useEffect, useRef, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { Annotation, HeartFill, HeartOutline } from "@components";
-import { addLikes, deleteLikes, RootState } from "@redux";
-import { countAmount, handleAmountRounding, handleTimeCreateAt } from "@utils";
+import {
+  findMemberPostInForum,
+  getAmountLikeInForum,
+  getAmountReplyInForum,
+  handleAmountRounding,
+  handleTimeCreateAt,
+  isLikedPost,
+} from "@utils";
 import { getActionLike } from "../../controller";
 import { RenderItemProps } from "./RenderITemModel";
 import { theme } from "@theme";
+import {
+  addLike,
+  getLikeRedux,
+  getMemberRedux,
+  getReplyRedux,
+  getUserRedux,
+  removeLike,
+} from "@redux";
 function RenderItem({ post, onPress }: RenderItemProps) {
-  //redux
   const dispatch = useDispatch();
-  const user = useSelector((state: RootState) => state.auth.user);
-  const likeRedux = useSelector((state: RootState) => state.forum.likes);
-  const repliesRedux = useSelector((state: RootState) => state.forum.replies);
+  //redux
+  const userRedux = useSelector(getUserRedux);
+  const likeRedux = useSelector(getLikeRedux);
+  const memberRedux = useSelector(getMemberRedux);
+  const repliesRedux = useSelector(getReplyRedux);
+  //handle
+  const amountReply = getAmountReplyInForum(post, repliesRedux);
+  const amountLike = getAmountLikeInForum(post, likeRedux);
+  const userPost = findMemberPostInForum(post, memberRedux, userRedux);
   //state
   const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [likes, setLikes] = useState<number>(0);
-
-  const amountReply = countAmount(post, repliesRedux);
-  console.log("likeRedux: ", likeRedux);
 
   useEffect(() => {
-    setIsLiked(getActionLike(likeRedux, user, post));
-    setLikes(countAmount(post, likeRedux));
+    setIsLiked(isLikedPost(userRedux, likeRedux, post));
   }, [likeRedux]);
 
   const handlePressLike = () => {
-    try {
-      const params = {
-        post: post,
-        user: user,
-      };
-      if (!isLiked) {
-        dispatch(addLikes(params));
-      } else {
-        dispatch(deleteLikes(params));
-      }
-    } catch (e) {
-    } finally {
+    const params = {
+      post: post,
+      user: userRedux,
+    };
+    if (isLiked) {
+      dispatch(removeLike(params));
+    } else {
+      dispatch(addLike(params));
     }
   };
 
   return (
     <View style={styles.container}>
-      <Image source={{ uri: post.avatar }} style={styles.avatar} />
+      <Image source={{ uri: userPost?.avatar }} style={styles.avatar} />
       <TouchableOpacity
         style={styles.viewPost}
         activeOpacity={0.8}
-        onPress={() => onPress && onPress(post, isLiked, likes, amountReply)}
+        onPress={() => onPress(post)}
       >
         <View style={styles.flex}>
-          <Text style={styles.textName}>{post.name}</Text>
+          <Text style={styles.textName}>{userPost?.name}</Text>
           <View style={styles.ellipse} />
           <Text style={styles.textTime}>
             {handleTimeCreateAt(post.createdAt)}
@@ -61,11 +71,13 @@ function RenderItem({ post, onPress }: RenderItemProps) {
             {post.title}
           </Text>
           <Text style={styles.textBody}>{post.body}</Text>
-          <Image
-            source={{ uri: post.image }}
-            style={styles.image}
-            resizeMode="cover"
-          />
+          {!!post.image && post.image !== "" && (
+            <Image
+              source={{ uri: post.image }}
+              style={styles.image}
+              resizeMode="cover"
+            />
+          )}
         </View>
         <View style={styles.flex}>
           <View style={[styles.flex, { marginRight: 28 }]}>
@@ -80,19 +92,18 @@ function RenderItem({ post, onPress }: RenderItemProps) {
                 <HeartOutline width={28} height={28} />
               )}
             </TouchableOpacity>
-            <Text style={styles.textLikes}>{handleAmountRounding(likes)}</Text>
+            <Text style={styles.textLikes}>{amountLike}</Text>
           </View>
-          <View style={styles.flex}>
-            <TouchableOpacity
-              style={styles.touchableOpacity}
-              activeOpacity={0.8}
-            >
-              <Annotation width={28} height={28} />
-            </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.touchableOpacity, styles.flex]}
+            activeOpacity={0.8}
+            onPress={() => onPress(post)}
+          >
+            <Annotation width={28} height={28} />
             <Text style={styles.textLikes}>
               {handleAmountRounding(amountReply)}
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     </View>

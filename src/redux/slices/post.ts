@@ -1,10 +1,11 @@
+import { IImage } from "@model";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 
 interface IState {
   title: string;
   body: string;
-  images: any[];
+  images: IImage[];
 }
 
 const initialState: IState = {

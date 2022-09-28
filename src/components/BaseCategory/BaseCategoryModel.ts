@@ -1,9 +1,11 @@
+import { ICommunityAPI } from "@model";
 import { StyleProp, ViewStyle } from "react-native";
 
 interface BaseCategoryProps {
-  item?: any;
-  onPress?: (item: any, pressed: boolean) => void;
+  community: ICommunityAPI;
+  onPress?: (item: ICommunityAPI, pressed: boolean) => void;
   isShowTick?: boolean;
+  isShowMember?: boolean;
   style?: StyleProp<ViewStyle> | undefined;
 }
 

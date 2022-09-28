@@ -7,15 +7,17 @@ const colors = theme.colors;
 const fontSize = theme.fontSize;
 
 function BaseCategory({
-  item,
+  community,
   onPress,
   isShowTick = true,
+  isShowMember = true,
   style,
 }: BaseCategoryProps) {
+  const amountMember = community.members.length;
   const [tick, setTick] = useState<boolean>(false);
 
   function handleOnPress() {
-    !!onPress && onPress(item, !tick);
+    !!onPress && onPress(community, !tick);
     setTick(!tick);
   }
   return (
@@ -37,12 +39,12 @@ function BaseCategory({
         </View>
       )}
       <View>
-        <Image source={{ uri: item.image_url }} style={styles.image} />
+        <Image source={{ uri: community.avatar }} style={styles.image} />
       </View>
       <View style={styles.body}>
-        <Text style={styles.textTitle}>{item.title}</Text>
-        {!!item.members && (
-          <Text style={styles.textBody}>{item.members} members</Text>
+        <Text style={styles.textTitle}>{community.name}</Text>
+        {isShowMember && (
+          <Text style={styles.textBody}>{amountMember} members</Text>
         )}
       </View>
     </TouchableOpacity>

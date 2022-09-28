@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { StyleSheet, View } from "react-native";
 import { BaseProfile } from "@components";
-import { RootState } from "@redux";
+import { getCommunitiesRedux, RootState } from "@redux";
 import { theme } from "@theme";
 import { ListAmount, ListSocial } from "./controller";
 
@@ -14,20 +14,17 @@ function OtherProfileScreen({
   navigation: any;
 }) {
   const { userOther, type } = route.params;
-  const joined = useSelector((state: RootState) => state.joined.communities);
+  const joined = useSelector(getCommunitiesRedux).slice(0, 5);
 
   return (
     <View style={styles.container}>
       <BaseProfile
-        avatar={userOther.avatar}
-        name={userOther.name}
-        idAccount={userOther.id_account}
-        introduction={userOther.introduction}
         navigation={navigation}
         listAmount={ListAmount(userOther.friend)}
         listSocial={ListSocial()}
         type={type}
         listJoined={joined}
+        member={userOther}
       />
     </View>
   );

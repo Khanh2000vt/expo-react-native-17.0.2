@@ -1,29 +1,37 @@
-import { IImage } from "@model";
+import { IImage, IUserAPI } from "@model";
+
+export const isPostEmpty = (
+  textTitle: string,
+  textBody: string,
+  images: IImage[]
+) => {
+  return (
+    (!textTitle || textTitle.trim().length === 0) &&
+    (!textBody || textBody.trim().length === 0) &&
+    images.length === 0
+  );
+};
 
 export const getNewPost = (
   textTitle: string,
   textBody: string,
   images: IImage[],
-  user: any
+  user: IUserAPI
 ) => {
-  if (
-    (!textTitle || textTitle.trim().length === 0) &&
-    (!textBody || textBody.trim().length === 0) &&
-    images.length === 0
-  ) {
+  if (isPostEmpty(textTitle, textBody, images)) {
+    console.log("di vao day");
     return undefined;
   } else {
     const dateCreate = new Date();
     const newPost = {
-      name: user.name,
-      avatar: user.avatar,
+      id_user: user.id,
       createdAt: dateCreate.toISOString(),
       title: textTitle,
       body: textBody,
-      likes: 0,
-      replies: 0,
-      image: images[0],
+      image: images.length === 0 ? "" : images[0].uri,
+      id: "0",
     };
+    console.log("di vao 2: ", newPost);
     return newPost;
   }
 };

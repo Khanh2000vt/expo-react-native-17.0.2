@@ -1,8 +1,6 @@
-import { GestureResponderEvent } from "react-native";
+import { IForumAPI } from "@model";
 
 export interface BasePostDetailProps {
-  postFocus: any;
-  onPressLikeDetail: () => void | undefined;
-  liked: boolean;
-  initAmountLike: number;
+  postFocus: IForumAPI;
+  onPressLikeDetail: () => void;
 }

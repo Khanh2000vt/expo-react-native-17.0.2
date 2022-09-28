@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 const LoginApi = {
   getAll: () => {
-    const url = "/login/1";
+    const url = "/login/10";
     return axiosClient.get(url);
   },
 };

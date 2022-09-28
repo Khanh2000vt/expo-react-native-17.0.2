@@ -1,28 +1,29 @@
-import { BaseProfile, Coin, Crown, Users } from "@components";
+import { BaseProfile } from "@components";
 import { YourProfileNavigation } from "@navigation";
-import { RootState } from "@redux";
+import { getCommunitiesRedux, getUserRedux } from "@redux";
 import { theme } from "@theme";
+import { getJoinedCommunities } from "@utils";
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { ListAmount, ListSocial } from "./constants";
 
 function YourProfileScreen({ navigation }: YourProfileNavigation) {
-  const joined = useSelector((state: RootState) => state.joined.communities);
-  const user = useSelector((state: RootState) => state.auth.user);
-
+  const userRedux = useSelector(getUserRedux);
+  const communitiesRedux = useSelector(getCommunitiesRedux);
+  const joined = getJoinedCommunities(userRedux.id, communitiesRedux).slice(
+    0,
+    5
+  );
   return (
     <View style={styles.container}>
       <BaseProfile
         navigation={navigation}
         isProfileSelf
-        avatar={user.avatar}
-        name={user.name}
-        idAccount={user.id_account}
-        introduction={user.introduction}
-        listAmount={ListAmount(user)}
+        listAmount={ListAmount(userRedux)}
         listSocial={ListSocial()}
         listJoined={joined}
+        user={userRedux}
       />
     </View>
   );

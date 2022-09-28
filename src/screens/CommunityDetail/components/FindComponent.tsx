@@ -12,10 +12,9 @@ import ModalFilter from "./ModalFilter";
 interface IState {
   setFilterMembers: React.Dispatch<React.SetStateAction<any[]>>;
   members: any[];
-  onFocus: () => void;
 }
 
-function FindComponent({ setFilterMembers, members, onFocus }: IState) {
+function FindComponent({ setFilterMembers, members }: IState) {
   const [isModalVisible, setModalVisible] = useState<boolean>(false);
   const [filter, onChangeFilter] = useState<IFilter>(initialFilter);
   const formik = useFormik({
@@ -84,8 +83,6 @@ function FindComponent({ setFilterMembers, members, onFocus }: IState) {
         onPressFilter={handlePressFilter}
         onChangeText={formik.handleChange("search")}
         value={formik.values.search}
-        onFocus={onFocus}
-        onChange={onFocus}
       />
       <ModalFilter
         ref={refModal}

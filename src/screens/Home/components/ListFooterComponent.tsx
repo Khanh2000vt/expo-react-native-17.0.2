@@ -1,4 +1,3 @@
-import { CommunitiesApi } from "@api";
 import {
   BaseButton,
   BaseCategory,
@@ -6,34 +5,45 @@ import {
   CaretRight,
   TomoCoins,
   ViaFacebook,
-  ViaTwitter,
+  ViaTwitter
 } from "@components";
 import { Navigation } from "@constant/index";
-import { ICommunityAPI } from "@model";
-import { getJoined } from "@redux";
+import { ICommunityAPI, IUserAPI } from "@model";
+// import { getJoined } from "@redux";
 import { theme } from "@theme";
+import { getOtherCommunities } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { useDispatch } from "react-redux";
 interface IState {
   navigation: any;
-  isLoading: boolean;
-  listOthers: ICommunityAPI[];
+  // isLoading: boolean;
+  // listOthers: ICommunityAPI[];
+  communitiesRedux: ICommunityAPI[];
+  userRedux: IUserAPI;
 }
 
-function ListFooterComponent({ navigation, isLoading, listOthers }: IState) {
+function ListFooterComponent({
+  navigation,
+  communitiesRedux,
+  userRedux,
+}: IState) {
+  const [otherCommunities, setOtherCommunities] = useState<ICommunityAPI[]>([]);
+  useEffect(() => {
+    let arrayFilter = getOtherCommunities(userRedux.id, communitiesRedux);
+    setOtherCommunities(arrayFilter.slice(0, 5));
+  }, [communitiesRedux]);
   const keyExtractor = useCallback((_, index) => index.toString(), []);
   return (
     <>
       <Text style={styles.textName}>Others</Text>
-      {isLoading ? (
+      {false ? (
         <View>{BasePlaceholder.Community(4)}</View>
       ) : (
         <FlatList
-          data={listOthers}
+          data={otherCommunities}
           renderItem={({ item }) => (
             <BaseCategory
-              item={item}
+              community={item}
               isShowTick={false}
               onPress={() =>
                 navigation.navigate(Navigation.COMMUNITY_DETAIL, {

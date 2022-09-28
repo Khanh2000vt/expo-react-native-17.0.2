@@ -1,12 +1,13 @@
 import { Coin, Crown, Users } from "@components";
+import { IUserAPI } from "@model";
 import { theme } from "@theme";
 import React from "react";
 
-const ListAmount = (user: any) => [
+const ListAmount = (user: IUserAPI) => [
   {
     id: 1,
     icon: <Users />,
-    amount: user.friend,
+    amount: user.friend.length,
     color: theme.colors.Semantic5,
     onPress: () => {},
   },

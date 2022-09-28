@@ -1,4 +1,4 @@
-import { CheckCircle, MinusCircle } from "@components";
+import { CheckCircle, MinusCircle } from "@components/Icon";
 import { theme } from "@theme";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";

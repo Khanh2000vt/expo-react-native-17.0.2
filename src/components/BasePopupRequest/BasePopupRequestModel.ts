@@ -1,4 +1,4 @@
-import { GestureResponderEvent, StyleProp, ViewStyle } from "react-native";
+import { StyleProp, ViewStyle } from "react-native";
 
 export interface BasePopupRequestProps {
   isVisible: boolean;
@@ -9,4 +9,5 @@ export interface BasePopupRequestProps {
   onPressOK?: () => void | undefined;
   accept?: boolean;
   coinRequest?: number;
+  name?: string;
 }

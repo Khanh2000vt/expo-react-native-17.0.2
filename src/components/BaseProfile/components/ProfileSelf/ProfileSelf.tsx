@@ -1,7 +1,9 @@
 import { LogApi } from "@api";
-import { BaseButton, Bell, CaretRight } from "@components";
+import { BaseButton } from "@components/BaseButton";
+import { Bell, CaretRight } from "@components/Icon";
 import { Navigation } from "@constant/index";
 import { ILogAPI } from "@model";
+import { getUserRedux } from "@redux";
 import { theme } from "@theme";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -11,19 +13,21 @@ import {
   Text,
   View,
 } from "react-native";
+import { useSelector } from "react-redux";
 import ItemActivityLog from "./ItemActivityLog";
 
 interface IProfileSelf {
   navigation: any;
 }
 
-const IconRightButton = (amount: string) => (
+const IconRightButton = (amount: string | number) => (
   <View style={styles.iconRightButtonStyle}>
     <Text style={styles.textIconRightButton}>{amount}</Text>
   </View>
 );
 
 function ProfileSelf({ navigation }: IProfileSelf) {
+  const userRedux = useSelector(getUserRedux);
   const [indexLog, setIndexLog] = useState<number>(3);
   const [activities, setActivities] = useState<ILogAPI[]>([]);
   const [isLoading, setLoading] = useState<boolean>(true);
@@ -41,7 +45,6 @@ function ProfileSelf({ navigation }: IProfileSelf) {
       const res: any = await LogApi.getAll(params);
       setActivities([...res]);
     } catch (error) {
-      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -95,7 +98,7 @@ function ProfileSelf({ navigation }: IProfileSelf) {
           title="Waiting for approval"
           backgroundColor={theme.colors.Neutral1}
           color={theme.colors.Neutral10}
-          IconRight={IconRightButton("5")}
+          IconRight={IconRightButton(userRedux.approval.length)}
           style={styles.buttonProfileSelf}
           onPress={() => navigation.navigate(Navigation.WAITING_FOR_APPROVAL)}
         />
@@ -103,7 +106,7 @@ function ProfileSelf({ navigation }: IProfileSelf) {
           title="Friend request sent"
           backgroundColor={theme.colors.Neutral1}
           color={theme.colors.Neutral10}
-          IconRight={IconRightButton("22")}
+          IconRight={IconRightButton(userRedux.request.length)}
           style={styles.buttonProfileSelf}
           onPress={() => navigation.navigate(Navigation.FRIEND_REQUEST)}
         />

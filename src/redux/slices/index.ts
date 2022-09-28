@@ -3,11 +3,11 @@ import { combineReducers } from "redux";
 import authReducer from "./auth";
 export * from "./auth";
 
-import mainReducer from "./main";
-export * from "./main";
+import userReducer from "./user";
+export * from "./user";
 
-import joinedCommunitiesReducers from "./JoinedCommunities";
-export * from "./JoinedCommunities";
+import communityReducers from "./community";
+export * from "./community";
 
 import postReducer from "./post";
 export * from "./post";
@@ -15,12 +15,24 @@ export * from "./post";
 import forumReducer from "./forum";
 export * from "./forum";
 
+import likeReducer from "./like";
+export * from "./like";
+
+import replyReducer from "./reply";
+export * from "./reply";
+
+import memberReducer from "./member";
+export * from "./member";
+
 const productReducer = combineReducers({
   auth: authReducer,
-  main: mainReducer,
-  joined: joinedCommunitiesReducers,
+  user: userReducer,
+  community: communityReducers,
   post: postReducer,
   forum: forumReducer,
+  like: likeReducer,
+  reply: replyReducer,
+  member: memberReducer,
 });
 
 export type RootState = ReturnType<typeof productReducer>;

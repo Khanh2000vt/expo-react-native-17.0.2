@@ -1,86 +1,81 @@
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useDispatch } from "react-redux";
 import { ApprovalApi } from "@api";
 import {
-  BaseButton,
   BaseHeader,
   BaseNotification,
   BasePopupRequest,
   EventNotification,
-  Users,
   VectorBack,
 } from "@components";
 import { Navigation, OtherProfile } from "@constant/index";
-import { spendCoins } from "@redux";
-import { handleTimeToNow } from "@utils";
+import { IMemberAPI } from "@model";
+import {
+  acceptMemberApproval,
+  getMemberRedux,
+  getUserRedux,
+  rejectMemberApproval,
+  spendCoins,
+} from "@redux";
 import { theme } from "@theme";
+import { getListMemberApproval } from "@utils";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { UserItem } from "./components";
 import { deleteElement, pushElement } from "./controller";
 function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<any[]>([]);
-  const [userSelected, setUserSelected] = useState<any>({});
+  const userRedux = useSelector(getUserRedux);
+  const memberRedux = useSelector(getMemberRedux);
+  // const [users, setUsers] = useState<any[]>([]);
+
+  const users = getListMemberApproval(userRedux, memberRedux);
+  const [userSelected, setUserSelected] = useState<IMemberAPI>();
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<EventNotification[]>([]);
-  useEffect(() => {
-    getListUser();
-  }, []);
 
-  async function getListUser() {
-    try {
-      const res: any = await ApprovalApi.getAll();
-      setUsers([...res]);
-    } catch (e) {
-      // setUsers([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
-  const handleConfirm = (item: any) => {
-    setUserSelected(item);
+  const handleConfirm = (member: IMemberAPI) => {
+    setUserSelected(member);
     setIsVisible(true);
   };
 
-  function handlePressItem(item: any) {
+  function handlePressItem(member: IMemberAPI) {
     navigation.navigate(Navigation.OTHER_PROFILE, {
-      userOther: item,
+      userOther: member,
       type: OtherProfile.INVITATION,
     });
   }
 
-  function handleAccept(user: any) {
-    handleStatusUsers(user);
+  function handleAccept(userAccept: IMemberAPI) {
+    // handleStatusUsers(user);
+    let params = {
+      user: userAccept,
+    };
     dispatch(spendCoins(500));
-    pushNotification(user, true);
+    dispatch(acceptMemberApproval(params));
+    pushNotification(userAccept, true);
     setIsVisible(false);
   }
 
-  function handleReject(user: any) {
-    handleStatusUsers(user);
+  function handleReject(user: IMemberAPI) {
+    // handleStatusUsers(user);
+    let params = {
+      user: user,
+    };
+    dispatch(rejectMemberApproval(params));
     pushNotification(user, false);
   }
 
-  function pushNotification(user: any, accept: boolean) {
+  function pushNotification(user: IMemberAPI, accept: boolean) {
     const notificationsNew = pushElement(user, accept, notifications);
     setNotifications([...notificationsNew]);
-  }
-
-  function handleStatusUsers(value: any) {
-    const newArrayUser = deleteElement(users, value.id);
-    setUsers([...newArrayUser]);
   }
 
   function handlePressNotification(id: string) {
@@ -96,7 +91,7 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
         onPressLeft={() => navigation.goBack()}
         styleHeader={styles.styleHeader}
       />
-      {isLoading ? (
+      {false ? (
         <ActivityIndicator style={styles.activityIndicator} />
       ) : (
         <FlatList
@@ -117,12 +112,13 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
       <BasePopupRequest
         isVisible={isVisible}
         accept
+        name={userSelected?.name}
         coinRequest={500}
         onBackButtonPress={() => setIsVisible(false)}
         onBackdropPress={() => setIsVisible(false)}
         onPressCancel={() => setIsVisible(false)}
         onPressOK={() => {
-          handleAccept(userSelected);
+          userSelected && handleAccept(userSelected);
         }}
       />
 

@@ -4,21 +4,21 @@ import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { BaseMemberProps } from "./BaseMemberModal";
 
-function BaseMember({ item, onPress }: BaseMemberProps) {
+function BaseMember({ member, onPress }: BaseMemberProps) {
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       style={[styles.container, styles.flex]}
-      onPress={() => onPress(item)}
+      onPress={() => onPress(member)}
     >
-      <Image source={{ uri: item.avatar }} style={styles.image} />
+      <Image source={{ uri: member.avatar }} style={styles.image} />
       <View style={styles.body}>
-        <Text style={styles.textName}>{item.name}</Text>
+        <Text style={styles.textName}>{member.name}</Text>
         <View style={styles.flex}>
-          <Text style={styles.textIndexMember}>{item.friend}</Text>
+          <Text style={styles.textIndexMember}>{member.friend}</Text>
           <SvgUser />
         </View>
-        <Text style={styles.textDescription}>{item.introduce}</Text>
+        <Text style={styles.textDescription}>{member.short_introduction}</Text>
       </View>
     </TouchableOpacity>
   );

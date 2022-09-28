@@ -4,7 +4,7 @@ import Modal from "react-native-modal";
 import { useSelector } from "react-redux";
 
 import { BaseButton } from "@components/BaseButton";
-import { RootState } from "@redux";
+import { getUserRedux } from "@redux";
 import { theme } from "@theme";
 import { BasePopupRequestProps } from "./BasePopupRequestModel";
 
@@ -17,9 +17,10 @@ function BasePopupRequest({
   onPressOK,
   accept,
   coinRequest = 0,
+  name,
 }: BasePopupRequestProps) {
-  const coinCurrent = useSelector((state: RootState) => state.auth.user.coin);
-  const isSuffering = coinCurrent - coinRequest >= 0;
+  const userRedux = useSelector(getUserRedux);
+  const isSuffering = userRedux.coin - coinRequest >= 0;
   return (
     <Modal
       isVisible={isVisible}
@@ -39,13 +40,13 @@ function BasePopupRequest({
               {accept
                 ? " on accepting request from "
                 : " on sending a RuiTomo request to "}
-              <Text style={styles.textName}>Cody Fisher</Text>?
+              <Text style={styles.textName}>{name || ""}</Text>?
             </Text>
           ) : (
             <Text style={styles.textTitle}>
               You need{" "}
               <Text style={styles.textCoinRequest}>
-                {coinRequest - coinCurrent}tc
+                {coinRequest - userRedux.coin}tc
               </Text>{" "}
               to post this
             </Text>
@@ -53,7 +54,7 @@ function BasePopupRequest({
           <Text style={styles.textBody}>
             Your current tc count:{" "}
             <Text style={styles.textCoinCurrent}>
-              {coinCurrent} <Text style={styles.textTC}>tc</Text>
+              {userRedux.coin} <Text style={styles.textTC}>tc</Text>
             </Text>
           </Text>
         </View>

@@ -1,6 +1,8 @@
-import { IUserAPI } from "@model";
+import { IForumAPI, IUserComment, IUserID } from "@model";
 
 export interface BaseInteractiveProps {
-  user: any;
+  post: IForumAPI;
   type: "like" | "reply";
+  userID?:IUserID;
+  userCommentID?: IUserComment
 }

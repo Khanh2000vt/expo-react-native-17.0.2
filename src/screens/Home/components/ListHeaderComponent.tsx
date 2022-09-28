@@ -1,8 +1,10 @@
 import { BasePlaceholder } from "@components";
 import { Navigation } from "@constant/index";
-import { RootState } from "@redux";
+import { ICommunityAPI, IUserAPI } from "@model";
+import { getUserRedux, RootState } from "@redux";
 import { theme } from "@theme";
-import React, { useCallback } from "react";
+import { getJoinedCommunities } from "@utils";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
   Image,
@@ -16,22 +18,33 @@ import ItemJoinedCommunity from "./ItemJoinedCommunity";
 
 interface IState {
   navigation: any;
+  communitiesRedux: ICommunityAPI[];
+  userRedux: IUserAPI;
 }
 
-function ListHeaderComponent({ navigation }: IState) {
-  const isLoadingJoined = useSelector(
-    (state: RootState) => state.joined.isLoading
+function ListHeaderComponent({
+  navigation,
+  communitiesRedux,
+  userRedux,
+}: IState) {
+  const [joinedCommunities, setJoinedCommunities] = useState<ICommunityAPI[]>(
+    []
   );
-  const userRedux = useSelector((state: RootState) => state.auth.user);
-  const joinedCommunities = useSelector(
-    (state: RootState) => state.joined.communities
-  );
+
+  useEffect(() => {
+    getCommunities();
+  }, [communitiesRedux]);
+
+  const getCommunities = () => {
+    let arrayFilter = getJoinedCommunities(userRedux.id, communitiesRedux);
+    setJoinedCommunities([...arrayFilter]);
+  };
+
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
-  const handlePressJoinedCommunity = (item: any) => {
+  const handlePressJoinedCommunity = (community: ICommunityAPI) => {
     navigation.navigate(Navigation.COMMUNITY_DETAIL, {
-      community: item,
-      joined: true,
+      community: community,
     });
   };
 
@@ -42,7 +55,14 @@ function ListHeaderComponent({ navigation }: IState) {
           activeOpacity={0.8}
           onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
         >
-          <Image source={{ uri: userRedux.avatar }} style={styles.imageAvt} />
+          <View
+            style={[
+              styles.imageAvt,
+              { backgroundColor: theme.colors.Neutral2 },
+            ]}
+          >
+            <Image source={{ uri: userRedux.avatar }} style={styles.imageAvt} />
+          </View>
         </TouchableOpacity>
         <View>
           <Text style={styles.textHello} numberOfLines={2}>
@@ -71,7 +91,7 @@ function ListHeaderComponent({ navigation }: IState) {
       </View>
       <View>
         <Text style={styles.textName}>Joined communities</Text>
-        {isLoadingJoined ? (
+        {false ? (
           <View style={[{ flexDirection: "row" }, styles.flatList]}>
             {BasePlaceholder.CommunityJoined(3)}
           </View>
@@ -81,7 +101,7 @@ function ListHeaderComponent({ navigation }: IState) {
             keyExtractor={keyExtractor}
             renderItem={({ item }) => (
               <ItemJoinedCommunity
-                item={item}
+                community={item}
                 onPress={handlePressJoinedCommunity}
               />
             )}

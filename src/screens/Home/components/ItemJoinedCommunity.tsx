@@ -3,21 +3,28 @@ import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { theme } from "@theme";
 import { Navigation } from "@constant/index";
+import { getCommunitiesRedux, RootState } from "@redux";
+import { useSelector } from "react-redux";
+import { ICommunityAPI, ICommunityID } from "@model";
+import { getFindCommunity } from "@utils";
 
 interface IState {
-  item: any;
+  community: ICommunityAPI;
   onPress: (item: any) => void;
 }
 
-function ItemJoinedCommunity({ item, onPress }: IState) {
+function ItemJoinedCommunity({ community, onPress }: IState) {
+  const communitiesRedux = useSelector(getCommunitiesRedux);
+  // const community: ICommunityAPI | undefined =
+  //   getFindCommunity(communitiesRedux, item) || communitiesRedux[0];
   return (
     <TouchableOpacity
       activeOpacity={0.6}
       style={styles.containerItem}
-      onPress={() => onPress(item)}
+      onPress={() => onPress(community)}
     >
       <Image
-        source={{ uri: item.image_url }}
+        source={{ uri: community.avatar }}
         style={styles.imageJoinedCommunity}
       />
       <LinearGradient
@@ -34,7 +41,7 @@ function ItemJoinedCommunity({ item, onPress }: IState) {
           },
         ]}
       />
-      <Text style={styles.textItem}>{item.title}</Text>
+      <Text style={styles.textItem}>{community.name}</Text>
     </TouchableOpacity>
   );
 }

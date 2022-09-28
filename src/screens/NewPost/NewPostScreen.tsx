@@ -1,6 +1,12 @@
 import React, { useCallback, useState } from "react";
 
-import { createPost, resetPost, RootState } from "@redux";
+import {
+  createPost,
+  getUserRedux,
+  pushPostInForum,
+  resetPost,
+  RootState,
+} from "@redux";
 import {
   FlatList,
   Image,
@@ -20,14 +26,12 @@ import {
 } from "@components";
 import { theme } from "@theme";
 import { GoBackAlert, ItemImage } from "./components";
-import { getNewArrayImage, getNewPost } from "./controller";
+import { getNewArrayImage, getNewPost, isPostEmpty } from "./controller";
 import { IImage } from "@model";
-function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
+function NewPostScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
 
-  const { onPressPost } = route.params;
-
-  const user = useSelector((state: RootState) => state.auth.user);
+  const userRedux = useSelector(getUserRedux);
   const postNote = useSelector((state: RootState) => state.post);
 
   const [textTitle, onChangeTextTitle] = useState<string>(postNote.title);
@@ -36,9 +40,14 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   async function handlePressPost() {
-    const newPost = getNewPost(textTitle, textBody, images, user);
+    const newPost = getNewPost(textTitle, textBody, images, userRedux);
+    console.log("co new post: ", newPost);
     if (newPost !== undefined) {
-      onPressPost(newPost);
+      let param = {
+        post: newPost,
+      };
+      // onPressPost(newPost);
+      dispatch(pushPostInForum(param));
       dispatch(resetPost());
       navigation.goBack();
     }
@@ -56,6 +65,13 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
     };
     dispatch(createPost(params));
     navigation.goBack();
+  };
+  const handleGoBack = () => {
+    if (!isPostEmpty(textTitle, textBody, images)) {
+      GoBackAlert(handleAgreeSavePost, handleCancelSavePost);
+    } else {
+      handleCancelSavePost();
+    }
   };
 
   const handleCancelSavePost = () => {
@@ -75,9 +91,7 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
       <BaseHeader
         title="New post"
         IconLeft={<VectorBack />}
-        onPressLeft={() =>
-          GoBackAlert(handleAgreeSavePost, handleCancelSavePost)
-        }
+        onPressLeft={handleGoBack}
         IconRight={
           <View style={styles.iconRight}>
             <Text style={styles.textIconRight}>Post</Text>
@@ -87,9 +101,9 @@ function NewPostScreen({ route, navigation }: { route: any; navigation: any }) {
         styleHeader={styles.styleHeader}
       />
       <View style={styles.body}>
-        <Image source={{ uri: user.avatar }} style={styles.image} />
+        <Image source={{ uri: userRedux.avatar }} style={styles.image} />
         <View style={styles.bodyPost}>
-          <Text style={styles.textName}>{user.name}</Text>
+          <Text style={styles.textName}>{userRedux.name}</Text>
           <TextInput
             placeholder="Title"
             style={[styles.text, styles.textTitle]}

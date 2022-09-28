@@ -1,73 +1,23 @@
 import { BaseHeader, BasePlaceholder, Pencil, VectorBack } from "@components";
 import { Navigation } from "@constant/index";
 import { IForumAPI } from "@model";
-import { RootState } from "@redux";
+import { getForumRedux } from "@redux";
 import { theme } from "@theme";
-import React, { useCallback, useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import React, { useCallback } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { ForumApi } from "../../api";
 import { RenderItem } from "./components";
 
 function ForumScreen({ navigation }: { navigation: any }) {
-  // const user = useSelector((state: RootState) => state.auth.user);
+  const postsRedux = useSelector(getForumRedux);
+  console.log("postsRedux: ", postsRedux);
 
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [posts, setPosts] = useState<IForumAPI[]>([]);
-  const [pageCurrent, setPageCurrent] = useState<number>(1);
-  const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
-  const [refreshing, setRefreshing] = useState<boolean>(false);
+  const keyExtractor = useCallback((_) => _.id, []);
 
-  useEffect(() => {
-    getListPost();
-  }, []);
-
-  async function getListPost() {
-    try {
-      setIsLoadMore(true);
-      setRefreshing(true);
-      const params = { p: pageCurrent, l: 10 };
-      const res: any = await ForumApi.getAll(params);
-      setPosts([...posts.concat(res)]);
-      setPageCurrent(pageCurrent + 1);
-    } catch (e) {
-    } finally {
-      setIsLoading(false);
-      setIsLoadMore(false);
-      setRefreshing(false);
-    }
-  }
-
-  async function handlePressPost(post: any) {
-    const a = await ForumApi.postNewPost(post);
-  }
-
-  const keyExtractor = useCallback((_, index) => index.toString(), []);
-
-  const ListFooterComponent = () => {
-    return isLoadMore ? (
-      <ActivityIndicator style={styles.activityIndicator} />
-    ) : null;
-  };
-
-  const handleRefresh = () => {
-    // setIsLoading(true);
-    setPosts([]);
-    setPageCurrent(1);
-    getListPost();
-  };
-
-  const handlePressItem = (
-    post: any,
-    liked: boolean,
-    amountLike: number,
-    amountReply: number
-  ) => {
+  const handlePressItem = (post: IForumAPI) => {
     navigation.navigate(Navigation.FORUM_DETAIL, {
       postFocus: post,
-      liked: liked,
-      initAmountLike: amountLike,
-      initAmountReply: amountReply,
     });
   };
   return (
@@ -77,30 +27,22 @@ function ForumScreen({ navigation }: { navigation: any }) {
         IconLeft={<VectorBack />}
         onPressLeft={() => navigation.goBack()}
         IconRight={<Pencil />}
-        onPressRight={() =>
-          navigation.navigate(Navigation.NEW_POST, {
-            onPressPost: handlePressPost,
-          })
-        }
+        onPressRight={() => navigation.navigate(Navigation.NEW_POST)}
         styleHeader={styles.styleHeader}
       />
-      {isLoading ? (
+      {false ? (
         <View style={{ marginHorizontal: 24 }}>
           {BasePlaceholder.Forum(10)}
         </View>
       ) : (
         <FlatList
-          data={posts}
+          data={postsRedux}
           renderItem={({ item }) => (
             <RenderItem post={item} onPress={handlePressItem} />
           )}
-          showsVerticalScrollIndicator={false}
           keyExtractor={keyExtractor}
-          ListFooterComponent={ListFooterComponent}
-          onEndReached={getListPost}
-          onEndReachedThreshold={0}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
+          showsVerticalScrollIndicator={false}
+          extraData={postsRedux}
         />
       )}
     </View>

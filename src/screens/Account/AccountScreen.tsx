@@ -8,20 +8,18 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { BaseButton, SvgCopy, Warnings } from "../../components";
 
+import { BaseAlert, BaseButton, SvgCopy, Warnings } from "@components";
 import { Navigation } from "@constant/index";
+import { getUserRedux, logoutAuth } from "@redux";
 import { theme } from "@theme";
-import BaseAlert from "../../components/BaseAlert/BaseAlert";
-import { logoutAuth, RootState } from "../../redux";
-import { AlertComponent, MenuComponent } from "./components";
+import { AlertComponent, ListMenu, MenuComponent } from "./components";
 import { Title } from "./enum";
-import ListMenu from "./components/ListMenu";
 
 function AccountScreen({ navigation }: { navigation: any }) {
   //redux
   const dispatch = useDispatch();
-  const userRedux = useSelector((state: RootState) => state.auth.user);
+  const userRedux = useSelector(getUserRedux);
   //state
   const [isVisible, setVisible] = useState<boolean>(false);
 
@@ -46,10 +44,17 @@ function AccountScreen({ navigation }: { navigation: any }) {
             activeOpacity={0.8}
             onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
           >
-            <Image
-              source={{ uri: userRedux.avatar }}
-              style={styles.imageAccount}
-            />
+            <View
+              style={[
+                styles.imageAccount,
+                { backgroundColor: theme.colors.Neutral2 },
+              ]}
+            >
+              <Image
+                source={{ uri: userRedux.avatar }}
+                style={styles.imageAccount}
+              />
+            </View>
           </TouchableOpacity>
           <View style={styles.accountViewBody}>
             <TouchableOpacity
@@ -59,7 +64,7 @@ function AccountScreen({ navigation }: { navigation: any }) {
               <Text style={styles.textNameAccount}>{userRedux.name}</Text>
             </TouchableOpacity>
             <View style={styles.accountViewID}>
-              <Text style={styles.textID}>ID: {userRedux.user_id}</Text>
+              <Text style={styles.textID}>ID: {userRedux.id_account}</Text>
               <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
                 <SvgCopy />
               </TouchableOpacity>
