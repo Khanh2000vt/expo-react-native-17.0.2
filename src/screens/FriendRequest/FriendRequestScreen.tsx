@@ -1,28 +1,19 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 
-import { ApprovalApi } from "@api";
 import { BaseHeader, VectorBack } from "@components";
-import { IApprovalAPI } from "@model";
+import { IMemberAPI } from "@model";
+import { getMemberRedux, getUserRedux } from "@redux";
 import { theme } from "@theme";
+import { useSelector } from "react-redux";
 import ItemRequestPending from "./components/ItemRequestPending";
-function FriendRequestScreen({ navigation }: { navigation: any }) {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<IApprovalAPI[]>([]);
-  useEffect(() => {
-    getListUser();
-  }, []);
+import { getListMemberRequest } from "@utils";
 
-  async function getListUser() {
-    try {
-      const res: any = await ApprovalApi.getAll();
-      setUsers([...res]);
-    } catch (e) {
-      setUsers([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }
+function FriendRequestScreen({ navigation }: { navigation: any }) {
+  const userRedux = useSelector(getUserRedux);
+  const memberRedux = useSelector(getMemberRedux);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const listRequest = getListMemberRequest(userRedux, memberRedux);
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
@@ -34,11 +25,11 @@ function FriendRequestScreen({ navigation }: { navigation: any }) {
         onPressLeft={() => navigation.goBack()}
         styleHeader={styles.styleHeader}
       />
-      {isLoading ? (
+      {false ? (
         <ActivityIndicator style={styles.activityIndicator} />
       ) : (
         <FlatList
-          data={users}
+          data={listRequest}
           renderItem={({ item }) => (
             <ItemRequestPending item={item} navigation={navigation} />
           )}

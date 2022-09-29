@@ -1,4 +1,4 @@
-import { ColorValue, StyleProp, ViewStyle } from "react-native";
+import { ColorValue, StyleProp, TextInput, ViewStyle } from "react-native";
 interface PropsOTPBase {
   type?: "otp" | "password";
   backgroundColor?: ColorValue | undefined;
@@ -18,7 +18,7 @@ interface PropsInputOTP extends PropsOTPBase {
   codeChar: string;
   index: number;
   onTextChange: (text: string, index: number) => void;
-  onLayout: (a: any, i: number) => void;
+  onLayout: (ref: React.RefObject<TextInput>, index: number) => void;
   onKeyPress: (s: string, c: string, index: number) => void;
   focused: boolean;
 }

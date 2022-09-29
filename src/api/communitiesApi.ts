@@ -1,3 +1,4 @@
+import { IRequestAPI } from "@model";
 import axiosClient from "./axiosClient";
 
 const CommunitiesApi = {
@@ -5,7 +6,7 @@ const CommunitiesApi = {
     const url = "/communities";
     return axiosClient.get(url);
   },
-  getParams: (params: any) => {
+  getParams: (params: IRequestAPI) => {
     const url = "/communities";
     return axiosClient.get(url, { params });
   },

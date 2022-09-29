@@ -1,7 +1,8 @@
 import { EventNotification } from "@components";
+import { IMemberAPI } from "@model";
 
 export const pushElement = (
-  user: any,
+  user: IMemberAPI,
   accept: boolean,
   notifications: EventNotification[]
 ) => {
@@ -18,6 +19,6 @@ export const pushElement = (
   return notificationsNew;
 };
 
-export const deleteElement = (list: any[], id: string) => {
+export const deleteElement = (list: EventNotification[], id: string) => {
   return list.filter((item) => item.id !== id);
 };

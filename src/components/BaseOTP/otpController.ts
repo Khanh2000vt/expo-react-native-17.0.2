@@ -11,12 +11,12 @@ function handleInputText(
 }
 
 function handleRef(
-  r: React.RefObject<TextInput>,
-  i: number,
+  refLayout: React.RefObject<TextInput>,
+  index: number,
   ref: React.RefObject<TextInput>[],
 ) {
   let temp = ref;
-  temp[i] = r;
+  temp[index] = refLayout;
   return temp;
 }
 

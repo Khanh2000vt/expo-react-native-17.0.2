@@ -1,4 +1,6 @@
 import React, { useCallback, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 import {
   BaseAreaView,
   BaseButton,
@@ -7,30 +9,29 @@ import {
   ArrowRight,
 } from "@components";
 
-import { FlatList, StyleSheet, View } from "react-native";
 import { Navigation } from "@constant/index";
 import { getAddITem, getDeleteItem } from "./PickPreferHandle";
 import { theme } from "@theme";
+import { getCommunitiesRedux } from "@redux";
+import { ICommunityAPI } from "@model";
 
 const colors = theme.colors;
 
 function CommunitiesScreen({ navigation }: { navigation: any }) {
-  const [countTick, setCountTick] = useState<number>(0);
-  const [list, setList] = useState<any[]>([]);
+  const communitiesRedux = useSelector(getCommunitiesRedux);
+  const [list, setList] = useState<ICommunityAPI[]>([]);
 
   //flat list
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  const renderItem = ({ item }: { item: any }) => {
+  const renderItem = ({ item }: { item: ICommunityAPI }) => {
     return <BaseCategory community={item} onPress={handlePressBaseCategory} />;
   };
 
   //function
-  function handlePressBaseCategory(item: any, pressed: boolean) {
+  function handlePressBaseCategory(item: ICommunityAPI, pressed: boolean) {
     if (pressed) {
-      setCountTick(countTick + 1);
       setList(getAddITem(list, item));
     } else {
-      setCountTick(countTick - 1);
       setList(getDeleteItem(list, item));
     }
   }
@@ -42,11 +43,11 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
         comment="Up to 3 communities"
         step={2}
         upto={3}
-        indexUpto={countTick}
+        indexUpto={list.length}
       />
       <View style={styles.viewBody}>
         <FlatList
-          data={dataTest}
+          data={communitiesRedux}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           showsVerticalScrollIndicator={false}
@@ -58,73 +59,15 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
         color={colors.primary}
         IconRight={
           <ArrowRight
-            stroke={countTick === 0 ? colors.Neutral3 : colors.primary}
+            stroke={list.length === 0 ? colors.Neutral3 : colors.primary}
           />
         }
         onPress={() => navigation.navigate(Navigation.PERSONAL_INTRODUCTION)}
-        disabled={countTick === 0}
+        disabled={list.length === 0}
       />
     </BaseAreaView>
   );
 }
-const dataTest = [
-  {
-    id: 1,
-    title: "Movies",
-  },
-  {
-    id: 2,
-    title: "Outdoors",
-  },
-  {
-    id: 3,
-    title: "Music",
-  },
-  {
-    id: 4,
-    title: "Gaming",
-  },
-  {
-    id: 5,
-    title: "Gaming",
-  },
-  {
-    id: 6,
-    title: "Gaming",
-  },
-  {
-    id: 7,
-    title: "Gaming",
-  },
-  {
-    id: 8,
-    title: "Gaming",
-  },
-  {
-    id: 9,
-    title: "Gaming",
-  },
-  {
-    id: 10,
-    title: "Gaming",
-  },
-  {
-    id: 11,
-    title: "Gaming",
-  },
-  {
-    id: 12,
-    title: "Gaming",
-  },
-  {
-    id: 13,
-    title: "Gaming",
-  },
-  {
-    id: 14,
-    title: "Gaming",
-  },
-];
 
 const styles = StyleSheet.create({
   viewBody: {

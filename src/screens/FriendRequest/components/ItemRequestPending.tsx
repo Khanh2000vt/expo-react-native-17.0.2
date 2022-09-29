@@ -1,51 +1,57 @@
 import { Users } from "@components";
 import { Navigation, OtherProfile } from "@constant/index";
-import { IApprovalAPI } from "@model";
+import { IMemberAPI, IMemberRequest } from "@model";
 import { theme } from "@theme";
 import { handleTimeToNow } from "@utils";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface IState {
-  item: IApprovalAPI;
+  item: IMemberRequest;
   navigation: any;
 }
 
+interface IITemRender {
+  member: IMemberAPI;
+}
+
+const ItemCommunity = ({ member }: IITemRender) => {
+  return (
+    <View style={[styles.flex, styles.viewCommunity]}>
+      <Image source={{ uri: member.avatar }} style={styles.imageCommunity} />
+      <Text style={styles.textNameCommunity}>Music</Text>
+    </View>
+  );
+};
+
 function ItemRequestPending({ item, navigation }: IState) {
+  const { createdAt, member } = item;
   return (
     <TouchableOpacity
       style={styles.containerItem}
       activeOpacity={0.8}
       onPress={() =>
         navigation.navigate(Navigation.OTHER_PROFILE, {
-          userOther: item,
+          userOther: member,
           type: OtherProfile.REQUEST_PENDING,
         })
       }
     >
-      <Image source={{ uri: item.avatar }} style={styles.avatar} />
+      <Image source={{ uri: member.avatar }} style={styles.avatar} />
       <View style={styles.bodyItem}>
         <View style={styles.viewTextTitle}>
-          <Text style={styles.textName}>{item.name}</Text>
-          <Text style={styles.textTime}>{handleTimeToNow(item.createdAt)}</Text>
+          <Text style={styles.textName}>{member.name}</Text>
+          <Text style={styles.textTime}>{handleTimeToNow(createdAt)}</Text>
         </View>
         <View style={[styles.flex, styles.viewFriend]}>
-          <Text style={styles.textFriend}>{item.friend}</Text>
+          <Text style={styles.textFriend}>{member.friend}</Text>
           <Users />
         </View>
         <View style={styles.viewCommunities}>
           {Array(3)
             .fill(0)
-            .map((_community, index) => {
-              return (
-                <View key={index} style={[styles.flex, styles.viewCommunity]}>
-                  <Image
-                    source={{ uri: item.avatar }}
-                    style={styles.imageCommunity}
-                  />
-                  <Text style={styles.textNameCommunity}>Music</Text>
-                </View>
-              );
+            .map((_, index) => {
+              return <ItemCommunity member={member} key={index} />;
             })}
         </View>
         <Text style={styles.textPending}>Request pending...</Text>

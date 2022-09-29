@@ -1,6 +1,4 @@
-import { IApprovalAPI } from "@model";
-import { theme } from "@theme";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -8,25 +6,28 @@ import {
   Text,
   View,
 } from "react-native";
-import { BaseHeader, VectorBack } from "../../components";
+import { useDispatch, useSelector } from "react-redux";
+import { IMemberAPI } from "@model";
+import { getMemberRedux, getUserRedux, removeMemberBlock } from "@redux";
+import { theme } from "@theme";
+import { getListMemberBlock } from "@utils";
+import { BaseHeader, VectorBack } from "@components";
 import { RenderItem } from "./components";
-import { getListUser, handleRemoveById } from "./controller";
 import { Title } from "./enum";
 
 function BlockListScreen({ navigation }: { navigation: any }) {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [users, setUsers] = useState<IApprovalAPI[]>([]);
-
-  useEffect(() => {
-    getListUser(setUsers, setIsLoading);
-  }, []);
-
-  const keyExtractor = useCallback((_, index) => index.toString(), []);
-
-  const handleRemoveBlock = (itemSelected: any) => {
-    setUsers(handleRemoveById(itemSelected, users));
+  const dispatch = useDispatch();
+  const userRedux = useSelector(getUserRedux);
+  const memberRedux = useSelector(getMemberRedux);
+  const listBlock = getListMemberBlock(userRedux, memberRedux);
+  const handleRemoveBlock = (userSelected: IMemberAPI) => {
+    let param = {
+      user: userSelected,
+    };
+    dispatch(removeMemberBlock(param));
   };
 
+  const keyExtractor = useCallback((_, index) => index.toString(), []);
   return (
     <View style={styles.container}>
       <BaseHeader
@@ -35,13 +36,13 @@ function BlockListScreen({ navigation }: { navigation: any }) {
         onPressLeft={() => navigation.goBack()}
         styleHeader={styles.styleHeader}
       />
-      {isLoading ? (
+      {false ? (
         <ActivityIndicator style={styles.activityIndicator} />
       ) : (
         <FlatList
-          data={users}
+          data={listBlock}
           renderItem={({ item }) => (
-            <RenderItem item={item} onPress={handleRemoveBlock} />
+            <RenderItem member={item} onPress={handleRemoveBlock} />
           )}
           keyExtractor={keyExtractor}
           style={styles.flatList}

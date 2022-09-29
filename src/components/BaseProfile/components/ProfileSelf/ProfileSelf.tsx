@@ -1,10 +1,3 @@
-import { LogApi } from "@api";
-import { BaseButton } from "@components/BaseButton";
-import { Bell, CaretRight } from "@components/Icon";
-import { Navigation } from "@constant/index";
-import { ILogAPI } from "@model";
-import { getUserRedux } from "@redux";
-import { theme } from "@theme";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -14,6 +7,13 @@ import {
   View,
 } from "react-native";
 import { useSelector } from "react-redux";
+import { LogApi } from "@api";
+import { BaseButton } from "@components/BaseButton";
+import { Bell, CaretRight } from "@components/Icon";
+import { Navigation } from "@constant/index";
+import { ILogAPI } from "@model";
+import { getUserRedux } from "@redux";
+import { theme } from "@theme";
 import ItemActivityLog from "./ItemActivityLog";
 
 interface IProfileSelf {
@@ -45,6 +45,7 @@ function ProfileSelf({ navigation }: IProfileSelf) {
       const res: any = await LogApi.getAll(params);
       setActivities([...res]);
     } catch (error) {
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -116,7 +117,6 @@ function ProfileSelf({ navigation }: IProfileSelf) {
 }
 
 const styles = StyleSheet.create({
-  //activities log
   viewActivityIndicator: {
     marginTop: 20,
   },
@@ -134,7 +134,6 @@ const styles = StyleSheet.create({
     height: undefined,
     paddingVertical: 17,
   },
-  //notification
   notification: {
     paddingHorizontal: 24,
     marginTop: 45,
@@ -146,7 +145,6 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.darkerPrimary,
     flexDirection: "row",
     alignItems: "center",
-    // justifyContent: "center",
     paddingTop: 16,
     paddingBottom: 15,
     paddingHorizontal: 24,

@@ -32,7 +32,6 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const userRedux = useSelector(getUserRedux);
   const memberRedux = useSelector(getMemberRedux);
-  // const [users, setUsers] = useState<any[]>([]);
 
   const users = getListMemberApproval(userRedux, memberRedux);
   const [userSelected, setUserSelected] = useState<IMemberAPI>();
@@ -49,7 +48,7 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
   function handlePressItem(member: IMemberAPI) {
     navigation.navigate(Navigation.OTHER_PROFILE, {
       userOther: member,
-      type: OtherProfile.INVITATION,
+      type: OtherProfile.APPROVAL,
     });
   }
 

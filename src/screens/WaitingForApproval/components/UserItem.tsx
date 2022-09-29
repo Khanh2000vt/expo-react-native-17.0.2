@@ -1,17 +1,18 @@
 import { BaseButton, Users } from "@components";
+import { IMemberAPI, IMemberRequest } from "@model";
 import { theme } from "@theme";
 import { handleTimeToNow } from "@utils";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface ISate {
-  item: any;
-  onPressItem: (item: any) => void;
-  onAccept: (item: any) => void;
-  onReject: (item: any) => void;
+  item: IMemberRequest;
+  onPressItem: (item: IMemberAPI) => void;
+  onAccept: (item: IMemberAPI) => void;
+  onReject: (item: IMemberAPI) => void;
 }
 
-const ItemCommunity = ({ item }: any) => {
+const ItemCommunity = ({ item }: { item: IMemberAPI }) => {
   return (
     <View style={[styles.flex, styles.viewCommunity]}>
       <Image source={{ uri: item.avatar }} style={styles.imageCommunity} />
@@ -21,43 +22,44 @@ const ItemCommunity = ({ item }: any) => {
 };
 
 function UserItem({ onPressItem, item, onAccept, onReject }: ISate) {
+  const { createdAt, member } = item;
   return (
     <View style={styles.containerItem}>
-      <TouchableOpacity activeOpacity={0.8} onPress={() => onPressItem(item)}>
-        <Image source={{ uri: item.avatar }} style={styles.avatar} />
+      <TouchableOpacity activeOpacity={0.8} onPress={() => onPressItem(member)}>
+        <Image source={{ uri: member.avatar }} style={styles.avatar} />
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.bodyItem}
         activeOpacity={0.8}
-        onPress={() => onPressItem(item)}
+        onPress={() => onPressItem(member)}
       >
         <View style={styles.viewTextTitle}>
-          <Text style={styles.textName}>{item.name}</Text>
-          <Text style={styles.textTime}>{handleTimeToNow(item.createdAt)}</Text>
+          <Text style={styles.textName}>{member.name}</Text>
+          <Text style={styles.textTime}>{handleTimeToNow(createdAt)}</Text>
         </View>
         <View style={[styles.flex, styles.viewFriend]}>
-          <Text style={styles.textFriend}>{item.friend}</Text>
+          <Text style={styles.textFriend}>{member.friend}</Text>
           <Users />
         </View>
         <View style={styles.viewCommunities}>
           {Array(3)
             .fill(0)
             .map((_community, index) => {
-              return <ItemCommunity item={item} key={index} />;
+              return <ItemCommunity item={member} key={index} />;
             })}
         </View>
         <View style={[styles.flex, styles.viewButton]}>
           <BaseButton
             title="Accept"
             style={[styles.button, styles.buttonAccept]}
-            onPress={() => onAccept(item)}
+            onPress={() => onAccept(member)}
           />
           <BaseButton
             title="Reject"
             option="solid"
             color={theme.colors.Neutral4}
             style={[styles.button, styles.buttonReject]}
-            onPress={() => onReject(item)}
+            onPress={() => onReject(member)}
           />
         </View>
       </TouchableOpacity>

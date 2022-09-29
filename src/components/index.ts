@@ -1,7 +1,6 @@
 export * from "./BaseAreaView";
 export * from "./BaseButton";
 export * from "./BaseCategory";
-export * from "./BaseDropDown";
 export * from "./BaseGettingStarted";
 export * from "./BaseInput";
 export * from "./BaseIntroduction";

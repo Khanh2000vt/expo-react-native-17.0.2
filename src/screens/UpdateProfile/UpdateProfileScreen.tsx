@@ -1,14 +1,6 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as Yup from "yup";
 import {
   BaseButton,
@@ -17,18 +9,21 @@ import {
   BaseIntroduction,
   BaseMediaPicker,
   BaseModal,
+  BaseVirtualizedView,
   Plus,
   Tick,
   VectorBack,
 } from "@components";
 import { gender } from "@constant/index";
-import { RootState, updateUser } from "@redux";
-import { ListYear } from "@utils";
+import { IImage } from "@model";
+import { getUserRedux, updateUser } from "@redux";
 import { theme } from "@theme";
+import { ListYear } from "@utils";
+import { useDispatch, useSelector } from "react-redux";
 
 function UpdateProfileScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
-  const userRedux = useSelector((state: RootState) => state.auth.user);
+  const userRedux = useSelector(getUserRedux);
   const [avatarUser, setAvatarUser] = useState<string>(userRedux.avatar);
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -56,7 +51,7 @@ function UpdateProfileScreen({ navigation }: { navigation: any }) {
     },
   });
 
-  const handlePickComplete = (result: any) => {
+  const handlePickComplete = (result: IImage) => {
     setAvatarUser(result.uri);
   };
 
@@ -68,7 +63,7 @@ function UpdateProfileScreen({ navigation }: { navigation: any }) {
         onPressLeft={() => navigation.goBack()}
         styleHeader={styles.styleHeader}
       />
-      <ScrollView style={styles.body} showsVerticalScrollIndicator={false}>
+      <BaseVirtualizedView style={styles.body}>
         <View style={styles.viewProfile}>
           <Text style={styles.textTitle}>Profile picture</Text>
           <Image source={{ uri: avatarUser }} style={styles.avatar} />
@@ -159,7 +154,7 @@ function UpdateProfileScreen({ navigation }: { navigation: any }) {
           style={styles.buttonUpdate}
           onPress={formik.handleSubmit}
         />
-      </ScrollView>
+      </BaseVirtualizedView>
       <BaseMediaPicker
         isVisible={isVisible}
         onPickComplete={handlePickComplete}

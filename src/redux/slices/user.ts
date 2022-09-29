@@ -1,13 +1,13 @@
 import { userData } from "@helper";
-import { IMemberAPI, IUserAPI, IUserID } from "@model";
+import { IMemberAPI, IRequest, IUserAPI, IUserID } from "@model";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 interface IState {
   user: IUserAPI;
 }
 
-interface IApproval {
-  user: IMemberAPI;
+interface IMemberRequest {
+  user: IMemberAPI | IUserAPI;
 }
 
 const initialState: IState = {
@@ -32,7 +32,10 @@ const userSlice = createSlice({
         ...action.payload,
       };
     },
-    acceptMemberApproval: (state: IState, action: PayloadAction<IApproval>) => {
+    acceptMemberApproval: (
+      state: IState,
+      action: PayloadAction<IMemberRequest>
+    ) => {
       const { user } = action.payload;
       const init: IUserID = {
         id_user: user.id,
@@ -42,11 +45,50 @@ const userSlice = createSlice({
       );
       state.user.friend = [...state.user.friend, init];
     },
-    rejectMemberApproval: (state: IState, action: PayloadAction<IApproval>) => {
+    rejectMemberApproval: (
+      state: IState,
+      action: PayloadAction<IMemberRequest>
+    ) => {
       const { user } = action.payload;
       state.user.approval = state.user.approval.filter(
         (member) => member.id_user !== user.id
       );
+    },
+    addMemberBlock: (state: IState, action: PayloadAction<IMemberRequest>) => {
+      const { user } = action.payload;
+      const init: IUserID = {
+        id_user: user.id,
+      };
+      state.user.friend = state.user.friend.filter(
+        (member) => member.id_user !== user.id
+      );
+      state.user.approval = state.user.approval.filter(
+        (member) => member.id_user !== user.id
+      );
+      state.user.request = state.user.request.filter(
+        (member) => member.id_user !== user.id
+      );
+      state.user.block = [...state.user.block, init];
+    },
+    removeMemberBlock: (
+      state: IState,
+      action: PayloadAction<IMemberRequest>
+    ) => {
+      const { user } = action.payload;
+      state.user.block = state.user.block.filter(
+        (member) => member.id_user !== user.id
+      );
+    },
+    addMemberRequest: (
+      state: IState,
+      action: PayloadAction<IMemberRequest>
+    ) => {
+      const { user } = action.payload;
+      const init: IRequest = {
+        id_user: user.id,
+        createdAt: new Date().toISOString(),
+      };
+      state.user.request = [init, ...state.user.request];
     },
   },
 });
@@ -57,6 +99,9 @@ export const {
   updateUser,
   acceptMemberApproval,
   rejectMemberApproval,
+  addMemberBlock,
+  removeMemberBlock,
+  addMemberRequest,
 } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;

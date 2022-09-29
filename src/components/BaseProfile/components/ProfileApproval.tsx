@@ -1,16 +1,24 @@
 import { BaseButton } from "@components/BaseButton";
 import { Warnings } from "@components/Icon";
-import { OtherProfile } from "@constant/index";
+import { rejectMemberApproval } from "@redux";
 import { theme } from "@theme";
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { useDispatch } from "react-redux";
 import { UseStateProps } from "../BaseProfileModel";
 
-function ProfileInvitation({
+function ProfileApproval({
   setIsVisibleModal,
-  setStatus,
   setIsShowAlert,
+  user,
 }: UseStateProps) {
+  const dispatch = useDispatch();
+  const handlePressReject = () => {
+    const param = {
+      user: user,
+    };
+    dispatch(rejectMemberApproval(param));
+  };
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row" }}>
@@ -24,7 +32,7 @@ function ProfileInvitation({
           style={{ marginVertical: 12, flex: 1, marginLeft: 8 }}
           option="solid"
           color={theme.colors.Neutral4}
-          onPress={() => setStatus && setStatus(OtherProfile.OTHER)}
+          onPress={handlePressReject}
         />
       </View>
       <BaseButton
@@ -47,4 +55,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileInvitation;
+export default ProfileApproval;

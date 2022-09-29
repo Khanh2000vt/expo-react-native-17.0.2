@@ -5,7 +5,7 @@ const handleCaseFilter = (
   debounce: string,
   members: IMemberAPI[],
   filter: IFilter
-): any[] => {
+): IMemberAPI[] => {
   let result: IMemberAPI[] = members;
   try {
     if (

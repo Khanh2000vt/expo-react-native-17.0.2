@@ -1,22 +1,17 @@
+import { ICommunityAPI } from "@model";
+import { getCommunitiesRedux } from "@redux";
+import { theme } from "@theme";
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { theme } from "@theme";
-import { Navigation } from "@constant/index";
-import { getCommunitiesRedux, RootState } from "@redux";
 import { useSelector } from "react-redux";
-import { ICommunityAPI, ICommunityID } from "@model";
-import { getFindCommunity } from "@utils";
 
 interface IState {
   community: ICommunityAPI;
-  onPress: (item: any) => void;
+  onPress: (item: ICommunityAPI) => void;
 }
 
 function ItemJoinedCommunity({ community, onPress }: IState) {
-  const communitiesRedux = useSelector(getCommunitiesRedux);
-  // const community: ICommunityAPI | undefined =
-  //   getFindCommunity(communitiesRedux, item) || communitiesRedux[0];
   return (
     <TouchableOpacity
       activeOpacity={0.6}

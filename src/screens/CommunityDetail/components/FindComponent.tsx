@@ -1,5 +1,6 @@
 import { BaseInput } from "@components";
 import { useDebounce } from "@hooks";
+import { IMemberAPI } from "@model";
 import { theme } from "@theme";
 import { useFormik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
@@ -10,8 +11,8 @@ import { IFilter, IGender } from "../model";
 import ModalFilter from "./ModalFilter";
 
 interface IState {
-  setFilterMembers: React.Dispatch<React.SetStateAction<any[]>>;
-  members: any[];
+  setFilterMembers: React.Dispatch<React.SetStateAction<IMemberAPI[]>>;
+  members: IMemberAPI[];
 }
 
 function FindComponent({ setFilterMembers, members }: IState) {

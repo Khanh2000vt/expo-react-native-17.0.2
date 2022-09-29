@@ -1,25 +1,26 @@
+import { Image, StyleSheet, Text, View } from "react-native";
+import { IMemberAPI } from "@model";
 import { theme } from "@theme";
 import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
-import { BaseButton } from "../../../components";
+import { BaseButton } from "@components";
 import { Title } from "../enum";
 
 interface IState {
-  item: any;
-  onPress: (item: any) => void;
+  member: IMemberAPI;
+  onPress: (item: IMemberAPI) => void;
 }
 
-function RenderItem({ item, onPress }: IState) {
+function RenderItem({ member, onPress }: IState) {
   return (
     <View style={styles.containerItem}>
       <View style={styles.headerItemFlatList}>
-        <Image source={{ uri: item.avatar }} style={styles.imageItem} />
-        <Text style={styles.textNameItem}>{item.name}</Text>
+        <Image source={{ uri: member.avatar }} style={styles.imageItem} />
+        <Text style={styles.textNameItem}>{member.name}</Text>
       </View>
       <BaseButton
         title={Title.REMOVE_BLOCK}
         option="solid"
-        onPress={() => onPress(item)}
+        onPress={() => onPress(member)}
       />
     </View>
   );

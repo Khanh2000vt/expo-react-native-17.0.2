@@ -1,7 +1,14 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { useDispatch } from "react-redux";
-import { OtherProfile } from "@constant/index";
+import { BaseAlert } from "@components/BaseAlert";
+import { BasePopupRequest } from "@components/BasePopupRequest";
+import {
+  acceptMemberApproval,
+  addMemberBlock,
+  addMemberRequest,
+  spendCoins,
+} from "@redux";
 import { theme } from "@theme";
 import { BaseProfileProps } from "./BaseProfileModel";
 import {
@@ -9,43 +16,41 @@ import {
   ListFooterComponent,
   ListHeaderComponent,
 } from "./components";
-import { BaseAlert } from "@components/BaseAlert";
-import { BasePopupRequest } from "@components/BasePopupRequest";
-import { spendCoins } from "@redux";
+import { OtherProfile } from "@constant/index";
 
 function BaseProfile({
   navigation,
-  isProfileSelf = false,
   listAmount = [],
   listSocial = [],
   listJoined = [],
-  type = OtherProfile.OTHER,
   user,
-  member,
+  relationship,
 }: BaseProfileProps) {
   const dispatch = useDispatch();
   const [isVisibleModal, setIsVisibleModal] = useState<boolean>(false);
   const [isShowAlert, setIsShowAlert] = useState<boolean>(false);
-  const [status, setStatus] = useState<OtherProfile>(OtherProfile.OTHER);
-  const userFocus = isProfileSelf ? user : member;
-
-  useEffect(() => {
-    setStatus(type);
-  }, []);
+  const isApproval = relationship === OtherProfile.APPROVAL;
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
   const handlePressOK = () => {
+    let param = {
+      user: user,
+    };
     dispatch(spendCoins(500));
-    setStatus(
-      status === OtherProfile.INVITATION
-        ? OtherProfile.FRIEND
-        : OtherProfile.REQUEST_PENDING
-    );
+    if (isApproval) {
+      dispatch(acceptMemberApproval(param));
+    } else {
+      dispatch(addMemberRequest(param));
+    }
     setIsVisibleModal(false);
   };
 
   const handleAgreeBlock = () => {
+    const param = {
+      user: user,
+    };
+    dispatch(addMemberBlock(param));
     setIsShowAlert(false);
     navigation.goBack();
   };
@@ -60,23 +65,21 @@ function BaseProfile({
         showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <ListHeaderComponent
-            isProfileSelf={isProfileSelf}
-            status={status}
+            relationship={relationship}
             listAmount={listAmount}
             listSocial={listSocial}
             listJoined={listJoined}
             navigation={navigation}
-            user={userFocus}
+            user={user}
           />
         }
         ListFooterComponent={
           <ListFooterComponent
-            isProfileSelf={isProfileSelf}
-            status={status}
+            relationship={relationship}
             navigation={navigation}
             setIsShowAlert={setIsShowAlert}
             setIsVisibleModal={setIsVisibleModal}
-            setStatus={setStatus}
+            user={user}
           />
         }
       />
@@ -93,7 +96,7 @@ function BaseProfile({
       </BaseAlert>
       <BasePopupRequest
         isVisible={isVisibleModal}
-        accept={status === OtherProfile.INVITATION}
+        accept={isApproval}
         coinRequest={500}
         onBackButtonPress={() => setIsVisibleModal(false)}
         onBackdropPress={() => setIsVisibleModal(false)}

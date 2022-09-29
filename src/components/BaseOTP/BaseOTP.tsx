@@ -40,7 +40,6 @@ function BaseOTP({
 
   function handleChangeText(text: string, index: number): void {
     if (text === "") {
-      console.log("handleDeleteText");
       handleDeleteText(text, index);
     } else {
       handleAddText(text, index);
@@ -75,8 +74,8 @@ function BaseOTP({
     setCode([...temp]);
   }
 
-  function handleLayout(r: any, i: number) {
-    const refInput = handleRef(r, i, ref);
+  function handleLayout(refLayout: React.RefObject<TextInput>, index: number) {
+    const refInput = handleRef(refLayout, index, ref);
     setRef([...refInput]);
   }
 

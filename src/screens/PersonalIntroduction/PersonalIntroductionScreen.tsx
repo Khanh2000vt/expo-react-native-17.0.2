@@ -1,3 +1,6 @@
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useFormik } from "formik";
 import {
   ArrowRight,
   BaseAreaView,
@@ -11,9 +14,6 @@ import { gender, Navigation } from "@constant/index";
 import { IImage } from "@model";
 import { theme } from "@theme";
 import { ListYear } from "@utils";
-import { useFormik } from "formik";
-import React, { useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 const colors = theme.colors;
 
 const initialValues = {

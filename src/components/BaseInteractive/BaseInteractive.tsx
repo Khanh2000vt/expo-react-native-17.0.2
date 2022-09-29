@@ -20,8 +20,6 @@ function BaseInteractive({
   const memberRedux = useSelector(getMemberRedux);
   const userRedux = useSelector(getUserRedux);
   const user = type === Type.LIKE ? userID : userCommentID;
-  console.log("userID: ", userID);
-  console.log("userCommentID: ", userCommentID);
 
   const userPost = getPersonByID(memberRedux, user, userRedux);
   return (

@@ -15,9 +15,14 @@ export interface IUserComment {
   createdAt: string;
 }
 
-interface IApproval {
+export interface IRequest {
   createdAt: string;
   id_user: string;
+}
+
+export interface IMemberRequest {
+  createdAt: string;
+  member: IMemberAPI;
 }
 
 interface IPerson {
@@ -32,8 +37,8 @@ interface IPerson {
   birth_year: number;
   id_account: number;
   block: IUserID[];
-  request: IUserID[];
-  approval: IApproval[];
+  request: IRequest[];
+  approval: IRequest[];
   token: string;
 }
 

@@ -1,26 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import { Annotation, HeartFill, HeartOutline } from "@components";
-import {
-  findMemberPostInForum,
-  getAmountLikeInForum,
-  getAmountReplyInForum,
-  handleAmountRounding,
-  handleTimeCreateAt,
-  isLikedPost,
-} from "@utils";
-import { getActionLike } from "../../controller";
-import { RenderItemProps } from "./RenderITemModel";
-import { theme } from "@theme";
 import {
   addLike,
   getLikeRedux,
   getMemberRedux,
   getReplyRedux,
   getUserRedux,
-  removeLike,
+  removeLike
 } from "@redux";
+import { theme } from "@theme";
+import {
+  findMemberPostInForum,
+  getAmountLikeInForum,
+  getAmountReplyInForum,
+  handleAmountRounding,
+  handleTimeCreateAt,
+  isLikedPost
+} from "@utils";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { RenderItemProps } from "./RenderITemModel";
 function RenderItem({ post, onPress }: RenderItemProps) {
   const dispatch = useDispatch();
   //redux

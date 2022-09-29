@@ -1,5 +1,5 @@
 import { IImage } from "@model";
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 
 interface IState {
@@ -21,8 +21,11 @@ const postSlice = createSlice({
     resetPost: () => {
       return initialState;
     },
-    createPost: (_, action: PayloadAction<any>) => {
-      return action.payload;
+    createPost: (state: IState, action: PayloadAction<any>) => {
+      return {
+        ...state,
+        ...action.payload,
+      };
     },
   },
 });

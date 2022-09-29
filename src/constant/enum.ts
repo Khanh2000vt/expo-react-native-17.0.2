@@ -14,10 +14,12 @@ enum Button {
 }
 
 enum OtherProfile {
-  OTHER,
-  REQUEST_PENDING,
-  INVITATION,
   FRIEND,
+  REQUEST_PENDING,
+  APPROVAL,
+  BLOCK,
+  OTHER,
+  MYSELF,
 }
 
 enum Navigation {

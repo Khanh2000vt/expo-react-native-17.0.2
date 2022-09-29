@@ -1,11 +1,12 @@
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 import { BaseProfile } from "@components";
+import { OtherProfile } from "@constant/index";
 import { YourProfileNavigation } from "@navigation";
 import { getCommunitiesRedux, getUserRedux } from "@redux";
 import { theme } from "@theme";
 import { getJoinedCommunities } from "@utils";
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { useSelector } from "react-redux";
 import { ListAmount, ListSocial } from "./constants";
 
 function YourProfileScreen({ navigation }: YourProfileNavigation) {
@@ -19,11 +20,11 @@ function YourProfileScreen({ navigation }: YourProfileNavigation) {
     <View style={styles.container}>
       <BaseProfile
         navigation={navigation}
-        isProfileSelf
         listAmount={ListAmount(userRedux)}
         listSocial={ListSocial()}
         listJoined={joined}
         user={userRedux}
+        relationship={OtherProfile.MYSELF}
       />
     </View>
   );

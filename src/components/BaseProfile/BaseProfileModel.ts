@@ -1,5 +1,5 @@
 import { OtherProfile } from "@constant/index";
-import { ICommunityAPI, IMemberAPI, IUserAPI } from "@model";
+import { ICommunityAPI, ILogAPI, IMemberAPI, IUserAPI } from "@model";
 import { ColorValue } from "react-native";
 
 interface IItemBase {
@@ -18,8 +18,7 @@ export interface SocialProps extends IItemBase {
 }
 
 export interface IProfileSelf {
-  activitiesLog: any[];
-  notificationFromFollowers?: any[];
+  activitiesLog: ILogAPI[];
 }
 
 export interface IList {
@@ -30,28 +29,24 @@ export interface IList {
 
 interface BaseProfileProps extends IList {
   navigation: any;
-  isProfileSelf?: boolean;
-  type?: OtherProfile;
-  user?: IUserAPI;
-  member?: IMemberAPI;
+  user: IUserAPI | IMemberAPI;
+  relationship: OtherProfile;
 }
 
 interface ListHeaderProps extends IList {
-  isProfileSelf: boolean;
-  status: OtherProfile;
   navigation: any;
-  user: IMemberAPI | IUserAPI | undefined;
+  user: IMemberAPI | IUserAPI;
+  relationship: OtherProfile;
 }
 
 export interface UseStateProps {
   setIsShowAlert: React.Dispatch<React.SetStateAction<boolean>>;
   setIsVisibleModal?: React.Dispatch<React.SetStateAction<boolean>>;
-  setStatus?: React.Dispatch<React.SetStateAction<OtherProfile>>;
+  user: IMemberAPI | IUserAPI;
 }
 
 interface ListFooterProps extends UseStateProps {
-  isProfileSelf: boolean;
-  status: OtherProfile;
   navigation: any;
+  relationship: OtherProfile;
 }
 export type { BaseProfileProps, ListHeaderProps, ListFooterProps };

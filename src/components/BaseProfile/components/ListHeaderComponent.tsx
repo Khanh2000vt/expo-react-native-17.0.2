@@ -3,9 +3,11 @@ import { BaseHeader } from "@components/BaseHeader";
 import { PencilLine, SvgCopy, VectorBack } from "@components/Icon";
 import { Navigation, OtherProfile } from "@constant/index";
 import { ICommunityAPI } from "@model";
+import { getUserRedux } from "@redux";
 import { theme } from "@theme";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { useSelector } from "react-redux";
 import { ListHeaderProps } from "../BaseProfileModel";
 
 interface IItem {
@@ -21,14 +23,14 @@ const ItemJoined = ({ itemJoined }: IItem) => {
 };
 
 function ListHeaderComponent({
-  isProfileSelf,
-  status,
   listAmount = [],
   listSocial = [],
   listJoined = [],
   navigation,
   user,
+  relationship,
 }: ListHeaderProps) {
+  const isProfileSelf = relationship === OtherProfile.MYSELF;
   return (
     <>
       <View style={styles.profileContainer}>
@@ -61,10 +63,7 @@ function ListHeaderComponent({
             { backgroundColor: theme.colors.Neutral1 },
           ]}
         >
-          <Image
-            source={{ uri: user?.avatar }}
-            style={styles.profileImageAvt}
-          />
+          <Image source={{ uri: user?.avatar }} style={styles.profileImageAvt} />
         </View>
       </View>
 
@@ -94,7 +93,7 @@ function ListHeaderComponent({
         })}
       </View>
 
-      {(status === OtherProfile.FRIEND || isProfileSelf) && (
+      {(relationship === OtherProfile.FRIEND || isProfileSelf) && (
         <View style={styles.containerSocial}>
           {listSocial.map((item) => {
             return (

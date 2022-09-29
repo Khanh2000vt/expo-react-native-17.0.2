@@ -1,9 +1,3 @@
-import { BasePlaceholder } from "@components";
-import { Navigation } from "@constant/index";
-import { ICommunityAPI, IUserAPI } from "@model";
-import { getUserRedux, RootState } from "@redux";
-import { theme } from "@theme";
-import { getJoinedCommunities } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
@@ -13,7 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { useSelector } from "react-redux";
+import { BasePlaceholder } from "@components";
+import { Navigation } from "@constant/index";
+import { ICommunityAPI, IUserAPI } from "@model";
+import { theme } from "@theme";
+import { getJoinedCommunities } from "@utils";
 import ItemJoinedCommunity from "./ItemJoinedCommunity";
 
 interface IState {
