@@ -6,8 +6,10 @@ import {
   EventNotification,
   VectorBack,
 } from "@components";
-import { Navigation, OtherProfile } from "@constant/index";
+import { SCREEN, OtherProfile } from "@constant/index";
 import { IMemberAPI } from "@model";
+import { RootStackScreenProps } from "@navigation";
+import { useNavigation } from "@react-navigation/native";
 import {
   acceptMemberApproval,
   getMemberRedux,
@@ -28,7 +30,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { UserItem } from "./components";
 import { deleteElement, pushElement } from "./controller";
-function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
+
+type INavigation =
+  RootStackScreenProps<SCREEN.WAITING_FOR_APPROVAL>["navigation"];
+
+function WaitingForApprovalScreen() {
+  const navigation = useNavigation<INavigation>();
   const dispatch = useDispatch();
   const userRedux = useSelector(getUserRedux);
   const memberRedux = useSelector(getMemberRedux);
@@ -46,9 +53,8 @@ function WaitingForApprovalScreen({ navigation }: { navigation: any }) {
   };
 
   function handlePressItem(member: IMemberAPI) {
-    navigation.navigate(Navigation.OTHER_PROFILE, {
+    navigation.navigate(SCREEN.OTHER_PROFILE, {
       userOther: member,
-      type: OtherProfile.APPROVAL,
     });
   }
 

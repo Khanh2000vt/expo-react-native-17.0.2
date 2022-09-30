@@ -2,19 +2,19 @@ import React from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { BaseProfile } from "@components";
-import { OtherProfile } from "@constant/index";
+import { OtherProfile, SCREEN } from "@constant/index";
 import { getCommunitiesRedux, getUserRedux } from "@redux";
 import { theme } from "@theme";
 import { getRelationshipMember } from "@utils";
 import { ListAmount, ListSocial } from "./controller";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { RootStackScreenProps } from "@navigation";
 
-function OtherProfileScreen({
-  route,
-  navigation,
-}: {
-  route: any;
-  navigation: any;
-}) {
+type INavigation = RootStackScreenProps<SCREEN.OTHER_PROFILE>;
+
+function OtherProfileScreen() {
+  const navigation = useNavigation<INavigation["navigation"]>();
+  const route = useRoute<INavigation["route"]>();
   const userRedux = useSelector(getUserRedux);
   const { userOther } = route.params;
   const joined = useSelector(getCommunitiesRedux).slice(0, 5);

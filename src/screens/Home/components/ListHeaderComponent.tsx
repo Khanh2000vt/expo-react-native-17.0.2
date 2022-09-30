@@ -1,3 +1,9 @@
+import { BasePlaceholder } from "@components";
+import { SCREEN } from "@constant/index";
+import { ICommunityAPI, IUserAPI } from "@model";
+import { HomeTabProps } from "@navigation";
+import { theme } from "@theme";
+import { getJoinedCommunities } from "@utils";
 import React, { useCallback, useEffect, useState } from "react";
 import {
   FlatList,
@@ -7,15 +13,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { BasePlaceholder } from "@components";
-import { Navigation } from "@constant/index";
-import { ICommunityAPI, IUserAPI } from "@model";
-import { theme } from "@theme";
-import { getJoinedCommunities } from "@utils";
 import ItemJoinedCommunity from "./ItemJoinedCommunity";
+type INav = HomeTabProps<SCREEN.HOME>["navigation"];
 
 interface IState {
-  navigation: any;
+  navigation: INav;
   communitiesRedux: ICommunityAPI[];
   userRedux: IUserAPI;
 }
@@ -41,7 +43,7 @@ function ListHeaderComponent({
   const keyExtractor = useCallback((_, index) => index.toString(), []);
 
   const handlePressJoinedCommunity = (community: ICommunityAPI) => {
-    navigation.navigate(Navigation.COMMUNITY_DETAIL, {
+    navigation.navigate(SCREEN.COMMUNITY_DETAIL, {
       community: community,
     });
   };
@@ -51,7 +53,7 @@ function ListHeaderComponent({
       <View style={styles.viewHeader}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
+          onPress={() => navigation.navigate(SCREEN.YOUR_PROFILE)}
         >
           <View
             style={[
@@ -68,7 +70,7 @@ function ListHeaderComponent({
           </Text>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
+            onPress={() => navigation.navigate(SCREEN.YOUR_PROFILE)}
           >
             <Text style={styles.textName}>{userRedux.name}</Text>
           </TouchableOpacity>

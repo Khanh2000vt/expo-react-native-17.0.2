@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { ForumDetailScreen, ForumScreen, NewPostScreen } from "@screens";
 import { ForumStackParamList } from "@navigation/type";
 const Stack = createNativeStackNavigator<ForumStackParamList>();
@@ -9,24 +9,14 @@ function ForumStack() {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        // gestureEnabled: false,
       }}
     >
-      <Stack.Screen name={Navigation.FORUM} component={ForumScreen} />
+      <Stack.Screen name={SCREEN.FORUM} component={ForumScreen} />
       <Stack.Screen
-        name={Navigation.FORUM_DETAIL}
+        name={SCREEN.FORUM_DETAIL}
         component={ForumDetailScreen}
       />
-      <Stack.Screen
-        name={Navigation.NEW_POST}
-        component={NewPostScreen}
-        // options={{ gestureEnabled: false }}
-        options={
-          {
-            // gestureEnabled: false,
-          }
-        }
-      />
+      <Stack.Screen name={SCREEN.NEW_POST} component={NewPostScreen} />
     </Stack.Navigator>
   );
 }

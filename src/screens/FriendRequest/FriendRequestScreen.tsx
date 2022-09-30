@@ -1,18 +1,21 @@
-import React, { useCallback, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useCallback } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { useSelector } from "react-redux";
 
 import { BaseHeader, VectorBack } from "@components";
-import { IMemberAPI } from "@model";
+import { SCREEN } from "@constant/index";
+import { RootStackScreenProps } from "@navigation";
 import { getMemberRedux, getUserRedux } from "@redux";
 import { theme } from "@theme";
-import { useSelector } from "react-redux";
-import ItemRequestPending from "./components/ItemRequestPending";
 import { getListMemberRequest } from "@utils";
-
-function FriendRequestScreen({ navigation }: { navigation: any }) {
+import ItemRequestPending from "./components/ItemRequestPending";
+type INav = RootStackScreenProps<SCREEN.FRIEND_REQUEST>["navigation"];
+function FriendRequestScreen() {
+  const navigation = useNavigation<INav>();
   const userRedux = useSelector(getUserRedux);
   const memberRedux = useSelector(getMemberRedux);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
   const listRequest = getListMemberRequest(userRedux, memberRedux);
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);

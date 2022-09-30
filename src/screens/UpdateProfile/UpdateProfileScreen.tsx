@@ -14,14 +14,19 @@ import {
   Tick,
   VectorBack,
 } from "@components";
-import { gender } from "@constant/index";
+import { gender, SCREEN } from "@constant/index";
 import { IImage } from "@model";
 import { getUserRedux, updateUser } from "@redux";
 import { theme } from "@theme";
 import { ListYear } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
+import { RootStackScreenProps } from "@navigation";
 
-function UpdateProfileScreen({ navigation }: { navigation: any }) {
+type INavigation = RootStackScreenProps<SCREEN.UPDATE_PROFILE>["navigation"];
+
+function UpdateProfileScreen() {
+  const navigation = useNavigation<INavigation>();
   const dispatch = useDispatch();
   const userRedux = useSelector(getUserRedux);
   const [avatarUser, setAvatarUser] = useState<string>(userRedux.avatar);

@@ -41,6 +41,9 @@ function FindComponent({ setFilterMembers, members }: IState) {
     } else {
       firstRenderedRef.current = true;
     }
+    return () => {
+      firstRenderedRef.current = false;
+    };
   }, [debounce, filter]);
 
   const handlePressGender = (item: IGender) => {

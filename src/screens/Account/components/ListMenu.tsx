@@ -1,30 +1,30 @@
 import { LockKeyOpen, Prohibit, SignOut, UserCircle } from "@components";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import React from "react";
 import { Title } from "../enum";
-import { IMenu } from "../model";
+import { IMenu, INavigationAccount } from "../model";
 
 const ListMenu = (
-  navigation: any,
+  navigation: INavigationAccount,
   setVisible: React.Dispatch<React.SetStateAction<boolean>>
 ): IMenu[] => [
   {
     id: 1,
     title: Title.YOUR_PROFILE,
     icon: <UserCircle />,
-    onPress: () => navigation.navigate(Navigation.YOUR_PROFILE),
+    onPress: () => navigation.navigate(SCREEN.YOUR_PROFILE),
   },
   {
     id: 2,
     title: Title.BLOCK_LIST,
     icon: <Prohibit />,
-    onPress: () => navigation.navigate(Navigation.BLOCK_LIST),
+    onPress: () => navigation.navigate(SCREEN.BLOCK_LIST),
   },
   {
     id: 3,
     title: Title.CHANGE_PASSWORD,
     icon: <LockKeyOpen />,
-    onPress: () => navigation.navigate(Navigation.CHANGE_PASSWORD),
+    onPress: () => navigation.navigate(SCREEN.CHANGE_PASSWORD),
   },
   {
     id: 4,

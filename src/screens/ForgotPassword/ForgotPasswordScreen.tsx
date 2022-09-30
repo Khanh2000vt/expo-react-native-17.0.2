@@ -2,11 +2,16 @@ import { Formik } from "formik";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ArrowRight, BaseAreaView, BaseButton, BaseInput } from "@components";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { theme } from "@theme";
+import { useNavigation } from "@react-navigation/native";
+import { LoginTabProps } from "@navigation";
+type INav = LoginTabProps<SCREEN.FORGOT_PASSWORD>["navigation"]
 const colors = theme.colors;
 const fontSize = theme.fontSize;
-function ForgotPasswordScreen({ navigation }: { navigation: any }) {
+function ForgotPasswordScreen() {
+  const navigation =
+    useNavigation<INav>();
   function handleBackToLogin() {
     navigation.goBack();
   }
@@ -21,7 +26,7 @@ function ForgotPasswordScreen({ navigation }: { navigation: any }) {
         initialValues={{
           email: "",
         }}
-        onSubmit={(_values) => navigation.navigate(Navigation.REGISTER_FORGOT)}
+        onSubmit={(_values) => navigation.navigate(SCREEN.REGISTER_FORGOT)}
       >
         {({ handleChange, handleSubmit, values }) => (
           <>

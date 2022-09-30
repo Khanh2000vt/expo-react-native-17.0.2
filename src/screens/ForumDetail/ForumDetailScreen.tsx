@@ -5,6 +5,9 @@ import {
   HeartFill,
   VectorBack,
 } from "@components";
+import { SCREEN } from "@constant/enum";
+import { ForumTabProps } from "@navigation";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { getLikeRedux } from "@redux";
 import { theme } from "@theme";
 import { getAmountLikeInForum, getElementLikeOfPost } from "@utils";
@@ -15,13 +18,11 @@ import { Modalize } from "react-native-modalize";
 import { useSelector } from "react-redux";
 import { BasePostDetail, ListFooterComponent } from "./components";
 
-function ForumDetailScreen({
-  route,
-  navigation,
-}: {
-  route: any;
-  navigation: any;
-}) {
+type INavigation = ForumTabProps<SCREEN.FORUM_DETAIL>;
+
+function ForumDetailScreen() {
+  const navigation = useNavigation<INavigation["navigation"]>();
+  const route = useRoute<INavigation["route"]>();
   const { postFocus } = route.params;
   //redux
   const likeRedux = useSelector(getLikeRedux);

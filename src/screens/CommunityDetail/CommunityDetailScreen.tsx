@@ -1,37 +1,39 @@
+import React from "react";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { BaseHeader, BaseVirtualizedView, VectorBack } from "@components";
-import { Navigation, OtherProfile } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { IMemberAPI } from "@model";
+import { RootStackScreenProps } from "@navigation";
 import { getCommunitiesRedux } from "@redux";
 import { theme } from "@theme";
 import { getCommunityByID } from "@utils";
-import React, { useRef } from "react";
-import { FlatList, SafeAreaView, StyleSheet, Text, View } from "react-native";
-import { useSelector } from "react-redux";
 import { ListFooterComponent, ListHeaderComponent } from "./components";
 
-function CommunityDetailScreen({
-  route,
-  navigation,
-}: {
-  route: any;
-  navigation: any;
-}) {
+type INavigation = RootStackScreenProps<SCREEN.COMMUNITY_DETAIL>;
+
+function CommunityDetailScreen() {
+  const navigation = useNavigation<INavigation["navigation"]>();
+  const route = useRoute<INavigation["route"]>();
   const communityRoute = route.params.community;
   const communitiesRedux = useSelector(getCommunitiesRedux);
   const community = getCommunityByID(communitiesRedux, communityRoute);
 
   const handlePressMember = (userOther: IMemberAPI) => {
     if (userOther.id === "1") {
-      navigation.navigate(Navigation.YOUR_PROFILE);
+      navigation.navigate(SCREEN.YOUR_PROFILE);
     } else {
-      navigation.navigate(Navigation.OTHER_PROFILE, {
+      navigation.navigate(SCREEN.OTHER_PROFILE, {
         userOther: userOther,
-        type: OtherProfile.OTHER,
       });
     }
   };
 
-  const handlePressJoin = () => navigation.navigate(Navigation.FORUM_STACK);
+  const handlePressJoin = () =>
+    navigation.navigate(SCREEN.FORUM_STACK, {
+      screen: SCREEN.FORUM,
+    });
 
   if (community === undefined) {
     return (

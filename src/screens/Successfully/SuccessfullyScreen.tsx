@@ -1,13 +1,16 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { BaseButton, CircleComplete } from "@components";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { theme } from "@theme";
-
+import { useNavigation } from "@react-navigation/native";
+import { LoginTabProps } from "@navigation";
+type INav = LoginTabProps<SCREEN.SUCCESSFULLY>["navigation"];
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
-function SuccessfullyScreen({ navigation }: { navigation: any }) {
+function SuccessfullyScreen() {
+  const navigation = useNavigation<INav>();
   return (
     <View style={styles.container}>
       <CircleComplete style={styles.circleComplete} />
@@ -18,7 +21,7 @@ function SuccessfullyScreen({ navigation }: { navigation: any }) {
         title="Back to login"
         option="solid"
         style={styles.button}
-        onPress={() => navigation.navigate(Navigation.LOGIN)}
+        onPress={() => navigation.navigate(SCREEN.LOGIN)}
       />
     </View>
   );

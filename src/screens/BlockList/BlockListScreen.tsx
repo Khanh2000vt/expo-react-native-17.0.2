@@ -14,8 +14,10 @@ import { getListMemberBlock } from "@utils";
 import { BaseHeader, VectorBack } from "@components";
 import { RenderItem } from "./components";
 import { Title } from "./enum";
+import { useNavigation } from "@react-navigation/native";
 
-function BlockListScreen({ navigation }: { navigation: any }) {
+function BlockListScreen() {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const userRedux = useSelector(getUserRedux);
   const memberRedux = useSelector(getMemberRedux);

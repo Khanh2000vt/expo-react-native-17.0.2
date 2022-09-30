@@ -9,7 +9,7 @@ import {
   BaseModal,
   VectorBack,
 } from "@components";
-import { gender, Navigation } from "@constant/index";
+import { gender, SCREEN } from "@constant/index";
 import { ListYear } from "@utils";
 import { theme } from "@theme";
 import {
@@ -17,10 +17,14 @@ import {
   arraySocialInput,
   initialValues,
 } from "./constants";
+import { useNavigation } from "@react-navigation/native";
+import { LoginTabProps } from "@navigation";
+type INav = LoginTabProps<SCREEN.REGISTER_FORGOT>["navigation"];
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
-function RegisterForgotScreen({ navigation }: { navigation: any }) {
+function RegisterForgotScreen() {
+  const navigation = useNavigation<INav>();
   const formik = useFormik({
     initialValues: initialValues,
     // validationSchema: Yup.object({
@@ -37,7 +41,7 @@ function RegisterForgotScreen({ navigation }: { navigation: any }) {
     //   birthYear: Yup.string().required("No birth year provided."),
     // }),
     onSubmit: (_values) => {
-      navigation.navigate(Navigation.OTP, {
+      navigation.navigate(SCREEN.OTP, {
         type: 2,
       });
     },

@@ -1,6 +1,12 @@
-import { OtherProfile } from "@constant/index";
+import { OtherProfile, SCREEN } from "@constant/index";
 import { ICommunityAPI, ILogAPI, IMemberAPI, IUserAPI } from "@model";
+import { RootStackParamList } from "@navigation";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { ColorValue } from "react-native";
+
+type INavigation =
+  | StackNavigationProp<RootStackParamList, SCREEN.YOUR_PROFILE, undefined>
+  | StackNavigationProp<RootStackParamList, SCREEN.OTHER_PROFILE, undefined>;
 
 interface IItemBase {
   id: number;
@@ -28,13 +34,13 @@ export interface IList {
 }
 
 interface BaseProfileProps extends IList {
-  navigation: any;
+  navigation: INavigation;
   user: IUserAPI | IMemberAPI;
   relationship: OtherProfile;
 }
 
 interface ListHeaderProps extends IList {
-  navigation: any;
+  navigation: INavigation;
   user: IMemberAPI | IUserAPI;
   relationship: OtherProfile;
 }
@@ -46,7 +52,16 @@ export interface UseStateProps {
 }
 
 interface ListFooterProps extends UseStateProps {
-  navigation: any;
+  navigation: INavigation;
   relationship: OtherProfile;
 }
-export type { BaseProfileProps, ListHeaderProps, ListFooterProps };
+
+interface IProfileSelfItem {
+  navigation: INavigation;
+}
+export type {
+  BaseProfileProps,
+  ListHeaderProps,
+  ListFooterProps,
+  IProfileSelfItem,
+};

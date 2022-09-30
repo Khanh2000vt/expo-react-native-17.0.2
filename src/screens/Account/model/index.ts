@@ -1,3 +1,7 @@
+import { SCREEN } from "@constant/index";
+import { AccountStackParamList, RootStackParamList } from "@navigation";
+import { CompositeNavigationProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { GestureResponderEvent } from "react-native";
 import { Title } from "../enum";
 interface IMenu {
@@ -16,4 +20,14 @@ interface AlertComponentProps {
   onPressCancel: () => void | undefined;
 }
 
-export type { MenuComponentProps, IMenu, AlertComponentProps };
+type INavigationAccount = CompositeNavigationProp<
+  StackNavigationProp<AccountStackParamList, SCREEN.ACCOUNT, undefined>,
+  StackNavigationProp<RootStackParamList, keyof RootStackParamList, undefined>
+>;
+
+export type {
+  MenuComponentProps,
+  IMenu,
+  AlertComponentProps,
+  INavigationAccount,
+};

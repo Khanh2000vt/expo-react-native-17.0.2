@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { PersistGate } from "redux-persist/integration/react";
+import { AppStackParamList } from "@navigation";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import RootStackScreen from "./src/navigation/RootNavigation";
-import { Provider } from "react-redux";
-import { persistor, store } from "./src/redux";
-import { StatusBar, Platform, Alert } from "react-native";
 import * as Device from "expo-device";
 import * as Notifications from "expo-notifications";
-import { AppStack, RootStackParamList } from "@navigation";
-const Stack = createNativeStackNavigator<AppStack>();
+import React, { useEffect, useRef, useState } from "react";
+import { Alert, Platform, StatusBar } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import RootStackScreen from "./src/navigation/RootNavigation";
+import { persistor, store } from "./src/redux";
+const Stack = createNativeStackNavigator<AppStackParamList>();
 //link: https://expo.dev/notifications
 //android: ExponentPushToken[auPLDKK-6KhHtvV6I2Wagm]
 //ios: ExponentPushToken[Q-1DX9IjVzMtE25xpUY2d3]

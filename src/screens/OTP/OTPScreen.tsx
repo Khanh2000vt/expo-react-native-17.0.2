@@ -9,9 +9,15 @@ import {
 } from "@components";
 import { theme } from "@theme";
 import { getNameNextNavigation } from "./controller";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { LoginTabProps } from "@navigation";
+import { SCREEN } from "@constant/index";
+type INavigation = LoginTabProps<SCREEN.OTP>;
 const colors = theme.colors;
 const fontSize = theme.fontSize;
-function OTPScreen({ route, navigation }: { route: any; navigation: any }) {
+function OTPScreen() {
+  const navigation = useNavigation<INavigation["navigation"]>();
+  const route = useRoute<INavigation["route"]>();
   const { type } = route.params;
   const nextNavigation = getNameNextNavigation(type);
   function handleCodeFilled(_value: string) {

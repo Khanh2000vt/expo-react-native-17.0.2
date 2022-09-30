@@ -12,14 +12,17 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import { ArrowRight, BaseAreaView, BaseButton, BaseInput } from "@components";
-import { Container, Navigation } from "@constant/index";
+import { Container, SCREEN } from "@constant/index";
 import { loginAuth, RootState } from "@redux";
 import { theme } from "@theme";
-
+import { useNavigation } from "@react-navigation/native";
+import { LoginTabProps } from "@navigation";
+type INav = LoginTabProps<SCREEN.LOGIN>["navigation"];
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
-function LoginScreen({ navigation }: { navigation: any }) {
+function LoginScreen() {
+  const navigation = useNavigation<INav>();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.auth.isLoading);
   // const isLoading = false;
@@ -44,12 +47,12 @@ function LoginScreen({ navigation }: { navigation: any }) {
 
   function handleForgotPassword() {
     console.log("ForgotPasswordScreen");
-    navigation.navigate(Navigation.FORGOT_PASSWORD);
+    navigation.navigate(SCREEN.FORGOT_PASSWORD);
   }
 
   function handleRegister() {
     console.log("RegisterScreen");
-    navigation.navigate(Navigation.REGISTER);
+    navigation.navigate(SCREEN.REGISTER);
   }
 
   if (isLoading) {

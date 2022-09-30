@@ -1,76 +1,46 @@
+import { ICommunityAPI, IForumAPI, IMemberAPI } from "@model";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {
+  CompositeScreenProps,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
+import type {
+  StackNavigationProp,
+  StackScreenProps,
+} from "@react-navigation/stack";
+//NavigatorScreenParams<HomeTabParamList>
 
-export type AppStack = {
+export type AppStackParamList = {
   RootStack: undefined;
 };
 
 export type RootStackParamList = {
-  MainStack: undefined;
-  LoginStack: undefined;
-  CommunityDetailScreen: undefined;
+  // MainStack: NavigatorScreenParams<MainStackParamList>;
+  MainStack: NavigatorScreenParams<MainStackParamList>;
+  LoginStack: NavigatorScreenParams<LoginStackParamList>;
+  CommunityDetailScreen: {
+    community: ICommunityAPI;
+  };
   YourProfileScreen: undefined;
   UpdateProfileScreen: undefined;
   WaitingForApprovalScreen: undefined;
   FriendRequestScreen: undefined;
   BlockListScreen: undefined;
   ChangePasswordScreen: undefined;
-  OtherProfileScreen: undefined;
+  OtherProfileScreen: {
+    userOther: IMemberAPI;
+  };
   PurchaseTomoCoinScreen: undefined;
-  ForumStack: undefined;
+  ForumStack: NavigatorScreenParams<ForumStackParamList>;
 };
-export type MainStack = BottomTabScreenProps<RootStackParamList, "MainStack">;
-
-export type CommunityDetailNavigation = NativeStackScreenProps<
-  RootStackParamList,
-  "CommunityDetailScreen"
->;
-
-export type YourProfileNavigation = NativeStackScreenProps<
-  RootStackParamList,
-  "YourProfileScreen"
->;
-
-export type UpdateProfileNavigation = NativeStackScreenProps<
-  RootStackParamList,
-  "UpdateProfileScreen"
->;
-
-export type WaitingForApprovalNavigation = NativeStackScreenProps<
-  RootStackParamList,
-  "WaitingForApprovalScreen"
->;
-
-export type FriendRequestNavigation = NativeStackScreenProps<
-  RootStackParamList,
-  "FriendRequestScreen"
->;
-
-export type BlockListNavigation = NativeStackScreenProps<
-  RootStackParamList,
-  "BlockListScreen"
->;
-
-export type ChangePasswordNavigation = NativeStackScreenProps<
-  RootStackParamList,
-  "ChangePasswordScreen"
->;
-
-export type OtherProfileNavigation = NativeStackScreenProps<
-  RootStackParamList,
-  "OtherProfileScreen"
->;
-
-export type PurchaseTomoCoinNavigation = NativeStackScreenProps<
-  RootStackParamList,
-  "PurchaseTomoCoinScreen"
->;
 
 export type LoginStackParamList = {
   LoginScreen: undefined;
   ForgotPasswordScreen: undefined;
   RegisterScreen: undefined;
-  OTPScreen: undefined;
+  OTPScreen: {
+    type: number;
+  };
   AccountsSNSScreen: undefined;
   PickPreferScreen: undefined;
   PersonalIntroductionScreen: undefined;
@@ -78,106 +48,86 @@ export type LoginStackParamList = {
   SuccessfullyScreen: undefined;
 };
 
-export type LoginNavigation = NativeStackScreenProps<
-  LoginStackParamList,
-  "LoginScreen"
->;
-
-export type ForgotPasswordNavigation = NativeStackScreenProps<
-  LoginStackParamList,
-  "ForgotPasswordScreen"
->;
-
-export type RegisterNavigation = NativeStackScreenProps<
-  LoginStackParamList,
-  "RegisterScreen"
->;
-
-export type OTPNavigation = NativeStackScreenProps<
-  LoginStackParamList,
-  "OTPScreen"
->;
-
-export type AccountsSNSNavigation = NativeStackScreenProps<
-  LoginStackParamList,
-  "AccountsSNSScreen"
->;
-
-export type PickPreferNavigation = NativeStackScreenProps<
-  LoginStackParamList,
-  "PickPreferScreen"
->;
-
-export type PersonalIntroductionNavigation = NativeStackScreenProps<
-  LoginStackParamList,
-  "PersonalIntroductionScreen"
->;
-
-export type RegisterForgotNavigation = NativeStackScreenProps<
-  LoginStackParamList,
-  "RegisterForgotScreen"
->;
-
-export type SuccessfullyNavigation = NativeStackScreenProps<
-  LoginStackParamList,
-  "SuccessfullyScreen"
->;
-
 export type MainStackParamList = {
-  HomeStack: undefined;
-  CommunitiesStack: undefined;
-  AccountStack: undefined;
+  HomeStack: NavigatorScreenParams<HomeStackParamList>;
+  CommunitiesStack: NavigatorScreenParams<CommunitiesStackParamList>;
+  AccountStack: NavigatorScreenParams<AccountStackParamList>;
 };
-//////
-export type HomeStackNavigation = BottomTabScreenProps<
-  MainStackParamList,
-  "HomeStack"
->;
+
+export type ForumStackParamList = {
+  ForumScreen: undefined;
+  ForumDetailScreen: {
+    postFocus: IForumAPI;
+  };
+  NewPostScreen: undefined;
+};
 
 export type HomeStackParamList = {
   HomeScreen: undefined;
 };
 
-export type HomeNavigation = NativeStackScreenProps<
-  HomeStackParamList,
-  "HomeScreen"
->;
-
 export type CommunitiesStackParamList = {
   CommunitiesScreen: undefined;
 };
-
-export type CommunitiesNavigation = NativeStackScreenProps<
-  CommunitiesStackParamList,
-  "CommunitiesScreen"
->;
 
 export type AccountStackParamList = {
   AccountScreen: undefined;
 };
 
-export type AccountNavigation = NativeStackScreenProps<
-  AccountStackParamList,
-  "AccountScreen"
->;
+//props
 
-export type ForumStackParamList = {
-  ForumScreen: undefined;
-  ForumDetailScreen: undefined;
-  NewPostScreen: undefined;
-};
+export type RootStackScreenProps<T extends keyof RootStackParamList> =
+  StackScreenProps<RootStackParamList, T>;
 
-export type ForumNavigation = NativeStackScreenProps<
-  ForumStackParamList,
-  "ForumScreen"
->;
+//
 
-export type ForumDetailNavigation = NativeStackScreenProps<
-  ForumStackParamList,
-  "ForumDetailScreen"
->;
+export type MainTabProps<T extends keyof MainStackParamList> =
+  CompositeScreenProps<
+    BottomTabScreenProps<MainStackParamList, T>,
+    RootStackScreenProps<keyof RootStackParamList>
+  >;
 
-export type NewPostNavigation = NativeStackScreenProps<
-  ForumStackParamList,
-  "NewPostScreen"
->;
+export type HomeTabProps<T extends keyof HomeStackParamList> =
+  CompositeScreenProps<
+    StackScreenProps<HomeStackParamList, T>,
+    CompositeScreenProps<
+      BottomTabScreenProps<MainStackParamList, "HomeStack">,
+      RootStackScreenProps<keyof RootStackParamList>
+    >
+  >;
+
+export type CommunitiesTabProps<T extends keyof CommunitiesStackParamList> =
+  CompositeScreenProps<
+    StackScreenProps<CommunitiesStackParamList, T>,
+    CompositeScreenProps<
+      BottomTabScreenProps<MainStackParamList, "CommunitiesStack">,
+      RootStackScreenProps<keyof RootStackParamList>
+    >
+  >;
+
+export type AccountTabProps<T extends keyof AccountStackParamList> =
+  CompositeScreenProps<
+    StackScreenProps<AccountStackParamList, T>,
+    CompositeScreenProps<
+      BottomTabScreenProps<MainStackParamList, "AccountStack">,
+      RootStackScreenProps<keyof RootStackParamList>
+    >
+  >;
+
+export type LoginTabProps<T extends keyof LoginStackParamList> =
+  CompositeScreenProps<
+    StackScreenProps<LoginStackParamList, T>,
+    RootStackScreenProps<keyof RootStackParamList>
+  >;
+
+export type ForumTabProps<T extends keyof ForumStackParamList> =
+  CompositeScreenProps<
+    StackScreenProps<ForumStackParamList, T>,
+    RootStackScreenProps<keyof RootStackParamList>
+  >;
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends RootStackParamList {}
+  }
+}

@@ -5,19 +5,19 @@ import {
   CaretRight,
   TomoCoins,
   ViaFacebook,
-  ViaTwitter
+  ViaTwitter,
 } from "@components";
-import { Navigation } from "@constant/index";
-import { ICommunityAPI, IUserAPI } from "@model";
-// import { getJoined } from "@redux";
-import { theme } from "@theme";
-import { getOtherCommunities } from "@utils";
+import { SCREEN } from "@constant/index";
+import { HomeTabProps } from "@navigation";
 import React, { useCallback, useEffect, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
+// import { getJoined } from "@redux";
+import { ICommunityAPI, IUserAPI } from "@model";
+import { theme } from "@theme";
+import { getOtherCommunities } from "@utils";
+
 interface IState {
-  navigation: any;
-  // isLoading: boolean;
-  // listOthers: ICommunityAPI[];
+  navigation: HomeTabProps<SCREEN.HOME>["navigation"];
   communitiesRedux: ICommunityAPI[];
   userRedux: IUserAPI;
 }
@@ -46,7 +46,7 @@ function ListFooterComponent({
               community={item}
               isShowTick={false}
               onPress={() =>
-                navigation.navigate(Navigation.COMMUNITY_DETAIL, {
+                navigation.navigate(SCREEN.COMMUNITY_DETAIL, {
                   community: item,
                 })
               }
@@ -59,7 +59,11 @@ function ListFooterComponent({
               IconRight={<CaretRight />}
               backgroundColor={theme.colors.Neutral0}
               color={theme.colors.primary}
-              onPress={() => navigation.navigate(Navigation.COMMUNITIES_STACK)}
+              onPress={() =>
+                navigation.navigate(SCREEN.COMMUNITIES_STACK, {
+                  screen: SCREEN.COMMUNITIES,
+                })
+              }
             />
           }
         />
@@ -71,7 +75,7 @@ function ListFooterComponent({
           color={theme.colors.Neutral10}
           IconLeft={<TomoCoins style={{ marginHorizontal: 23 }} />}
           style={styles.buttonGray}
-          onPress={() => navigation.navigate(Navigation.PURCHASE_TOMO_COIN)}
+          onPress={() => navigation.navigate(SCREEN.PURCHASE_TOMO_COIN)}
         />
         <BaseButton
           title="Introduce via Twitter"

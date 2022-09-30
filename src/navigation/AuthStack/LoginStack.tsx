@@ -1,6 +1,6 @@
 import { LoginStackParamList } from "@navigation/type";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import {
   AccountsSNSScreen,
   PickPreferScreen,
@@ -20,31 +20,31 @@ function LoginStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name={Navigation.LOGIN} component={LoginScreen} />
+      <Stack.Screen name={SCREEN.LOGIN} component={LoginScreen} />
       <Stack.Screen
-        name={Navigation.FORGOT_PASSWORD}
+        name={SCREEN.FORGOT_PASSWORD}
         component={ForgotPasswordScreen}
       />
-      <Stack.Screen name={Navigation.REGISTER} component={RegisterScreen} />
-      <Stack.Screen name={Navigation.OTP} component={OTPScreen} />
+      <Stack.Screen name={SCREEN.REGISTER} component={RegisterScreen} />
+      <Stack.Screen name={SCREEN.OTP} component={OTPScreen} />
       <Stack.Screen
-        name={Navigation.ACCOUNTS_SNS}
+        name={SCREEN.ACCOUNTS_SNS}
         component={AccountsSNSScreen}
       />
       <Stack.Screen
-        name={Navigation.PICK_PREFER}
+        name={SCREEN.PICK_PREFER}
         component={PickPreferScreen}
       />
       <Stack.Screen
-        name={Navigation.PERSONAL_INTRODUCTION}
+        name={SCREEN.PERSONAL_INTRODUCTION}
         component={PersonalIntroductionScreen}
       />
       <Stack.Screen
-        name={Navigation.REGISTER_FORGOT}
+        name={SCREEN.REGISTER_FORGOT}
         component={RegisterForgotScreen}
       />
       <Stack.Screen
-        name={Navigation.SUCCESSFULLY}
+        name={SCREEN.SUCCESSFULLY}
         component={SuccessfullyScreen}
       />
     </Stack.Navigator>

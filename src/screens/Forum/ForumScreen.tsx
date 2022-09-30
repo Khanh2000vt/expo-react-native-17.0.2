@@ -1,22 +1,23 @@
 import { BaseHeader, BasePlaceholder, Pencil, VectorBack } from "@components";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { IForumAPI } from "@model";
+import { ForumTabProps } from "@navigation";
+import { useNavigation } from "@react-navigation/native";
 import { getForumRedux } from "@redux";
 import { theme } from "@theme";
 import React, { useCallback } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
-import { ForumApi } from "../../api";
 import { RenderItem } from "./components";
-
-function ForumScreen({ navigation }: { navigation: any }) {
+type INav = ForumTabProps<SCREEN.FORUM>["navigation"];
+function ForumScreen() {
+  const navigation = useNavigation<INav>();
   const postsRedux = useSelector(getForumRedux);
-  console.log("postsRedux: ", postsRedux);
 
   const keyExtractor = useCallback((_) => _.id, []);
 
   const handlePressItem = (post: IForumAPI) => {
-    navigation.navigate(Navigation.FORUM_DETAIL, {
+    navigation.navigate(SCREEN.FORUM_DETAIL, {
       postFocus: post,
     });
   };
@@ -27,7 +28,7 @@ function ForumScreen({ navigation }: { navigation: any }) {
         IconLeft={<VectorBack />}
         onPressLeft={() => navigation.goBack()}
         IconRight={<Pencil />}
-        onPressRight={() => navigation.navigate(Navigation.NEW_POST)}
+        onPressRight={() => navigation.navigate(SCREEN.NEW_POST)}
         styleHeader={styles.styleHeader}
       />
       {false ? (

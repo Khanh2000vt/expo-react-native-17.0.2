@@ -1,6 +1,5 @@
-import { TabAccount, TabCommunities, TabHome } from "@components";
-import { Navigation } from "@constant/index";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
+import { ParamListBase } from "@react-navigation/native";
 import { theme } from "@theme";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";

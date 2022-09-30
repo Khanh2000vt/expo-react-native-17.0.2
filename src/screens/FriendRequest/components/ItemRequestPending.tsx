@@ -1,6 +1,8 @@
 import { Users } from "@components";
-import { Navigation, OtherProfile } from "@constant/index";
+import { SCREEN, OtherProfile } from "@constant/index";
 import { IMemberAPI, IMemberRequest } from "@model";
+import { RootStackParamList } from "@navigation";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { theme } from "@theme";
 import { handleTimeToNow } from "@utils";
 import React from "react";
@@ -8,7 +10,11 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 interface IState {
   item: IMemberRequest;
-  navigation: any;
+  navigation: StackNavigationProp<
+    RootStackParamList,
+    SCREEN.FRIEND_REQUEST,
+    undefined
+  >;
 }
 
 interface IITemRender {
@@ -31,9 +37,8 @@ function ItemRequestPending({ item, navigation }: IState) {
       style={styles.containerItem}
       activeOpacity={0.8}
       onPress={() =>
-        navigation.navigate(Navigation.OTHER_PROFILE, {
+        navigation.navigate(SCREEN.OTHER_PROFILE, {
           userOther: member,
-          type: OtherProfile.REQUEST_PENDING,
         })
       }
     >

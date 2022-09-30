@@ -9,15 +9,18 @@ import {
   ArrowRight,
 } from "@components";
 
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { getAddITem, getDeleteItem } from "./PickPreferHandle";
 import { theme } from "@theme";
 import { getCommunitiesRedux } from "@redux";
 import { ICommunityAPI } from "@model";
-
+import { useNavigation } from "@react-navigation/native";
+import { LoginTabProps } from "@navigation";
+type INav = LoginTabProps<SCREEN.PICK_PREFER>["navigation"];
 const colors = theme.colors;
 
-function CommunitiesScreen({ navigation }: { navigation: any }) {
+function PickPreferScreen() {
+  const navigation = useNavigation<INav>();
   const communitiesRedux = useSelector(getCommunitiesRedux);
   const [list, setList] = useState<ICommunityAPI[]>([]);
 
@@ -59,11 +62,11 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
         color={colors.primary}
         IconRight={
           <ArrowRight
-            stroke={list.length === 0 ? colors.Neutral3 : colors.primary}
+            stroke={list.length < 3 ? colors.Neutral3 : colors.primary}
           />
         }
-        onPress={() => navigation.navigate(Navigation.PERSONAL_INTRODUCTION)}
-        disabled={list.length === 0}
+        onPress={() => navigation.navigate(SCREEN.PERSONAL_INTRODUCTION)}
+        disabled={list.length < 3}
       />
     </BaseAreaView>
   );
@@ -76,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CommunitiesScreen;
+export default PickPreferScreen;

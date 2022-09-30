@@ -1,7 +1,7 @@
 import { BaseButton } from "@components/BaseButton";
 import { BaseHeader } from "@components/BaseHeader";
 import { PencilLine, SvgCopy, VectorBack } from "@components/Icon";
-import { Navigation, OtherProfile } from "@constant/index";
+import { SCREEN, OtherProfile } from "@constant/index";
 import { ICommunityAPI } from "@model";
 import { getUserRedux } from "@redux";
 import { theme } from "@theme";
@@ -52,7 +52,7 @@ function ListHeaderComponent({
           onPressLeft={() => navigation.goBack()}
           IconRight={isProfileSelf && <PencilLine />}
           onPressRight={() =>
-            isProfileSelf && navigation.navigate(Navigation.UPDATE_PROFILE)
+            isProfileSelf && navigation.navigate(SCREEN.UPDATE_PROFILE)
           }
           styleHeader={styles.styleHeader}
           styleTitleHeader={styles.styleTitleHeader}

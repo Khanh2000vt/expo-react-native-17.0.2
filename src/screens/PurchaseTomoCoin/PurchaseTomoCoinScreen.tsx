@@ -3,15 +3,19 @@ import {
   BaseHeader,
   CurrencyJpy,
   SvgInfo,
-  VectorBack
+  VectorBack,
 } from "@components";
+import { SCREEN } from "@constant/index";
+import { RootStackScreenProps } from "@navigation";
+import { useNavigation } from "@react-navigation/native";
 import { addCoins, getUserRedux } from "@redux";
 import { theme } from "@theme";
 import React from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-
-function PurchaseTomoCoinScreen({ navigation }: { navigation: any }) {
+type INav = RootStackScreenProps<SCREEN.PURCHASE_TOMO_COIN>["navigation"];
+function PurchaseTomoCoinScreen() {
+  const navigation = useNavigation<INav>();
   const userRedux = useSelector(getUserRedux);
   const dispatch = useDispatch();
   const arrayButton = [

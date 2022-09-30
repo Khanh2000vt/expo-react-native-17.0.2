@@ -42,6 +42,7 @@ export const getFilterCommunitiesByName = (
   communities: ICommunityAPI[]
 ): ICommunityAPI[] => {
   let list = communities;
+  value = value.toLowerCase();
   if (value === "" || value === undefined) {
     return list;
   } else {
@@ -50,7 +51,10 @@ export const getFilterCommunitiesByName = (
         return community.name.toLowerCase().indexOf(value.toLowerCase()) !== -1;
       })
       .sort((a, b) => {
-        return a.name.indexOf(value) - b.name.indexOf(value);
+        return (
+          a.name.toLowerCase().indexOf(value) -
+          b.name.toLowerCase().indexOf(value)
+        );
       });
   }
 };

@@ -16,11 +16,18 @@ const handleCaseFilter = (
     ) {
       if (debounce) {
         console.log("Di vao 1");
-        result = result.filter((member) => {
-          return (
-            member.name.toLowerCase().indexOf(debounce.toLowerCase()) !== -1
-          );
-        });
+        result = result
+          .filter((member) => {
+            return (
+              member.name.toLowerCase().indexOf(debounce.toLowerCase()) !== -1
+            );
+          })
+          .sort((a, b) => {
+            return (
+              a.name.toLowerCase().indexOf(debounce.toLowerCase()) -
+              b.name.toLowerCase().indexOf(debounce.toLowerCase())
+            );
+          });
       }
       if (!!filter.minAge) {
         console.log("Di vao 2");

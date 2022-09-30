@@ -10,15 +10,12 @@ import { useSelector } from "react-redux";
 import { LogApi } from "@api";
 import { BaseButton } from "@components/BaseButton";
 import { Bell, CaretRight } from "@components/Icon";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { ILogAPI } from "@model";
 import { getUserRedux } from "@redux";
 import { theme } from "@theme";
 import ItemActivityLog from "./ItemActivityLog";
-
-interface IProfileSelf {
-  navigation: any;
-}
+import { IProfileSelfItem } from "@components/BaseProfile/BaseProfileModel";
 
 const IconRightButton = (amount: string | number) => (
   <View style={styles.iconRightButtonStyle}>
@@ -26,7 +23,7 @@ const IconRightButton = (amount: string | number) => (
   </View>
 );
 
-function ProfileSelf({ navigation }: IProfileSelf) {
+function ProfileSelf({ navigation }: IProfileSelfItem) {
   const userRedux = useSelector(getUserRedux);
   const [indexLog, setIndexLog] = useState<number>(3);
   const [activities, setActivities] = useState<ILogAPI[]>([]);
@@ -101,7 +98,7 @@ function ProfileSelf({ navigation }: IProfileSelf) {
           color={theme.colors.Neutral10}
           IconRight={IconRightButton(userRedux.approval.length)}
           style={styles.buttonProfileSelf}
-          onPress={() => navigation.navigate(Navigation.WAITING_FOR_APPROVAL)}
+          onPress={() => navigation.navigate(SCREEN.WAITING_FOR_APPROVAL)}
         />
         <BaseButton
           title="Friend request sent"
@@ -109,7 +106,7 @@ function ProfileSelf({ navigation }: IProfileSelf) {
           color={theme.colors.Neutral10}
           IconRight={IconRightButton(userRedux.request.length)}
           style={styles.buttonProfileSelf}
-          onPress={() => navigation.navigate(Navigation.FRIEND_REQUEST)}
+          onPress={() => navigation.navigate(SCREEN.FRIEND_REQUEST)}
         />
       </View>
     </>

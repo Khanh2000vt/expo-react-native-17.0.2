@@ -2,14 +2,16 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { BaseProfile } from "@components";
-import { OtherProfile } from "@constant/index";
-import { YourProfileNavigation } from "@navigation";
+import { OtherProfile, SCREEN } from "@constant/index";
 import { getCommunitiesRedux, getUserRedux } from "@redux";
 import { theme } from "@theme";
 import { getJoinedCommunities } from "@utils";
 import { ListAmount, ListSocial } from "./constants";
-
-function YourProfileScreen({ navigation }: YourProfileNavigation) {
+import { useNavigation } from "@react-navigation/native";
+import { RootStackScreenProps } from "@navigation";
+type INavigation = RootStackScreenProps<SCREEN.YOUR_PROFILE>["navigation"];
+function YourProfileScreen() {
+  const navigation = useNavigation<INavigation>();
   const userRedux = useSelector(getUserRedux);
   const communitiesRedux = useSelector(getCommunitiesRedux);
   const joined = getJoinedCommunities(userRedux.id, communitiesRedux).slice(

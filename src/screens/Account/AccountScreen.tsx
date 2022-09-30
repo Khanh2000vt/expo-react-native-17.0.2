@@ -8,15 +8,17 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useNavigation } from "@react-navigation/native";
 import { BaseAlert, BaseButton, SvgCopy, Warnings } from "@components";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { getUserRedux, logoutAuth } from "@redux";
 import { theme } from "@theme";
 import { AlertComponent, ListMenu, MenuComponent } from "./components";
 import { Title } from "./enum";
-
-function AccountScreen({ navigation }: { navigation: any }) {
+import { AccountTabProps } from "@navigation";
+type INavigation = AccountTabProps<SCREEN.ACCOUNT>["navigation"];
+function AccountScreen() {
+  const navigation = useNavigation<INavigation>();
   //redux
   const dispatch = useDispatch();
   const userRedux = useSelector(getUserRedux);
@@ -42,7 +44,7 @@ function AccountScreen({ navigation }: { navigation: any }) {
         <View style={styles.accountView}>
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
+            onPress={() => navigation.navigate(SCREEN.YOUR_PROFILE)}
           >
             <View
               style={[
@@ -59,7 +61,7 @@ function AccountScreen({ navigation }: { navigation: any }) {
           <View style={styles.accountViewBody}>
             <TouchableOpacity
               activeOpacity={0.8}
-              onPress={() => navigation.navigate(Navigation.YOUR_PROFILE)}
+              onPress={() => navigation.navigate(SCREEN.YOUR_PROFILE)}
             >
               <Text style={styles.textNameAccount}>{userRedux.name}</Text>
             </TouchableOpacity>

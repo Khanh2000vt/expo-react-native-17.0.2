@@ -11,13 +11,14 @@ import {
   Tick,
   VectorBack,
 } from "@components";
-import { gender, Navigation } from "@constant/index";
+import { gender, SCREEN } from "@constant/index";
 import { ListYear } from "@utils";
 import { theme } from "@theme";
-
+import { useNavigation } from "@react-navigation/native";
+import { LoginTabProps } from "@navigation";
+type INav = LoginTabProps<SCREEN.REGISTER>["navigation"];
 const colors = theme.colors;
 const fontSize = theme.fontSize;
-
 const initialValues = {
   email: "",
   password: "",
@@ -27,7 +28,8 @@ const initialValues = {
   introductionCode: "",
 };
 
-function RegisterScreen({ navigation }: { navigation: any }) {
+function RegisterScreen() {
+  const navigation = useNavigation<INav>();
   const [agree, setAgree] = useState<boolean>(false);
 
   const formik = useFormik({
@@ -47,7 +49,7 @@ function RegisterScreen({ navigation }: { navigation: any }) {
     // }),
     onSubmit: (_values) => {
       console.log("OTPScreen");
-      navigation.navigate(Navigation.OTP, {
+      navigation.navigate(SCREEN.OTP, {
         type: 1,
       });
     },

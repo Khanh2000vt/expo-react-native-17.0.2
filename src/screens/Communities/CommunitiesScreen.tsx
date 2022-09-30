@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { getCommunitiesRedux } from "@redux";
 import { theme } from "@theme";
 import { getFilterCommunitiesByName } from "@utils";
@@ -8,8 +8,11 @@ import { useSelector } from "react-redux";
 import { BaseCategory, BaseInput, BasePlaceholder } from "@components";
 import { useDebounce } from "@hooks";
 import { ICommunityAPI } from "@model";
-
-function CommunitiesScreen({ navigation }: { navigation: any }) {
+import { useNavigation } from "@react-navigation/native";
+import { CommunitiesTabProps } from "@navigation";
+type INav = CommunitiesTabProps<SCREEN.COMMUNITIES>["navigation"];
+function CommunitiesScreen() {
+  const navigation = useNavigation<INav>();
   //redux
   const communitiesRedux = useSelector(getCommunitiesRedux);
   //state
@@ -31,7 +34,7 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
 
   //function
   function handleOnPressCategories(community: ICommunityAPI) {
-    navigation.navigate(Navigation.COMMUNITY_DETAIL, {
+    navigation.navigate(SCREEN.COMMUNITY_DETAIL, {
       community: community,
     });
   }
@@ -67,6 +70,7 @@ function CommunitiesScreen({ navigation }: { navigation: any }) {
           keyExtractor={keyExtractor}
           ListEmptyComponent={<Text>No results were found !</Text>}
           style={styles.flatList}
+          showsVerticalScrollIndicator={false}
         />
       )}
     </View>

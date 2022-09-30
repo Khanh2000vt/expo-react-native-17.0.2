@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { theme } from "@theme";
 import { useFormik } from "formik";
 import React from "react";
@@ -11,7 +12,8 @@ import {
 import { arrayInput, initialValues, validationSchema } from "./constant";
 import { Title } from "./enum";
 
-function ChangePasswordScreen({ navigation }: { navigation: any }) {
+function ChangePasswordScreen() {
+  const navigation = useNavigation();
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: validationSchema,

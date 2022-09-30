@@ -1,6 +1,6 @@
 import { AccountStackParamList } from "@navigation/type";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { AccountScreen } from "@screens";
 const Stack = createNativeStackNavigator<AccountStackParamList>();
 function AccountStack() {
@@ -10,7 +10,7 @@ function AccountStack() {
         headerShown: false,
       }}
     >
-      <Stack.Screen name={Navigation.ACCOUNT} component={AccountScreen} />
+      <Stack.Screen name={SCREEN.ACCOUNT} component={AccountScreen} />
     </Stack.Navigator>
   );
 }

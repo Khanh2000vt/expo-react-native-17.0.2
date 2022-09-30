@@ -8,15 +8,19 @@ import {
   ArrowRight,
   Plus,
 } from "../../components";
-import { Navigation } from "@constant/index";
+import { SCREEN } from "@constant/index";
 import { propsGettingStated } from "./constants";
 import { Title } from "./enum";
 import { theme } from "@theme";
+import { useNavigation } from "@react-navigation/native";
+import { LoginTabProps } from "@navigation";
 
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
-function AccountsSNSScreen({ navigation }: { navigation: any }) {
+function AccountsSNSScreen() {
+  const navigation =
+    useNavigation<LoginTabProps<SCREEN.ACCOUNTS_SNS>["navigation"]>();
   return (
     <BaseAreaView style={styles.container}>
       <BaseGettingStarted {...propsGettingStated} />
@@ -47,7 +51,7 @@ function AccountsSNSScreen({ navigation }: { navigation: any }) {
         option="solid"
         color={colors.primary}
         IconRight={<ArrowRight stroke={colors.primary} />}
-        onPress={() => navigation.navigate(Navigation.PICK_PREFER)}
+        onPress={() => navigation.navigate(SCREEN.PICK_PREFER)}
       />
     </BaseAreaView>
   );

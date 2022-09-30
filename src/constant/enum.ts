@@ -22,7 +22,7 @@ enum OtherProfile {
   MYSELF,
 }
 
-enum Navigation {
+enum SCREEN {
   ACCOUNT = "AccountScreen",
   ACCOUNT_STACK = "AccountStack",
   ACCOUNTS_SNS = "AccountsSNSScreen",
@@ -54,5 +54,9 @@ enum Navigation {
   WAITING_FOR_APPROVAL = "WaitingForApprovalScreen",
   YOUR_PROFILE = "YourProfileScreen",
 }
+enum NAVIGATION {
+  NAVIGATION = "navigation",
+  ROUTE = "route",
+}
 
-export { Input, Container, Button, OtherProfile, Navigation };
+export { Input, Container, Button, OtherProfile, SCREEN, NAVIGATION };

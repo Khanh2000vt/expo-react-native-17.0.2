@@ -1,11 +1,15 @@
 // import { getJoined, loginAuth } from "@redux";
-import { getCommunitiesRedux, getUserRedux } from "@redux";
-import React, { useState } from "react";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { FlatList, StyleSheet, View } from "react-native";
+import { getCommunitiesRedux, getUserRedux } from "@redux";
+import { SCREEN } from "@constant/index";
+import { HomeTabProps } from "@navigation";
 import { useSelector } from "react-redux";
 import { ListFooterComponent, ListHeaderComponent } from "./components";
-
-function HomeScreen({ navigation }: { navigation: any }) {
+type INav = HomeTabProps<SCREEN.HOME>["navigation"];
+function HomeScreen() {
+  const navigation = useNavigation<INav>();
   const communitiesRedux = useSelector(getCommunitiesRedux);
   const userRedux = useSelector(getUserRedux);
   return (

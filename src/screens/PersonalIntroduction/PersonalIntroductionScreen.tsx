@@ -10,26 +10,28 @@ import {
   BaseMediaPicker,
   BaseModal,
 } from "@components";
-import { gender, Navigation } from "@constant/index";
+import { gender, SCREEN } from "@constant/index";
 import { IImage } from "@model";
 import { theme } from "@theme";
 import { ListYear } from "@utils";
-const colors = theme.colors;
+import { useNavigation } from "@react-navigation/native";
+import { LoginTabProps } from "@navigation";
 
+type INav = LoginTabProps<SCREEN.PERSONAL_INTRODUCTION>["navigation"];
+const colors = theme.colors;
 const initialValues = {
   profession: "",
   gender: "",
   birthYear: "",
   introduction: "",
 };
-
 const avatarDefault = "../../../assets/png/avtDefault.png";
-
-function PersonalIntroductionScreen({ navigation }: { navigation: any }) {
+function PersonalIntroductionScreen() {
+  const navigation = useNavigation<INav>();
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: (values) => {
-      navigation.navigate(Navigation.LOGIN);
+      navigation.navigate(SCREEN.LOGIN);
     },
   });
   const [isVisible, setIsVisible] = useState<boolean>(false);

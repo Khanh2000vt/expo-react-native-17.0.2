@@ -1,5 +1,10 @@
 import React, { useCallback, useState } from "react";
 
+import { BaseHeader, BaseMediaPicker, ImageSVG, VectorBack } from "@components";
+import { SCREEN } from "@constant/index";
+import { IImage } from "@model";
+import { ForumTabProps } from "@navigation";
+import { useNavigation } from "@react-navigation/native";
 import {
   createPost,
   getUserRedux,
@@ -7,6 +12,7 @@ import {
   resetPost,
   RootState,
 } from "@redux";
+import { theme } from "@theme";
 import {
   FlatList,
   Image,
@@ -17,18 +23,11 @@ import {
   View,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  BaseHeader,
-  BaseMediaPicker,
-  ImageSVG,
-  SvgX,
-  VectorBack,
-} from "@components";
-import { theme } from "@theme";
 import { GoBackAlert, ItemImage } from "./components";
 import { getNewArrayImage, getNewPost, isPostEmpty } from "./controller";
-import { IImage } from "@model";
-function NewPostScreen({ navigation }: { navigation: any }) {
+type INav = ForumTabProps<SCREEN.NEW_POST>["navigation"];
+function NewPostScreen() {
+  const navigation = useNavigation<INav>();
   const dispatch = useDispatch();
 
   const userRedux = useSelector(getUserRedux);
