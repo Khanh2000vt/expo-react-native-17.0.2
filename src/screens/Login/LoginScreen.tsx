@@ -21,6 +21,18 @@ type INav = LoginTabProps<SCREEN.LOGIN>["navigation"];
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
+const initialValues = {
+  email: "macro@gmail.com",
+  password: "1234566789",
+};
+const validationSchema = Yup.object({
+  email: Yup.string().email("Invalid email address").required("Required"),
+  password: Yup.string()
+    .required("No password provided.")
+    .min(6, "Password is too short - should be 6 chars minimum."),
+  // .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
+});
+
 function LoginScreen() {
   const navigation = useNavigation<INav>();
   const dispatch = useDispatch();
@@ -31,17 +43,8 @@ function LoginScreen() {
   }
 
   const formik = useFormik({
-    initialValues: {
-      email: "macro@gmail.com",
-      password: "1234566789",
-    },
-    validationSchema: Yup.object({
-      email: Yup.string().email("Invalid email address").required("Required"),
-      password: Yup.string()
-        .required("No password provided.")
-        .min(6, "Password is too short - should be 6 chars minimum."),
-      // .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
-    }),
+    initialValues: initialValues,
+    validationSchema: validationSchema,
     onSubmit: (values) => handleLogin(values),
   });
 

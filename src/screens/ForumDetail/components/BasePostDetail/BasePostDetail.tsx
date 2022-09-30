@@ -34,7 +34,23 @@ interface ISizeImage {
   width: number | string | undefined;
   height: number | string | undefined;
 }
-function BasePostDetail({ postFocus, onPressLikeDetail }: BasePostDetailProps) {
+const initSize: ISizeImage = {
+  width: 0,
+  height: 0,
+};
+
+const getSizeImage = (width: number, height: number): ISizeImage => {
+  const screenWidth = Dimensions.get("window").width;
+  const scaleFactor = width / (screenWidth - 2 * 24);
+  const imageHeight = height / scaleFactor;
+  return { width: screenWidth - 2 * 24, height: imageHeight };
+};
+
+function BasePostDetail({
+  postFocus,
+  onPressLikeDetail,
+  onPressMember,
+}: BasePostDetailProps) {
   const dispatch = useDispatch();
   const userRedux = useSelector(getUserRedux);
   const likeRedux = useSelector(getLikeRedux);
@@ -48,10 +64,9 @@ function BasePostDetail({ postFocus, onPressLikeDetail }: BasePostDetailProps) {
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [comment, onChangeComment] = useState<string>();
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(true);
-  const [sizeImage, setSizeImage] = useState<ISizeImage>({
-    width: 0,
-    height: 0,
-  });
+  const [sizeImage, setSizeImage] = useState<ISizeImage>(initSize);
+
+  const inputRef = useRef<TextInput>(null);
   useEffect(() => {
     setIsLiked(isLikedPost(userRedux, likeRedux, postFocus));
   }, [likeRedux]);
@@ -73,14 +88,16 @@ function BasePostDetail({ postFocus, onPressLikeDetail }: BasePostDetailProps) {
   };
 
   function getImage(imageUrl: string) {
-    Image.getSize(imageUrl, (width, height) => {
-      // calculate image width and height
-      const screenWidth = Dimensions.get("window").width;
-      const scaleFactor = width / (screenWidth - 2 * 24);
-      const imageHeight = height / scaleFactor;
-      setSizeImage({ width: screenWidth - 2 * 24, height: imageHeight });
+    try {
+      Image.getSize(imageUrl, (width, height) => {
+        // calculate image width and height
+        const size = getSizeImage(width, height);
+        setSizeImage(size);
+      });
+    } catch (e) {
+    } finally {
       setIsLoadingImage(false);
-    });
+    }
   }
 
   function handlePressReply() {
@@ -98,7 +115,11 @@ function BasePostDetail({ postFocus, onPressLikeDetail }: BasePostDetailProps) {
   return (
     <View style={styles.containerHeaderComponent}>
       <View style={{ paddingHorizontal: 24 }}>
-        <View style={styles.flex}>
+        <TouchableOpacity
+          style={styles.flex}
+          activeOpacity={0.8}
+          onPress={() => !!userPost && onPressMember(userPost)}
+        >
           <Image
             source={{ uri: userPost?.avatar }}
             style={styles.avatarUserPost}
@@ -115,9 +136,9 @@ function BasePostDetail({ postFocus, onPressLikeDetail }: BasePostDetailProps) {
               </Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
 
-        <View>
+        <>
           <Text style={styles.textTitle}>{postFocus.title}</Text>
           <Text style={styles.textBody}>{postFocus.body}</Text>
           {isLoadingImage ? (
@@ -133,7 +154,7 @@ function BasePostDetail({ postFocus, onPressLikeDetail }: BasePostDetailProps) {
               onLoadEnd={() => {}}
             />
           )}
-        </View>
+        </>
 
         <View style={styles.flex}>
           <View style={[styles.flex, { marginRight: 28 }]}>
@@ -156,17 +177,18 @@ function BasePostDetail({ postFocus, onPressLikeDetail }: BasePostDetailProps) {
               <Text style={styles.textLikes}>{amountLike} likes</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.flex}>
+          <>
             <TouchableOpacity
-              style={styles.touchableOpacity}
+              style={[styles.touchableOpacity, styles.flex]}
               activeOpacity={0.8}
+              onPress={() => inputRef.current?.focus()}
             >
               <Annotation width={32} height={32} />
+              <Text style={styles.textLikes}>
+                {handleAmountRounding(amountReply)} replies
+              </Text>
             </TouchableOpacity>
-            <Text style={styles.textLikes}>
-              {handleAmountRounding(amountReply)} replies
-            </Text>
-          </View>
+          </>
         </View>
       </View>
       <View style={[styles.flex, styles.viewReply]}>
@@ -177,6 +199,7 @@ function BasePostDetail({ postFocus, onPressLikeDetail }: BasePostDetailProps) {
           onChangeText={onChangeComment}
           value={comment}
           multiline
+          ref={inputRef}
         />
         <BaseButton
           title="Reply"

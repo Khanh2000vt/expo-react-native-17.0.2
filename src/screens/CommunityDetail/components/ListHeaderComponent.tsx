@@ -23,9 +23,13 @@ function ListHeaderComponent({ community, onPressJoin }: IState) {
   const [isJoined, setIsJoined] = useState<boolean>(false);
 
   useEffect(() => {
+    getIsJoined();
+  }, [community]);
+
+  const getIsJoined = () => {
     let joined = isUserJoinedCommunity(userRedux.id, community);
     setIsJoined(joined);
-  }, [community]);
+  };
 
   const handlePressJoined = () => {
     const params = {

@@ -1,3 +1,4 @@
+import { IMemberAPI } from "@model";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from ".";
 import { LoginApi } from "../../api";
@@ -41,7 +42,7 @@ const authSlice = createSlice({
       })
       .addCase(
         loginAuth.fulfilled,
-        (state: IState, action: PayloadAction<any>) => {
+        (state: IState, action: PayloadAction<IMemberAPI>) => {
           state.isLoading = false;
           state.token = action.payload.token;
           // state.user = action.payload;

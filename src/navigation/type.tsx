@@ -1,4 +1,4 @@
-import { ICommunityAPI, IForumAPI, IMemberAPI } from "@model";
+import { ICommunityAPI, IForumAPI, IMemberAPI, IUserAPI } from "@model";
 import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import {
   CompositeScreenProps,
@@ -28,7 +28,7 @@ export type RootStackParamList = {
   BlockListScreen: undefined;
   ChangePasswordScreen: undefined;
   OtherProfileScreen: {
-    userOther: IMemberAPI;
+    userOther: IMemberAPI | IUserAPI;
   };
   PurchaseTomoCoinScreen: undefined;
   ForumStack: NavigatorScreenParams<ForumStackParamList>;

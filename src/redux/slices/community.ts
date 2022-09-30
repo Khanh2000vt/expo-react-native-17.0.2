@@ -12,18 +12,6 @@ const initialState: IState = {
   communities: communitiesData,
 };
 
-// export const getJoined: any = createAsyncThunk(
-//   "user/joined",
-//   async (_data, { rejectWithValue }) => {
-//     try {
-//       const response: any = await JoinedApi.getAll();
-//       return response;
-//     } catch (error) {
-//       return rejectWithValue(error);
-//     }
-//   }
-// );
-
 interface IPayload {
   idCommunity: string;
   user: IUserAPI;

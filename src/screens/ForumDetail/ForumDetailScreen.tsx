@@ -6,6 +6,7 @@ import {
   VectorBack,
 } from "@components";
 import { SCREEN } from "@constant/enum";
+import { IMemberAPI, IUserAPI } from "@model";
 import { ForumTabProps } from "@navigation";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { getLikeRedux } from "@redux";
@@ -19,6 +20,17 @@ import { useSelector } from "react-redux";
 import { BasePostDetail, ListFooterComponent } from "./components";
 
 type INavigation = ForumTabProps<SCREEN.FORUM_DETAIL>;
+
+function HeaderComponent({ amountLike }: { amountLike: number }) {
+  return (
+    <View style={[styles.flex, styles.headerModal]}>
+      <HeartFill width={32} height={32} />
+      <Text style={[styles.textLikes, styles.textLikesModal]}>
+        {amountLike} likes
+      </Text>
+    </View>
+  );
+}
 
 function ForumDetailScreen() {
   const navigation = useNavigation<INavigation["navigation"]>();
@@ -34,16 +46,16 @@ function ForumDetailScreen() {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   const keyExtractor = useCallback((_, index) => index.toString(), []);
-  function headerComponent() {
-    return (
-      <View style={[styles.flex, styles.headerModal]}>
-        <HeartFill width={32} height={32} />
-        <Text style={[styles.textLikes, styles.textLikesModal]}>
-          {amountLike} likes
-        </Text>
-      </View>
-    );
-  }
+
+  const handlePressMember = (member: IMemberAPI | IUserAPI) => {
+    if (member.id === "1") {
+      navigation.navigate(SCREEN.YOUR_PROFILE);
+    } else {
+      navigation.navigate(SCREEN.OTHER_PROFILE, {
+        userOther: member,
+      });
+    }
+  };
 
   return (
     <GestureHandlerRootView style={styles.container}>
@@ -55,6 +67,7 @@ function ForumDetailScreen() {
       <BaseVirtualizedView>
         <BasePostDetail
           postFocus={postFocus}
+          onPressMember={handlePressMember}
           onPressLikeDetail={() => {
             modalizeRef.current?.open();
           }}
@@ -63,7 +76,7 @@ function ForumDetailScreen() {
       </BaseVirtualizedView>
       <Modalize
         ref={modalizeRef}
-        HeaderComponent={headerComponent}
+        HeaderComponent={<HeaderComponent amountLike={amountLike} />}
         handleStyle={[styles.lineModal]}
         threshold={200}
         modalTopOffset={132}
