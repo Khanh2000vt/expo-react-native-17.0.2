@@ -62,7 +62,7 @@ function ListFooterComponent({ onPress, community }: IState) {
         <FlatList
           data={filterMembers}
           renderItem={({ item }) => (
-            <BaseMember member={item} onPress={() => onPress(item)} />
+            <BaseMember member={item} onPress={onPress} />
           )}
           keyExtractor={(_, index) => index.toString()}
           ListEmptyComponent={

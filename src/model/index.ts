@@ -40,6 +40,8 @@ interface IPerson {
   request: IRequest[];
   approval: IRequest[];
   token: string;
+  email: string;
+  password: string;
 }
 
 interface IUserAPI extends IPerson {

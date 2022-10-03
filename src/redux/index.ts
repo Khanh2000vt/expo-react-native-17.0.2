@@ -18,3 +18,5 @@ export const getReplyRedux = (state: RootState) => state.reply.reply;
 export const getUserRedux = (state: RootState) => state.user.user;
 
 export const getMemberRedux = (state: RootState) => state.member.members;
+
+export const getAuthRedux = (state: RootState) => state.auth;

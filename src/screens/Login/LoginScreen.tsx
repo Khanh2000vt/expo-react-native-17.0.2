@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -13,17 +13,23 @@ import * as Yup from "yup";
 
 import { ArrowRight, BaseAreaView, BaseButton, BaseInput } from "@components";
 import { Container, SCREEN } from "@constant/index";
-import { loginAuth, RootState } from "@redux";
+import { getAuthRedux, getUserRedux, loginAuth, RootState } from "@redux";
 import { theme } from "@theme";
 import { useNavigation } from "@react-navigation/native";
 import { LoginTabProps } from "@navigation";
+import { getLogin } from "./controller";
 type INav = LoginTabProps<SCREEN.LOGIN>["navigation"];
+
+export interface IFormikLogin {
+  email: string;
+  password: string;
+}
 const colors = theme.colors;
 const fontSize = theme.fontSize;
 
-const initialValues = {
+const initialValues: IFormikLogin = {
   email: "macro@gmail.com",
-  password: "1234566789",
+  password: "123456",
 };
 const validationSchema = Yup.object({
   email: Yup.string().email("Invalid email address").required("Required"),
@@ -34,12 +40,21 @@ const validationSchema = Yup.object({
 });
 
 function LoginScreen() {
-  const navigation = useNavigation<INav>();
   const dispatch = useDispatch();
-  const isLoading = useSelector((state: RootState) => state.auth.isLoading);
-  // const isLoading = false;
-  function handleLogin(_value: any) {
-    dispatch(loginAuth());
+  const userRedux = useSelector(getUserRedux);
+  const navigation = useNavigation<INav>();
+  const isLoading = useSelector(getAuthRedux).isLoading;
+
+  function handleLogin(value: IFormikLogin) {
+    // dispatch();
+    const isSuccessful = getLogin(value, userRedux);
+    if (isSuccessful) {
+      dispatch(loginAuth());
+    } else {
+      formik.setSubmitting(false);
+      formik.setFieldValue("password", "", false);
+      formik.setFieldError("password", "Email or password is incorrect");
+    }
   }
 
   const formik = useFormik({
@@ -190,6 +205,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.Neutral0,
+  },
+  textFailLogin: {
+    color: "red",
+    fontWeight: "500",
+    fontSize: theme.fontSize.font12,
   },
 });
 export default LoginScreen;

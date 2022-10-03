@@ -38,7 +38,6 @@ function BaseInput({
   ...props
 }: PropsBaseInput) {
   const [hidePassword, setHidePassword] = useState<boolean>(true);
-
   return (
     <View style={styleContainer}>
       {!!title && <Text style={[styles.text, styleTitle]}>{title}</Text>}
@@ -83,8 +82,10 @@ function BaseInput({
           </TouchableOpacity>
         )}
       </View>
-      {error && !!messageError && (
-        <Text style={styles.textError}>{messageError}</Text>
+      {error && (
+        <Text style={styles.textError}>
+          {!!messageError ? messageError : " "}
+        </Text>
       )}
     </View>
   );

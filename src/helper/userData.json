@@ -8,6 +8,8 @@
   "gender": false,
   "birth_year": 21,
   "id_account": 22605,
+  "email": "macro@gmail.com",
+  "password": "123456",
   "friend": [
     {
       "id_user": "2"

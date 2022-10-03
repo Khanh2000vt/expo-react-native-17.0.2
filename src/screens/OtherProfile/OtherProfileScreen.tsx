@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Alert, StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { BaseProfile } from "@components";
@@ -7,8 +8,8 @@ import { getCommunitiesRedux, getUserRedux } from "@redux";
 import { theme } from "@theme";
 import { getRelationshipMember } from "@utils";
 import { ListAmount, ListSocial } from "./controller";
-import { useNavigation, useRoute } from "@react-navigation/native";
 import { RootStackScreenProps } from "@navigation";
+import { IMemberAPI } from "@model";
 
 type INavigation = RootStackScreenProps<SCREEN.OTHER_PROFILE>;
 
@@ -21,19 +22,24 @@ function OtherProfileScreen() {
   const relationship = getRelationshipMember(userOther, userRedux);
 
   if (relationship === OtherProfile.BLOCK) {
-    return Alert.alert("Can't watch profile", "You have blocked this user", [
+    Alert.alert("Can't watch profile", "You have blocked this user", [
       {
         text: "Return",
         onPress: () => navigation.goBack(),
         style: "cancel",
       },
     ]);
+    return <View style={{ flex: 1 }}></View>;
   }
   return (
     <View style={styles.container}>
       <BaseProfile
         navigation={navigation}
-        listAmount={ListAmount(userOther.friend)}
+        listAmount={ListAmount(
+          typeof userOther.friend === "number"
+            ? userOther.friend
+            : userOther.friend.length
+        )}
         listSocial={ListSocial()}
         listJoined={joined}
         user={userOther}
