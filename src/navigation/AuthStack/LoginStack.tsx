@@ -11,6 +11,7 @@ import {
   RegisterForgotScreen,
   RegisterScreen,
   SuccessfullyScreen,
+  ResetPasswordScreen,
 } from "@screens";
 const Stack = createNativeStackNavigator<LoginStackParamList>();
 function LoginStack() {
@@ -27,14 +28,8 @@ function LoginStack() {
       />
       <Stack.Screen name={SCREEN.REGISTER} component={RegisterScreen} />
       <Stack.Screen name={SCREEN.OTP} component={OTPScreen} />
-      <Stack.Screen
-        name={SCREEN.ACCOUNTS_SNS}
-        component={AccountsSNSScreen}
-      />
-      <Stack.Screen
-        name={SCREEN.PICK_PREFER}
-        component={PickPreferScreen}
-      />
+      <Stack.Screen name={SCREEN.ACCOUNTS_SNS} component={AccountsSNSScreen} />
+      <Stack.Screen name={SCREEN.PICK_PREFER} component={PickPreferScreen} />
       <Stack.Screen
         name={SCREEN.PERSONAL_INTRODUCTION}
         component={PersonalIntroductionScreen}
@@ -44,9 +39,10 @@ function LoginStack() {
         component={RegisterForgotScreen}
       />
       <Stack.Screen
-        name={SCREEN.SUCCESSFULLY}
-        component={SuccessfullyScreen}
+        name={SCREEN.RESET_PASSWORD}
+        component={ResetPasswordScreen}
       />
+      <Stack.Screen name={SCREEN.SUCCESSFULLY} component={SuccessfullyScreen} />
     </Stack.Navigator>
   );
 }

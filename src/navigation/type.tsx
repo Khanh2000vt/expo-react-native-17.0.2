@@ -46,6 +46,7 @@ export type LoginStackParamList = {
   PersonalIntroductionScreen: undefined;
   RegisterForgotScreen: undefined;
   SuccessfullyScreen: undefined;
+  ResetPasswordScreen: undefined;
 };
 
 export type MainStackParamList = {

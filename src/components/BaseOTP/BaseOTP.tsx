@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import InputOTP from "./components/OtpInput";
 import {
-  handleCodeFillFull,
+  handleArrayToString,
   handleInputText,
   handleRef,
 } from "./otpController";
@@ -24,6 +24,7 @@ function BaseOTP({
   styleContainerOTP,
   backgroundColor = "#f0f0f0",
   styleInputHighlight,
+  onChangeCode,
 }: PropsOTP) {
   const rerTemp = useRef<TextInput>();
   const arrayRef = new Array(pinCount).fill(rerTemp);
@@ -36,6 +37,7 @@ function BaseOTP({
 
   function clearAllCode() {
     setCode(array);
+    onChangeCode && onChangeCode("");
   }
 
   function handleChangeText(text: string, index: number): void {
@@ -56,9 +58,10 @@ function BaseOTP({
     }
     const temp = handleInputText(text, index, code);
     setCode([...temp]);
+    onChangeCode && onChangeCode(handleArrayToString(temp));
     if (index === pinCount - 1) {
       if (onCodeFilled) {
-        let codeFillFull = handleCodeFillFull(code);
+        let codeFillFull = handleArrayToString(code);
         onCodeFilled(codeFillFull);
       }
     }
@@ -72,6 +75,7 @@ function BaseOTP({
     }
     const temp = handleInputText(text, index, code);
     setCode([...temp]);
+    onChangeCode && onChangeCode(handleArrayToString(temp));
   }
 
   function handleLayout(refLayout: React.RefObject<TextInput>, index: number) {
@@ -103,6 +107,7 @@ function BaseOTP({
         }
         const temp = handleInputText("", index - 1, code);
         setCode([...temp]);
+        onChangeCode && onChangeCode(handleArrayToString(temp));
       }
     }
   }

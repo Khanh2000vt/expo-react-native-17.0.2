@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import {
   BaseAreaView,
@@ -21,6 +21,8 @@ const fontSize = theme.fontSize;
 function AccountsSNSScreen() {
   const navigation =
     useNavigation<LoginTabProps<SCREEN.ACCOUNTS_SNS>["navigation"]>();
+  const [listAccount, setListAccount] = useState<number[]>(Array(0).fill(0));
+
   return (
     <BaseAreaView style={styles.container}>
       <BaseGettingStarted {...propsGettingStated} />
@@ -30,20 +32,20 @@ function AccountsSNSScreen() {
           showsVerticalScrollIndicator={false}
           bounces={false}
         >
-          {Array(2)
-            .fill(0)
-            .map((_, index) => {
-              return <BaseIntroduction key={index} />;
-            })}
-          <BaseButton
-            title={Title.ADD_NEW_ADDRESS}
-            option="solid"
-            color={colors.Neutral4}
-            style={styles.buttonAdd}
-            styleText={styles.textButtonAdd}
-            IconLeft={<Plus />}
-            onPress={() => {}}
-          />
+          {listAccount.map((_, index) => {
+            return <BaseIntroduction key={index} />;
+          })}
+          {listAccount.length < 5 && (
+            <BaseButton
+              title={Title.ADD_NEW_ADDRESS}
+              option="solid"
+              color={colors.Neutral4}
+              style={styles.buttonAdd}
+              styleText={styles.textButtonAdd}
+              IconLeft={<Plus />}
+              onPress={() => setListAccount(listAccount.concat([0]))}
+            />
+          )}
         </ScrollView>
       </View>
       <BaseButton

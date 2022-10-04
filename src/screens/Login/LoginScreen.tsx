@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import {
   ActivityIndicator,
   Image,
@@ -13,10 +13,10 @@ import * as Yup from "yup";
 
 import { ArrowRight, BaseAreaView, BaseButton, BaseInput } from "@components";
 import { Container, SCREEN } from "@constant/index";
-import { getAuthRedux, getUserRedux, loginAuth, RootState } from "@redux";
-import { theme } from "@theme";
-import { useNavigation } from "@react-navigation/native";
 import { LoginTabProps } from "@navigation";
+import { useNavigation } from "@react-navigation/native";
+import { getAuthRedux, getUserRedux, loginAuth } from "@redux";
+import { theme } from "@theme";
 import { getLogin } from "./controller";
 type INav = LoginTabProps<SCREEN.LOGIN>["navigation"];
 

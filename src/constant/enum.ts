@@ -49,6 +49,7 @@ enum SCREEN {
   PURCHASE_TOMO_COIN = "PurchaseTomoCoinScreen",
   REGISTER = "RegisterScreen",
   REGISTER_FORGOT = "RegisterForgotScreen",
+  RESET_PASSWORD = "ResetPasswordScreen",
   UPDATE_PROFILE = "UpdateProfileScreen",
   SUCCESSFULLY = "SuccessfullyScreen",
   WAITING_FOR_APPROVAL = "WaitingForApprovalScreen",

@@ -7,6 +7,7 @@ export { default as PersonalIntroductionScreen } from "./PersonalIntroduction/Pe
 export { default as RegisterScreen } from "./Register/RegisterScreen";
 export { default as RegisterForgotScreen } from "./RegisterForgot/RegisterForgotScreen";
 export { default as SuccessfullyScreen } from "./Successfully/SuccessfullyScreen";
+export { default as ResetPasswordScreen } from "./ResetPassword/ResetPasswordScreen";
 
 //main stacks
 export { default as YourProfileScreen } from "./YourProfile/YourProfileScreen";

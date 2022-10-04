@@ -28,10 +28,11 @@ const initialValues = {
 const avatarDefault = "../../../assets/png/avtDefault.png";
 function PersonalIntroductionScreen() {
   const navigation = useNavigation<INav>();
+
   const formik = useFormik({
     initialValues: initialValues,
     onSubmit: (values) => {
-      navigation.navigate(SCREEN.LOGIN);
+      navigation.popToTop();
     },
   });
   const [isVisible, setIsVisible] = useState<boolean>(false);
@@ -60,7 +61,10 @@ function PersonalIntroductionScreen() {
                 : require(avatarDefault)
             }
           />
-          <TouchableOpacity activeOpacity={0.8}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => setIsVisible(true)}
+          >
             <Text style={styles.textChoosePicture}>Choose picture</Text>
           </TouchableOpacity>
         </View>

@@ -9,9 +9,10 @@ import {
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import * as Clipboard from "expo-clipboard";
 import { BaseAlert, BaseButton, SvgCopy, Warnings } from "@components";
 import { SCREEN } from "@constant/index";
-import { getUserRedux, logoutAuth } from "@redux";
+import { getUserRedux, logoutAuth, updateUser } from "@redux";
 import { theme } from "@theme";
 import { AlertComponent, ListMenu, MenuComponent } from "./components";
 import { Title } from "./enum";
@@ -30,6 +31,21 @@ function AccountScreen() {
     setTimeout(() => {
       dispatch(logoutAuth());
     }, 500);
+  };
+
+  const handleCancelAccount = () => {
+    const params = {
+      password: null,
+      email: null,
+    };
+    dispatch(updateUser(params));
+    setTimeout(() => {
+      dispatch(logoutAuth());
+    }, 500);
+  };
+
+  const copyToClipboard = async () => {
+    await Clipboard.setStringAsync(userRedux.id_account.toString());
   };
 
   return (
@@ -67,7 +83,7 @@ function AccountScreen() {
             </TouchableOpacity>
             <View style={styles.accountViewID}>
               <Text style={styles.textID}>ID: {userRedux.id_account}</Text>
-              <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
+              <TouchableOpacity activeOpacity={0.6} onPress={copyToClipboard}>
                 <SvgCopy />
               </TouchableOpacity>
             </View>
@@ -87,6 +103,7 @@ function AccountScreen() {
           style={styles.button}
           color={theme.colors.Semantic4}
           styleText={styles.buttonText}
+          onPress={handleCancelAccount}
         />
       </ScrollView>
       <BaseAlert isVisible={isVisible}>

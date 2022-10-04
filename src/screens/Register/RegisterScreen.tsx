@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import * as Yup from "yup";
+
 import {
   ArrowRight,
   BaseAreaView,
@@ -16,39 +16,29 @@ import { ListYear } from "@utils";
 import { theme } from "@theme";
 import { useNavigation } from "@react-navigation/native";
 import { LoginTabProps } from "@navigation";
+import { initialValues, validationSchema } from "./controller";
+import { useDispatch } from "react-redux";
+import { updateUser } from "@redux";
 type INav = LoginTabProps<SCREEN.REGISTER>["navigation"];
+
 const colors = theme.colors;
 const fontSize = theme.fontSize;
-const initialValues = {
-  email: "",
-  password: "",
-  username: "",
-  gender: "",
-  birthYear: "",
-  introductionCode: "",
-};
 
 function RegisterScreen() {
+  const dispatch = useDispatch();
   const navigation = useNavigation<INav>();
   const [agree, setAgree] = useState<boolean>(false);
 
   const formik = useFormik({
     initialValues: initialValues,
-    // validationSchema: Yup.object({
-    //   email: Yup.string().email("Invalid email address").required("Required"),
-    //   password: Yup.string()
-    //     .required("No password provided.")
-    //     .min(8, "Password is too short - should be 8 chars minimum.")
-    //     .matches(/[a-zA-Z]/, "Password can only contain Latin letters."),
-    //   username: Yup.string()
-    //     .required("No username provided.")
-    //     .min(6, "Username is too short - should be 6 chars minimum.")
-    //     .matches(/[a-zA-Z]/, "Username can only contain Latin letters."),
-    //   gender: Yup.string().required("No gender provided."),
-    //   birthYear: Yup.string().required("No birth year provided."),
-    // }),
-    onSubmit: (_values) => {
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
       console.log("OTPScreen");
+      const params = {
+        ...values,
+        birth_year: values.birth_year === "male",
+      };
+      dispatch(updateUser(params));
       navigation.navigate(SCREEN.OTP, {
         type: 1,
       });
@@ -114,18 +104,18 @@ function RegisterScreen() {
           data={ListYear()}
           title="Birth Year"
           placeholder="- Birth Year -"
-          onChangeValue={formik.handleChange("birthYear")}
+          onChangeValue={formik.handleChange("birth_year")}
           styleContainer={{ marginLeft: 8 }}
-          error={formik.touched.birthYear}
-          messageError={formik.errors.birthYear}
-          value={formik.values.birthYear}
+          error={formik.touched.birth_year}
+          messageError={formik.errors.birth_year}
+          value={formik.values.birth_year}
         />
       </View>
       <BaseInput
         title="Introduction Code"
-        value={formik.values.introductionCode}
+        value={formik.values.introduction}
         styleContainer={styles.inputContainer}
-        onChangeText={formik.handleChange("introductionCode")}
+        onChangeText={formik.handleChange("introduction")}
         placeholderTextColor={colors.Neutral3}
       />
       <View style={styles.viewTerms}>
@@ -153,6 +143,7 @@ function RegisterScreen() {
         IconRight={<ArrowRight height={20} width={20} />}
         style={styles.baseButton}
         onPress={formik.handleSubmit}
+        disabled={!agree}
       />
     </BaseAreaView>
   );

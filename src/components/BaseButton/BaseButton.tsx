@@ -41,6 +41,7 @@ function BaseButton({
         style,
         disabled && {
           borderColor: colors.Neutral3,
+          // opacity: 0.5,
         },
       ]}
       disabled={disabled}

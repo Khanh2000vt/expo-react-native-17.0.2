@@ -1,9 +1,9 @@
-import {TextInput} from 'react-native';
+import { TextInput } from "react-native";
 
 function handleInputText(
   text: string,
   index: number,
-  code: string[],
+  code: string[]
 ): string[] {
   let temp = code;
   temp[index] = text;
@@ -13,16 +13,16 @@ function handleInputText(
 function handleRef(
   refLayout: React.RefObject<TextInput>,
   index: number,
-  ref: React.RefObject<TextInput>[],
+  ref: React.RefObject<TextInput>[]
 ) {
   let temp = ref;
   temp[index] = refLayout;
   return temp;
 }
 
-function handleCodeFillFull(code: string[]): string {
-  let string = code.join('');
+function handleArrayToString(code: string[]): string {
+  let string = code.join("");
   return string;
 }
 
-export {handleInputText, handleRef, handleCodeFillFull};
+export { handleInputText, handleRef, handleArrayToString };

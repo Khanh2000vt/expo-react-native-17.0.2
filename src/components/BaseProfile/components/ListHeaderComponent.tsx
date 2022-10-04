@@ -1,15 +1,13 @@
+import React from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import * as Clipboard from "expo-clipboard";
 import { BaseButton } from "@components/BaseButton";
 import { BaseHeader } from "@components/BaseHeader";
 import { PencilLine, SvgCopy, VectorBack } from "@components/Icon";
-import { SCREEN, OtherProfile } from "@constant/index";
+import { OtherProfile, SCREEN } from "@constant/index";
 import { ICommunityAPI } from "@model";
-import { getUserRedux } from "@redux";
 import { theme } from "@theme";
-import React from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
 import { ListHeaderProps } from "../BaseProfileModel";
-
 interface IItem {
   itemJoined: ICommunityAPI;
 }
@@ -31,6 +29,9 @@ function ListHeaderComponent({
   relationship,
 }: ListHeaderProps) {
   const isProfileSelf = relationship === OtherProfile.MYSELF;
+  const copyToClipboard = async () => {
+    await Clipboard.setStringAsync(user?.id_account.toString() || "");
+  };
   return (
     <>
       <View style={styles.profileContainer}>
@@ -63,7 +64,10 @@ function ListHeaderComponent({
             { backgroundColor: theme.colors.Neutral1 },
           ]}
         >
-          <Image source={{ uri: user?.avatar }} style={styles.profileImageAvt} />
+          <Image
+            source={{ uri: user?.avatar }}
+            style={styles.profileImageAvt}
+          />
         </View>
       </View>
 
@@ -71,7 +75,7 @@ function ListHeaderComponent({
         <Text style={styles.textNameAccount}>{user?.name}</Text>
         <View style={styles.viewUserID}>
           <Text style={styles.textID}>ID: {user?.id_account}</Text>
-          <TouchableOpacity activeOpacity={0.6} onPress={() => {}}>
+          <TouchableOpacity activeOpacity={0.6} onPress={copyToClipboard}>
             <SvgCopy />
           </TouchableOpacity>
         </View>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {
   BaseAreaView,
@@ -8,10 +8,11 @@ import {
   VectorBack,
 } from "@components";
 import { theme } from "@theme";
-import { getNameNextNavigation } from "./controller";
+import { getNameNextNavigation, getRandomCodeOTP } from "./controller";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LoginTabProps } from "@navigation";
 import { SCREEN } from "@constant/index";
+import * as Notifications from "expo-notifications";
 type INavigation = LoginTabProps<SCREEN.OTP>;
 const colors = theme.colors;
 const fontSize = theme.fontSize;
@@ -20,9 +21,33 @@ function OTPScreen() {
   const route = useRoute<INavigation["route"]>();
   const { type } = route.params;
   const nextNavigation = getNameNextNavigation(type);
-  function handleCodeFilled(_value: string) {
-    navigation.navigate(nextNavigation);
+  const [codeCurrent, setCodeCurrent] = useState<string>("");
+  const [fakeOTP, setFakeOTP] = useState<string>(getRandomCodeOTP());
+
+  useEffect(() => {
+    console.log("fakeOTP: ", fakeOTP);
+    schedulePushNotification();
+  }, [fakeOTP]);
+
+  async function schedulePushNotification() {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "OTP Code",
+        body: "Your OTP code is: " + fakeOTP,
+        // data: { data: "goes here" },
+      },
+      trigger: { seconds: 2 },
+    });
   }
+
+  function handleCodeFilled(value: string) {
+    if (value === fakeOTP) {
+      navigation.navigate(nextNavigation);
+    }
+  }
+
+  console.log("codeCurrent: ", codeCurrent);
+
   return (
     <BaseAreaView
       style={styles.container}
@@ -44,6 +69,7 @@ function OTPScreen() {
         styleContainerOTP={styles.styleContainerOTP}
         styleInputHighlight={styles.styleInputHighlight}
         onCodeFilled={handleCodeFilled}
+        onChangeCode={(code: string) => setCodeCurrent(code)}
         backgroundColor={colors.Neutral0}
       />
       <BaseButton
@@ -54,7 +80,12 @@ function OTPScreen() {
       />
       <View style={styles.viewReceiveOTP}>
         <Text style={styles.textReceiveOTP}>Didn’t receive OTP code?</Text>
-        <TouchableOpacity onPress={() => {}} activeOpacity={0.8}>
+        <TouchableOpacity
+          onPress={() => {
+            setFakeOTP(getRandomCodeOTP());
+          }}
+          activeOpacity={0.8}
+        >
           <Text style={[styles.textReceiveOTP, styles.textResend]}>
             {" Resend"}
           </Text>

@@ -12,6 +12,7 @@ interface PropsOTP extends PropsOTPBase {
   clearInputs?: boolean;
   styleViewOTP?: StyleProp<ViewStyle> | undefined;
   styleContainerOTP?: StyleProp<ViewStyle> | undefined;
+  onChangeCode?: (code: string) => void | undefined;
 }
 
 interface PropsInputOTP extends PropsOTPBase {
